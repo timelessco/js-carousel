@@ -44,10 +44,17 @@ html {
 1. Remove the margin in all browsers.
 2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
 */
+h3 {
+  color: white;
+  margin: auto !important;
+  text-align: left;
+  max-width: 660px;
+}
 
 body {
   margin: 0; /* 1 */
   line-height: inherit; /* 2 */
+  background: black;
 }
 
 /*
@@ -103,6 +110,9 @@ strong {
   font-weight: bolder;
 }
 
+p {
+  color: white;
+}
 /*
 1. Use the user's configured `mono` font family by default.
 2. Correct the odd `em` font sizing in all browsers.
@@ -367,6 +377,15 @@ object {
   vertical-align: middle; /* 2 */
 }
 
+.svg {
+  width: 100%;
+  height: 100%;
+}
+
+.fig {
+  width: 20px;
+  height: 20px;
+}
 /*
 Constrain images and videos to the parent width and preserve their intrinsic aspect ratio.
 (https://github.com/mozdevs/cssremedy/issues/14)
@@ -387,4 +406,170 @@ video {
 
 #app {
   min-height: 100%;
+}
+
+.parent {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-stop: always;
+  scroll-snap-type: x mandatory;
+  cursor: grab;
+  touch-action: none;
+  /* max-width: 1200px;
+  margin: auto; */
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
+.parent2,
+.loop,
+.autoplay {
+  /* max-width: 1090px; */
+  max-width: 660px;
+
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  scroll-snap-stop: always;
+  cursor: grab;
+  overflow-y: hidden;
+  white-space: nowrap;
+  touch-action: none;
+  will-change: transform;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  /* max-width: 1200px; */
+  margin: auto;
+}
+
+.motion {
+  overflow: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  scroll-snap-stop: always;
+  cursor: grab;
+  overflow-y: hidden;
+  white-space: nowrap;
+  touch-action: none;
+  will-change: transform;
+}
+
+@media only screen and (max-width: 600px) {
+  .parent2 {
+    scroll-snap-type: x mandatory;
+  }
+
+  .inner {
+    overflow: scroll;
+    scroll-snap-type: x mandatory;
+  }
+}
+
+.previous {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+}
+
+.next {
+  position: absolute;
+  z-index: 10;
+  right: 0;
+}
+
+.previous svg {
+  transform: rotate(180deg);
+}
+
+.parent:active {
+  cursor: grabbing;
+}
+
+.slider {
+  width: 150px;
+  margin: 10px;
+  height: auto;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  pointer-events: none;
+}
+
+.two {
+  background-color: blue;
+}
+
+.three {
+  background-color: green;
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  object-fit: cover;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  touch-action: none;
+}
+
+.active {
+  scroll-behavior: smooth;
+}
+
+.slider:first-of-type {
+  margin-left: 0;
+}
+
+.embla {
+  overflow: hidden;
+  cursor: grab;
+}
+
+.embla__container {
+  display: flex;
+  max-width: 300px;
+}
+
+.embla__slide {
+  flex: 0 0 150px;
+  width: 100%;
+  margin: 10px;
+}
+
+.left-arrow {
+  transform: rotateY(180deg);
+  position: absolute;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.right-arrow {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  cursor: pointer;
 }
