@@ -46,7 +46,7 @@ html {
 */
 h3 {
   color: white;
-  margin: auto !important;
+  margin: 10px auto !important;
   text-align: left;
   max-width: 660px;
 }
@@ -430,7 +430,9 @@ video {
 
 .parent2,
 .loop,
-.autoplay {
+.autoplay,
+.dragfree,
+.dots-parent {
   /* max-width: 1090px; */
   max-width: 660px;
 
@@ -453,8 +455,21 @@ video {
   -o-user-drag: none;
   /* max-width: 1200px; */
   margin: auto;
+  position: relative;
 }
-
+.dots-flex {
+  display: flex;
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.dots {
+  cursor: pointer;
+}
+.dots-parent {
+  padding-bottom: 20px;
+}
 .motion {
   overflow: scroll;
   display: flex;
@@ -470,7 +485,10 @@ video {
   touch-action: none;
   will-change: transform;
 }
-
+.selected-dot circle {
+  fill: white;
+  stroke: white;
+}
 @media only screen and (max-width: 600px) {
   .parent2 {
     scroll-snap-type: x mandatory;
@@ -559,7 +577,10 @@ img {
   width: 100%;
   margin: 10px;
 }
-
+.embla-p {
+  text-align: left;
+  max-width: 100%;
+}
 .left-arrow {
   transform: rotateY(180deg);
   position: absolute;

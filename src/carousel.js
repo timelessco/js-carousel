@@ -12,6 +12,10 @@ function Carousel(props) {
     autoplay = false,
     autoplayTimeout = 2000,
     onInit = () => {},
+    displayDots = false,
+    dotsHTML = `<svg height="12" width="12" class="dots">
+    <circle cx="5" cy="5" r="2.5" stroke="gray" stroke-width="3" fill="gray" />
+  </svg>`,
   } = props;
 
   let { parent, child } = props;
@@ -54,10 +58,9 @@ function Carousel(props) {
     const firstChild = parent.children[0];
     // moveToSnapPoint(0, axis);
     // parent.style.transform = `translateX(0px)`;
-    lastScrolledTo = 0;
+    // lastScrolledTo = 0;
     firstChild.style.transform = `translateX(${
-      parent.parentNode.clientWidth +
-      window.getComputedStyle(parent.children[0]).marginRigh
+      parent.parentNode.clientWidth + firstChild.clientWidth
     }px)`;
     // parent.removeChild(firstChild);
     // parent.appendChild(firstChild);
@@ -75,9 +78,17 @@ function Carousel(props) {
     });
   }
   let indexValue = 1;
-
+  let dotsArray = [];
   pushToOffsetArray();
-  let timeout;
+  function dotsFunctionality(array, scrolledValue) {
+    const scrolledIndex = leftOffsetArray.indexOf(scrolledValue);
+    array?.forEach(i => {
+      if (i.classList.contains("selected-dot")) {
+        i.classList.remove("selected-dot");
+      }
+    });
+    array?.[scrolledIndex]?.classList.add("selected-dot");
+  }
   function moveToSnapPoint(snapValue, axisValue) {
     if (axisValue === "x") {
       anime({
@@ -95,6 +106,29 @@ function Carousel(props) {
       });
     }
   }
+  if (displayDots) {
+    const dotsFlex = document.createElement("div");
+    dotsFlex.classList.add("dots-flex");
+    parent.parentNode.appendChild(dotsFlex);
+
+    leftOffsetArray.forEach(() => {
+      dotsFlex.insertAdjacentHTML("beforeend", dotsHTML);
+    });
+    dotsArray = dotsFlex.childNodes;
+
+    dotsArray[0].classList.add("selected-dot");
+
+    dotsArray.forEach((i, index) => {
+      i.addEventListener("click", () => {
+        lastScrolledTo = leftOffsetArray[index];
+        moveToSnapPoint(-lastScrolledTo, axis);
+        dotsFunctionality(dotsArray, lastScrolledTo);
+      });
+    });
+  }
+
+  let timeout;
+
   function myLoop() {
     timeout = setTimeout(function () {
       if (
@@ -103,6 +137,7 @@ function Carousel(props) {
       ) {
         moveToSnapPoint(-leftOffsetArray[indexValue], axis);
         lastScrolledTo = leftOffsetArray[indexValue];
+        dotsArray[indexValue].classList.add("selected-dot");
       } else {
         indexValue = 0;
       }
@@ -137,7 +172,7 @@ function Carousel(props) {
         pushToOffsetArray();
         if (window.innerWidth > 700) {
           if (active) {
-            moveToSnapPoint(offsetValue, axis);
+            if (offsetValue < 10) moveToSnapPoint(offsetValue, axis);
             if (loop && !canScrollNext()) addToLoop(offsetValue);
           } else {
             let snapValue;
@@ -153,6 +188,7 @@ function Carousel(props) {
 
             if (!dragFree) moveToSnapPoint(snapValue, axis);
             lastScrolledTo = closestTo(-snapValue, leftOffsetArray);
+            dotsFunctionality(dotsArray, lastScrolledTo);
           }
         }
         whileDragging();
@@ -182,6 +218,7 @@ function Carousel(props) {
 
             if (!dragFree) moveToSnapPoint(snapValue, axis);
             lastScrolledTo = closestTo(-offsetValue, leftOffsetArray);
+            dotsFunctionality(dotsArray, lastScrolledTo);
           }
         }
         whileScrolling();
@@ -228,10 +265,12 @@ function Carousel(props) {
       if (currentIndex - 1 >= 0) {
         moveToSnapPoint(-leftOffsetArray[currentIndex - 1], axis);
         lastScrolledTo = leftOffsetArray[currentIndex - 1];
+        dotsFunctionality(dotsArray, lastScrolledTo);
       }
     } else {
       parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
       lastScrolledTo = leftOffsetArray[currentIndex + 1];
+      dotsFunctionality(dotsArray, lastScrolledTo);
     }
   }
 
@@ -257,12 +296,14 @@ function Carousel(props) {
           moveToSnapPoint(-leftOffsetArray[currentIndex + 1], axis);
 
           lastScrolledTo = leftOffsetArray[currentIndex + 1];
+          dotsFunctionality(dotsArray, lastScrolledTo);
         }
       }
     } else {
       if (leftOffsetArray[currentIndex + 1])
         parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
       lastScrolledTo = leftOffsetArray[currentIndex + 1];
+      dotsFunctionality(dotsArray, lastScrolledTo);
     }
   }
 

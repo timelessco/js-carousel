@@ -4,6 +4,7 @@ import EmblaCarousel from "embla-carousel";
 import Carousel from "../src/carousel";
 
 let carouselValue;
+let dotCarousel;
 
 function displayArrows() {
   if (!carouselValue.canScrollPrev()) {
@@ -17,8 +18,22 @@ function displayArrows() {
     document.querySelector(".right-arrow").style.display = "block";
   }
 }
+function displayArrowsNew() {
+  if (!dotCarousel.canScrollPrev()) {
+    document.querySelector(".left-arrow.dots").style.display = "none";
+  } else {
+    document.querySelector(".left-arrow.dots").style.display = "block";
+  }
+  if (!dotCarousel.canScrollNext()) {
+    document.querySelector(".right-arrow.dots").style.display = "none";
+  } else {
+    document.querySelector(".right-arrow.dots").style.display = "block";
+  }
+}
 
 document.querySelector(".left-arrow").style.display = "none";
+document.querySelector(".left-arrow.dots").style.display = "none";
+
 carouselValue = Carousel({
   parent: ".parent2 .inner",
   child: ".parent2 .slider",
@@ -36,34 +51,56 @@ carouselValue = Carousel({
   //   dragFree: false,
 });
 
-Carousel({
-  parent: ".loop .inner",
-  child: ".loop .slider",
-  loop: true,
+// Carousel({
+//   parent: ".loop .inner",
+//   child: ".loop .slider",
+//   loop: true,
+//   whileScrolling: () => {
+//     displayArrows();
+//     // document.body.style.overflowY = "hidden";
+//   },
+//   whileDragging: () => {
+//     displayArrows();
+
+//     // document.body.style.overflowY = "hidden";
+//   },
+// });
+
+dotCarousel = Carousel({
+  parent: ".dots-parent .inner",
+  child: ".dots-parent .slider",
+  displayDots: true,
   whileScrolling: () => {
-    displayArrows();
-    // document.body.style.overflowY = "hidden";
+    displayArrowsNew();
   },
   whileDragging: () => {
-    displayArrows();
-
-    // document.body.style.overflowY = "hidden";
+    displayArrowsNew();
   },
 });
-
 Carousel({
   parent: ".autoplay .inner",
   child: ".autoplay .slider",
   autoplay: true,
   whileScrolling: () => {
     displayArrows();
-    document.body.style.overflowY = "hidden";
+    // document.body.style.overflowY = "hidden";
   },
   whileDragging: () => {
     displayArrows();
-    document.body.style.overflowY = "hidden";
+    // document.body.style.overflowY = "hidden";
   },
 });
+// Carousel({
+//   parent: ".dragfree .inner",
+//   child: ".dragfree .slider",
+//   dragFree: true,
+//   whileScrolling: () => {
+//     displayArrows();
+//   },
+//   whileDragging: () => {
+//     displayArrows();
+//   },
+// });
 
 const emblaNode = document.querySelector(".embla");
 const options = {
@@ -90,4 +127,13 @@ document.querySelector(".right-arrow").addEventListener("click", () => {
   console.log(carouselValue.slideNodes(), "slide nodes");
   console.log(carouselValue.rootNode(), "root node");
   console.log(carouselValue.containerNode(), "container node");
+});
+
+document.querySelector(".left-arrow.dots").addEventListener("click", () => {
+  dotCarousel.scrollPrev();
+  displayArrowsNew();
+});
+document.querySelector(".right-arrow.dots").addEventListener("click", () => {
+  dotCarousel.scrollNext();
+  displayArrowsNew();
 });
