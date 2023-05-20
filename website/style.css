@@ -49,6 +49,9 @@ h3 {
   margin: 10px auto !important;
   text-align: left;
   max-width: 660px;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none;
 }
 
 body {
@@ -112,6 +115,9 @@ strong {
 
 p {
   color: white;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none;
 }
 /*
 1. Use the user's configured `mono` font family by default.
@@ -432,7 +438,9 @@ video {
 .loop,
 .autoplay,
 .dragfree,
-.dots-parent {
+.dots-parent,
+.carousel-container,
+.selected-state {
   /* max-width: 1090px; */
   max-width: 660px;
 
@@ -548,7 +556,9 @@ img {
   user-select: none;
 }
 
-.inner {
+.inner,
+.carousel-item,
+.selected-state-div {
   display: flex;
   align-items: center;
   touch-action: none;
@@ -556,6 +566,10 @@ img {
 
 .active {
   scroll-behavior: smooth;
+}
+
+.slider.selected {
+  transform: scale(1.2);
 }
 
 .slider:first-of-type {
