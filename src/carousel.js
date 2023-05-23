@@ -29,11 +29,15 @@ function Carousel(props) {
   let indexValue = 1;
   let dotsArray = [];
   let leftOffsetArray = [];
-
-  function getCurrentPosition(elem) {
+  if (axis === "y") {
+    parent.style.height = "100%";
+  }
+  function getCurrentPosition(elem, y = false) {
     const style = window?.getComputedStyle(elem);
     // eslint-disable-next-line
     var matrix = new WebKitCSSMatrix(style.transform);
+
+    if (y) return matrix.m42;
     return matrix.m41;
   }
   function dotsFunctionality(array, scrolledValue) {
@@ -53,9 +57,17 @@ function Carousel(props) {
     }
   }
   function canScrollNext() {
+    if (axis === "x") {
+      if (
+        parent.clientWidth - lastScrolledTo >=
+        parent.parentNode.clientWidth + 30
+      )
+        return true;
+      return false;
+    }
     if (
-      parent.clientWidth - lastScrolledTo >=
-      parent.parentNode.clientWidth + 30
+      parent.clientHeight - lastScrolledTo >=
+      parent.parentNode.clientHeight + 30
     )
       return true;
     return false;
@@ -97,8 +109,6 @@ function Carousel(props) {
       rect.left >= -(element.clientWidth + 20) &&
       rect.bottom <=
         (window.innerHeight || document.documentElement.clientHeight)
-      //   rect.right <=
-      //     (parent.parentNode.clientWidth || document.documentElement.clientWidth)
     );
   }
   onInit();
@@ -116,7 +126,6 @@ function Carousel(props) {
       selectedScrollSnapIndex -= 1;
       addClassName();
     }
-    // lastScrolledTo = -Math.round(getCurrentPosition(parent));
     if (!looping) {
       leftOffsetArray.forEach((i, index) => {
         if (i === lastScrolledTo) {
@@ -127,35 +136,29 @@ function Carousel(props) {
         if (currentIndex - 1 >= 0) {
           moveToSnapPoint(-leftOffsetArray[currentIndex - 1], axis);
           lastScrolledTo = leftOffsetArray[currentIndex - 1];
-          child[leftOffsetArray.indexOf(lastScrolledTo)].classList.add(
-            selectedScrollClassName,
-          );
+          addToOffsetArray();
           dotsFunctionality(dotsArray, lastScrolledTo);
         }
       } else {
         parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
         lastScrolledTo = leftOffsetArray[currentIndex + 1];
-        addToOffsetArray();
+        if (selectedState) addToOffsetArray();
         dotsFunctionality(dotsArray, lastScrolledTo);
       }
     } else {
       let currentPosition = 0;
       const carouselItems = parent.children;
       currentPosition += carouselItems[0].offsetWidth;
-      //   parent.style.transform = `translateX(${currentPosition}px)`;
       moveToSnapPoint(currentPosition, axis);
       const lastItem = carouselItems[carouselItems.length - 1];
       parent.insertBefore(lastItem, carouselItems[0]);
       currentPosition -= carouselItems[0].offsetWidth;
       moveToSnapPoint(currentPosition, axis);
-
-      //   parent.style.transform = `translateX(${currentPosition}px)`;
     }
   }
   function scrollNext(looping) {
     let currentIndex;
     addClassName();
-    // lastScrolledTo = -Math.round(getCurrentPosition(parent));
     if (!looping) {
       leftOffsetArray.forEach((i, index) => {
         if (i === lastScrolledTo) {
@@ -169,8 +172,12 @@ function Carousel(props) {
           0
         ) {
           if (
-            parent.clientWidth - leftOffsetArray[currentIndex + 1] >
-            parent.parentNode.clientWidth
+            (parent.clientWidth - leftOffsetArray[currentIndex + 1] >
+              parent.parentNode.clientWidth &&
+              axis === "x") ||
+            (axis === "y" &&
+              parent.clientHeight - leftOffsetArray[currentIndex] >
+                parent.parentNode.clientHeight)
           ) {
             moveToSnapPoint(-leftOffsetArray[currentIndex + 1], axis);
 
@@ -178,6 +185,12 @@ function Carousel(props) {
             addToOffsetArray();
             dotsFunctionality(dotsArray, lastScrolledTo);
           }
+        } else {
+          if (leftOffsetArray[currentIndex + 1])
+            parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
+          lastScrolledTo = leftOffsetArray[currentIndex + 1];
+          addToOffsetArray();
+          dotsFunctionality(dotsArray, lastScrolledTo);
         }
       } else {
         if (leftOffsetArray[currentIndex + 1])
@@ -212,10 +225,10 @@ function Carousel(props) {
   }
 
   let allLeftOffsets = [];
-  if (axis === "y") {
-    parent.style.flexDirection = "column";
-    parent.parentNode.style.maxHeight = "800px";
-  }
+  // if (axis === "y") {
+  //   parent.style.flexDirection = "column";
+  //   parent.parentNode.style.maxHeight = "800px";
+  // }
   //   function scrollNext(loop) {
   //     console.log("true");
   //     let currentPosition = 0;
@@ -454,6 +467,15 @@ function Carousel(props) {
           scrollNext(loop);
         if (loop && parent.children[0].scrollLeft >= 0 && dx > 0)
           throttleFunction(scrollPrev(loop), 2500);
+
+        if (axis === "y") {
+          document.body.style.overflow = "hidden";
+        }
+      },
+      onWheelEnd: () => {
+        if (axis === "y") {
+          document.body.style.overflow = "scroll";
+        }
       },
     },
     {
@@ -466,17 +488,22 @@ function Carousel(props) {
             parent.parentNode.clientWidth +
             child[0].clientWidth,
           top: 0,
+          bottom: parent.parentNode.clientHeight + child[0].clientHeight,
         },
         axis,
       },
       drag: {
-        from: () => [getCurrentPosition(parent), 0],
+        from: () => [
+          getCurrentPosition(parent),
+          getCurrentPosition(parent, true),
+        ],
         bounds: {
           left: -(
             parent.children[parent.children.length - 1].offsetLeft -
             parent.parentNode.clientWidth +
             child[0].clientWidth
           ),
+          bottom: parent.parentNode.clientHeight + child[0].clientHeight,
         },
         rubberband: true,
         axis,

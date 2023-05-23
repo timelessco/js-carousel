@@ -3,49 +3,26 @@ import EmblaCarousel from "embla-carousel";
 
 import Carousel from "../src/carousel";
 
-let carouselValue;
-let dotCarousel;
+let carouselValue = "";
+let dotCarousel = "";
 let loopCarousel = "";
-let selectCarousel;
-
+const selectCarousel = "";
+let yAxis = "";
 document.querySelector(".new-slide")?.addEventListener("click", () => {});
 
-function displayArrows() {
-  if (!carouselValue.canScrollPrev()) {
-    document.querySelector(".left-arrow").style.display = "none";
+function displayOrHideArrows(carousel, leftArrow, rightArrow) {
+  if (!carousel.canScrollPrev()) {
+    document.querySelector(leftArrow).style.display = "none";
   } else {
-    document.querySelector(".left-arrow").style.display = "block";
+    document.querySelector(leftArrow).style.display = "block";
   }
-  if (!carouselValue.canScrollNext()) {
-    document.querySelector(".right-arrow").style.display = "none";
+  if (!carousel.canScrollNext()) {
+    document.querySelector(rightArrow).style.display = "none";
   } else {
-    document.querySelector(".right-arrow").style.display = "block";
-  }
-}
-function displayArrowsNew() {
-  if (!dotCarousel.canScrollPrev()) {
-    document.querySelector(".left-arrow.dots").style.display = "none";
-  } else {
-    document.querySelector(".left-arrow.dots").style.display = "block";
-  }
-  if (!dotCarousel.canScrollNext()) {
-    document.querySelector(".right-arrow.dots").style.display = "none";
-  } else {
-    document.querySelector(".right-arrow.dots").style.display = "block";
+    document.querySelector(rightArrow).style.display = "block";
   }
 }
-function displayArrowsSelected() {
-  if (!selectCarousel.canScrollPrev()) {
-    document.querySelector(".left-arrow.selected").style.display = "none";
-  } else {
-    document.querySelector(".left-arrow.selected").style.display = "block";
-  }
-  if (!selectCarousel.canScrollNext()) {
-    document.querySelector(".right-arrow.selected").style.display = "none";
-  } else {
-    document.querySelector(".right-arrow.selected").style.display = "block";
-  }
-}
+
 document.querySelector(".left-arrow").style.display = "none";
 document.querySelector(".left-arrow.dots").style.display = "none";
 
@@ -54,30 +31,17 @@ carouselValue = Carousel({
   child: ".parent2 .slider",
   slidesToScroll: 4,
   whileScrolling: () => {
-    displayArrows();
-    // document.body.style.overflowY = "hidden";
+    displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
   },
   whileDragging: () => {
-    displayArrows();
-
-    // document.body.style.overflowY = "hidden";
+    displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
   },
-  //   dragFree: false,
 });
 
 loopCarousel = Carousel({
   parent: ".carousel-item",
   child: ".carousel-item .slider",
   loop: true,
-  whileScrolling: () => {
-    displayArrowsNew();
-    // document.body.style.overflowY = "hidden";
-  },
-  whileDragging: () => {
-    displayArrowsNew();
-
-    // document.body.style.overflowY = "hidden";
-  },
 });
 
 dotCarousel = Carousel({
@@ -85,10 +49,10 @@ dotCarousel = Carousel({
   child: ".dots-parent .slider",
   displayDots: true,
   whileScrolling: () => {
-    displayArrowsNew();
+    displayOrHideArrows(dotCarousel, ".left-arrows.dots", ".right-arrows.dots");
   },
   whileDragging: () => {
-    displayArrowsNew();
+    displayOrHideArrows(dotCarousel, ".left-arrows.dots", ".right-arrows.dots");
   },
   selectedState: true,
 });
@@ -97,39 +61,22 @@ Carousel({
   parent: ".autoplay .inner",
   child: ".autoplay .slider",
   autoplay: true,
-  whileScrolling: () => {
-    displayArrows();
-    // document.body.style.overflowY = "hidden";
-  },
-  whileDragging: () => {
-    displayArrows();
-    // document.body.style.overflowY = "hidden";
-  },
   selectedState: true,
 });
-// selectCarousel = Carousel({
-//   parent: ".selected-state-div",
-//   child: ".selected-state-div .slider",
-//   whileScrolling: () => {
-//     displayArrows();
-//     // document.body.style.overflowY = "hidden";
-//   },
-//   whileDragging: () => {
-//     displayArrows();
-//     // document.body.style.overflowY = "hidden";
-//   },
-// });
-// Carousel({
-//   parent: ".dragfree .inner",
-//   child: ".dragfree .slider",
-//   dragFree: true,
-//   whileScrolling: () => {
-//     displayArrows();
-//   },
-//   whileDragging: () => {
-//     displayArrows();
-//   },
-// });
+
+yAxis = Carousel({
+  parent: ".axis",
+  child: ".axis .slider",
+  autoplay: true,
+  axis: "y",
+  whileScrolling: () => {
+    displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
+  },
+  whileDragging: () => {
+    displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
+  },
+  selectedState: false,
+});
 
 const emblaNode = document.querySelector(".embla");
 const options = {
@@ -143,14 +90,15 @@ EmblaCarousel(emblaNode, options);
 
 document.querySelector(".left-arrow").addEventListener("click", () => {
   carouselValue.scrollPrev();
-  displayArrows();
+  displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
 
   console.log(carouselValue.slidesInView(), "slides in view");
   console.log(carouselValue.slidesNotInView(), "slides not in view");
 });
+
 document.querySelector(".right-arrow").addEventListener("click", () => {
   carouselValue.scrollNext();
-  displayArrows();
+  displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
   console.log(carouselValue.slidesInView(), "slides in view");
   console.log(carouselValue.slidesNotInView(), "slides not in view");
   console.log(carouselValue.slideNodes(), "slide nodes");
@@ -160,33 +108,47 @@ document.querySelector(".right-arrow").addEventListener("click", () => {
 
 document.querySelector(".left-arrow.dots").addEventListener("click", () => {
   dotCarousel.scrollPrev();
-  displayArrowsNew();
+  displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
 });
 document.querySelector(".right-arrow.dots").addEventListener("click", () => {
   dotCarousel.scrollNext();
-  displayArrowsNew();
+  displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
 });
 
 document.querySelector(".left-arrow.select")?.addEventListener("click", () => {
   dotCarousel.scrollPrev();
-  displayArrowsSelected();
+  displayOrHideArrows(
+    selectCarousel,
+    ".left-arrow.selected",
+    ".right-arrow.selected",
+  );
 });
 document.querySelector(".right-arrow.select")?.addEventListener("click", () => {
   dotCarousel.scrollNext();
-  displayArrowsSelected();
+  displayOrHideArrows(
+    selectCarousel,
+    ".left-arrow.selected",
+    ".right-arrow.selected",
+  );
 });
-
-// let carItems = document.querySelectorAll(".carousel-item .slider");
 
 document
   .querySelectorAll(".carousel-item .slider")[0]
   .addEventListener("click", () => {});
-
-// let currentPosition = 0;
 
 document.querySelector("#next-button")?.addEventListener("click", () => {
   loopCarousel.scrollNext(true);
 });
 document.querySelector("#previous-button").addEventListener("click", () => {
   loopCarousel.scrollPrev(true);
+});
+
+document.querySelector(".up-arrow").addEventListener("click", () => {
+  yAxis.scrollPrev();
+  displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
+});
+
+document.querySelector(".down-arrow").addEventListener("click", () => {
+  yAxis.scrollNext();
+  displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
 });
