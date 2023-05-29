@@ -564,13 +564,17 @@ img {
   touch-action: none;
 }
 
-.axis-container {
+.axis-container,
+.axis-loop-container {
   max-height: 500px;
   overflow: hidden;
   display: flex;
   justify-content: center;
   position: relative;
-  cursor: drag;
+}
+
+span {
+  color: white;
 }
 
 .active {
@@ -613,14 +617,16 @@ img {
   cursor: pointer;
 }
 
-.up-arrow {
+.up-arrow,
+.up-arrow-loop {
   transform: rotateZ(270deg);
   position: absolute;
   z-index: 1;
   cursor: pointer;
 }
 
-.down-arrow {
+.down-arrow,
+.down-arrow-loop {
   transform: rotateZ(90deg);
   position: absolute;
   z-index: 1;
@@ -635,7 +641,8 @@ img {
   cursor: pointer;
 }
 
-.axis-container .slider:first-of-type {
+.axis-container .slider:first-of-type,
+.axis-loop-containe .slider:first-of-type {
   margin: 0 !important;
   margin-left: 13px !important;
 }
