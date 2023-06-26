@@ -380,7 +380,12 @@ iframe,
 embed,
 object {
   display: block; /* 1 */
-  vertical-align: middle; /* 2 */
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none; /* 2 */
 }
 
 .svg {
@@ -422,7 +427,7 @@ video {
   flex-wrap: nowrap;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  scroll-snap-stop: always;
+  scroll-snap-stop: normal;
   scroll-snap-type: x mandatory;
   cursor: grab;
   touch-action: none;
@@ -440,10 +445,13 @@ video {
 .dragfree,
 .dots-parent,
 .carousel-container,
-.selected-state {
+.selected-state,
+.parent-1,
+.parent-0,
+.scroll-1 {
   /* max-width: 1090px; */
   max-width: 660px;
-
+  z-index: 1;
   margin: auto;
   display: flex;
   align-items: center;
@@ -451,7 +459,7 @@ video {
   width: 100%;
   flex-wrap: nowrap;
   overflow-x: hidden;
-  scroll-snap-stop: always;
+  scroll-snap-stop: normal;
   cursor: grab;
   overflow-y: hidden;
   white-space: nowrap;
@@ -465,46 +473,55 @@ video {
   margin: auto;
   position: relative;
 }
+
 .dots-flex {
   display: flex;
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
 }
+
 .dots {
   cursor: pointer;
 }
+
 .dots-parent {
   padding-bottom: 20px;
 }
-.motion {
-  overflow: scroll;
-  display: flex;
-  align-items: center;
-  justify-content: stretch;
-  width: 100%;
-  flex-wrap: nowrap;
-  overflow-x: hidden;
-  scroll-snap-stop: always;
-  cursor: grab;
-  overflow-y: hidden;
-  white-space: nowrap;
-  touch-action: none;
-  will-change: transform;
+
+.scroll {
+  overflow-x: scroll;
+  /* scroll-behavior: smooth; */
 }
+
+.scroll-behaviour {
+  scroll-behavior: smooth;
+}
+
 .selected-dot circle {
   fill: white;
   stroke: white;
 }
-@media only screen and (max-width: 600px) {
-  .parent2 {
+@media only screen and (max-width: 700px) {
+  /* .parent2 {
     scroll-snap-type: x mandatory;
-  }
+  } */
 
-  .inner {
+  /* .inner {
     overflow: scroll;
     scroll-snap-type: x mandatory;
+  } */
+  /* .left-arrow{
+    display: none;
+  }
+
+  .right-arrow{
+    display: none;
+  } */
+
+  .slider.selected {
+    transform: scale(1) !important;
   }
 }
 
@@ -561,7 +578,7 @@ img {
 .selected-state-div {
   display: flex;
   align-items: center;
-  touch-action: none;
+  z-index: 1;
 }
 
 .axis-container,
@@ -575,6 +592,9 @@ img {
 
 span {
   color: white;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none;
 }
 
 .active {
@@ -610,11 +630,16 @@ span {
   max-width: 100%;
 }
 
-.left-arrow {
-  transform: rotateY(180deg);
+.left-arrow,
+.left-arrow-1,
+.left-arrow-0,
+.left-arrow-s1,
+.dots {
+  /* transform: rotateY(180deg); */
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   cursor: pointer;
+  display: block;
 }
 
 .up-arrow,
@@ -634,7 +659,11 @@ span {
   bottom: 0;
 }
 
-.right-arrow {
+.right-arrow,
+.right-arrow-1,
+.right-arrow-0,
+.right-arrow-s1,
+.dots-right {
   position: absolute;
   z-index: 1;
   right: 0;

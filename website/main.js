@@ -1,4 +1,5 @@
 import "./style.css";
+import "../src/carousel.css";
 import EmblaCarousel from "embla-carousel";
 
 import Carousel from "../src/carousel";
@@ -6,6 +7,8 @@ import Carousel from "../src/carousel";
 let carouselValue = "";
 let dotCarousel = "";
 let loopCarousel = "";
+let carouselValue1 = "";
+let carouselValues1 = "";
 const selectCarousel = "";
 let yAxis = "";
 let yAxisLoop = "";
@@ -17,6 +20,7 @@ function displayOrHideArrows(carousel, leftArrow, rightArrow) {
   } else {
     document.querySelector(leftArrow).style.display = "block";
   }
+
   if (!carousel.canScrollNext()) {
     document.querySelector(rightArrow).style.display = "none";
   } else {
@@ -26,17 +30,50 @@ function displayOrHideArrows(carousel, leftArrow, rightArrow) {
 
 document.querySelector(".left-arrow").style.display = "none";
 document.querySelector(".left-arrow.dots").style.display = "none";
+document.querySelector(".left-arrow-1").style.display = "none";
 
 carouselValue = Carousel({
   parent: ".parent2 .inner",
   child: ".parent2 .slider",
-  slidesToScroll: 4,
+  slidesToScroll: 2,
+  displayDots: true,
   whileScrolling: () => {
     displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
   },
   whileDragging: () => {
     displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
   },
+});
+carouselValue1 = Carousel({
+  parent: ".parent-1 .inner",
+  child: ".parent-1 .slider",
+  slidesToScroll: 1,
+  whileScrolling: () => {
+    displayOrHideArrows(carouselValue1, ".left-arrow-1", ".right-arrow-1");
+  },
+  whileDragging: () => {
+    displayOrHideArrows(carouselValue1, ".left-arrow-1", ".right-arrow-1");
+  },
+});
+
+carouselValues1 = Carousel({
+  parent: ".scroll-1 .inner",
+  child: ".scroll-1 .slider",
+  slidesToScroll: 1,
+  dragFree: true,
+  whileScrolling: () => {
+    displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
+  },
+  whileDragging: () => {
+    displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
+  },
+});
+
+Carousel({
+  parent: ".parent-0 .inner",
+  child: ".parent-0 .slider",
+  slidesToScroll: 0,
+  dragFree: true,
 });
 
 loopCarousel = Carousel({
@@ -76,7 +113,7 @@ yAxis = Carousel({
     displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
   },
   selectedState: false,
-  autoplay: true,
+  // autoplay: true,
 });
 yAxisLoop = Carousel({
   parent: ".axis-loop",
@@ -108,6 +145,14 @@ document.querySelector(".left-arrow").addEventListener("click", () => {
   console.log(carouselValue.slidesInView(), "slides in view");
   console.log(carouselValue.slidesNotInView(), "slides not in view");
 });
+document.querySelector(".left-arrow-1").addEventListener("click", () => {
+  carouselValue1.scrollPrev();
+  displayOrHideArrows(carouselValue1, ".left-arrow-1", ".right-arrow-1");
+});
+document.querySelector(".left-arrow-s1").addEventListener("click", () => {
+  carouselValues1.scrollPrev();
+  displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
+});
 
 document.querySelector(".right-arrow").addEventListener("click", () => {
   carouselValue.scrollNext();
@@ -118,12 +163,24 @@ document.querySelector(".right-arrow").addEventListener("click", () => {
   console.log(carouselValue.rootNode(), "root node");
   console.log(carouselValue.containerNode(), "container node");
 });
+document.querySelector(".right-arrow-1").addEventListener("click", () => {
+  carouselValue1.scrollNext();
+  displayOrHideArrows(carouselValue1, ".left-arrow-1", ".right-arrow-1");
+});
+document.querySelector(".right-arrow-s1").addEventListener("click", () => {
+  carouselValues1.scrollNext();
+  displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
+});
 
 document.querySelector(".left-arrow.dots").addEventListener("click", () => {
+  console.log("dots =prev");
+
   dotCarousel.scrollPrev();
   displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
 });
+
 document.querySelector(".right-arrow.dots").addEventListener("click", () => {
+  console.log("dots next");
   dotCarousel.scrollNext();
   displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
 });
@@ -163,7 +220,7 @@ document.querySelector(".up-arrow").addEventListener("click", () => {
 
 document.querySelector(".down-arrow").addEventListener("click", () => {
   yAxis.scrollNext();
-  displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow-loop");
+  displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
 });
 
 document.querySelector(".up-arrow-loop").addEventListener("click", () => {
