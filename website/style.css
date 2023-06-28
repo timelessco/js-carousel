@@ -427,8 +427,6 @@ video {
   flex-wrap: nowrap;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  scroll-snap-stop: normal;
-  scroll-snap-type: x mandatory;
   cursor: grab;
   touch-action: none;
   /* max-width: 1200px;
@@ -459,7 +457,6 @@ video {
   width: 100%;
   flex-wrap: nowrap;
   overflow-x: hidden;
-  scroll-snap-stop: normal;
   cursor: grab;
   overflow-y: hidden;
   white-space: nowrap;
@@ -473,7 +470,9 @@ video {
   margin: auto;
   position: relative;
 }
-
+.inner {
+  padding-bottom: 20px;
+}
 .dots-flex {
   display: flex;
   position: absolute;
@@ -633,8 +632,7 @@ span {
 .left-arrow,
 .left-arrow-1,
 .left-arrow-0,
-.left-arrow-s1,
-.dots {
+.left-arrow-s1 {
   /* transform: rotateY(180deg); */
   position: absolute;
   z-index: 2;
@@ -662,8 +660,7 @@ span {
 .right-arrow,
 .right-arrow-1,
 .right-arrow-0,
-.right-arrow-s1,
-.dots-right {
+.right-arrow-s1 {
   position: absolute;
   z-index: 1;
   right: 0;

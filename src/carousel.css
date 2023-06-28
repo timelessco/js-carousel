@@ -1,8 +1,8 @@
 .scroll-snap-x {
   touch-action: auto;
   scroll-behavior: smooth;
-  scroll-snap-type: x proximity;
-  scroll-snap-align: left;
+  scroll-snap-type: x mandatory;
+  scroll-snap-align: start;
 }
 
 .scroll-x {
@@ -19,7 +19,7 @@
   touch-action: auto;
   scroll-behavior: smooth;
   scroll-snap-type: y proximity;
-  scroll-snap-align: left;
+  scroll-snap-align: start;
 }
 
 .drag-free {

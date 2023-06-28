@@ -120,5 +120,5 @@
       "pnpm format:fix"
     ]
   },
-  "source": "./src/index.js"
+  "source": "website/main.js"
 }

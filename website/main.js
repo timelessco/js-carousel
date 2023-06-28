@@ -36,7 +36,8 @@ carouselValue = Carousel({
   parent: ".parent2 .inner",
   child: ".parent2 .slider",
   slidesToScroll: 2,
-  displayDots: true,
+  dragFree: false,
+
   whileScrolling: () => {
     displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
   },

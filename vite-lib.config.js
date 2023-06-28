@@ -26,7 +26,7 @@ export default defineConfig(() => {
     build: {
       outDir: path.resolve(__dirname, "lib"),
       lib: {
-        entry: path.resolve(__dirname, "src/index.js"),
+        entry: path.resolve(__dirname, "website/main.js"),
         name: getPackageNameCamelCase(),
         formats: ["es", "umd"],
         fileName: format => fileName[format],
