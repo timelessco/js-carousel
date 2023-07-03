@@ -24,6 +24,7 @@ function Carousel(props) {
     <circle cx="5" cy="5" r="2.5" stroke="gray" stroke-width="3" fill="gray" />
   </svg>`,
     selectedScrollClassName = "selected",
+    expLoop = false,
   } = props;
 
   let { parent, child, selectedScrollSnapIndex = 0 } = props;
@@ -190,6 +191,10 @@ function Carousel(props) {
   function canScrollPrev() {
     if (window.innerWidth < 700 && axis === "y") {
       if (parent.scrollTop === 0) return false;
+      return true;
+    }
+    if (window.innerWidth < 700 && axis === "x") {
+      if (parent.scrollLeft === 0) return false;
       return true;
     }
     if (leftOffsetArray.indexOf(lastScrolledTo) > 0) return true;
@@ -422,6 +427,13 @@ function Carousel(props) {
     {
       onDrag: ({ active, offset: [ox, oy], direction: [dx] }) => {
         clearTimeout(timeout);
+        setTimeout(() => {
+          whileDragging();
+        }, 200);
+
+        if (!canScrollNext() && expLoop) {
+          console.log("end");
+        }
 
         leftOffsetArray = [];
         allLeftOffsets = [];
@@ -459,7 +471,6 @@ function Carousel(props) {
                 leftOffsetArray,
               );
             }
-
             moveToSnapPoint(snapValue, axis);
             lastScrolledTo = getclosestSliderElement(
               -snapValue,
@@ -469,7 +480,6 @@ function Carousel(props) {
             dotsFunctionality(dotsArray, lastScrolledTo);
           }
 
-          whileDragging();
           handleCursor(true);
           if (
             loop &&
@@ -598,6 +608,79 @@ function Carousel(props) {
       },
       onDragEnd: () => {
         handleCursor();
+        whileScrolling();
+        whileDragging();
+        if (window.innerWidth < 700) {
+          // if (loop) {
+          //   if (parent.scrollLeft >= parent.scrollWidth - parent.clientWidth) {
+          //     scrollNext(loop);
+          //   }
+          // }
+          // dotsFunctionality(
+          //   dotsArray,
+          //   getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
+          // );
+
+          if (axis === "x") {
+            parent.scrollTo(
+              getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
+              0,
+            );
+            if (
+              slidesToScroll !== 0 &&
+              !(slidesToScroll === 1 && dragFree === true)
+            ) {
+              // if (
+              //   getclosestSliderElement(parent.scrollLeft, leftOffsetArray) > 0
+              // ) {
+              // }
+            }
+            dotsFunctionality(
+              dotsArray,
+              getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
+            );
+            setTimeout(() => {
+              lastScrolledTo = getclosestSliderElement(
+                parent.scrollLeft,
+                leftOffsetArray,
+              );
+            }, 500);
+          } else if (
+            slidesToScroll !== 0 &&
+            !(slidesToScroll === 1 && dragFree === true)
+          ) {
+            if (
+              getclosestSliderElement(parent.scrollLeft, leftOffsetArray) > 0 &&
+              parent.scrollLeft + parent.offsetWidth < parent.scrollWidth
+            ) {
+              parent.scrollTo(
+                0,
+                getclosestSliderElement(parent.scrollTop, leftOffsetArray),
+              );
+            }
+            dotsFunctionality(
+              dotsArray,
+              getclosestSliderElement(parent.scrollTop, leftOffsetArray),
+            );
+            setTimeout(() => {
+              lastScrolledTo = getclosestSliderElement(
+                parent.scrollTop,
+                leftOffsetArray,
+              );
+            }, 500);
+          } else {
+            setTimeout(() => {
+              lastScrolledTo = getclosestSliderElement(
+                parent.scrollTop,
+                leftOffsetArray,
+              );
+            }, 500);
+            dotsFunctionality(
+              dotsArray,
+              getclosestSliderElement(parent.scrollTop, leftOffsetArray),
+            );
+          }
+        }
       },
       onWheelEnd: () => {
         if (axis === "y") {

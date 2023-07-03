@@ -83,6 +83,13 @@ loopCarousel = Carousel({
   loop: true,
 });
 
+loopCarousel = Carousel({
+  parent: ".loop-exp-div",
+  child: ".loop-exp-div .slider",
+  loop: false,
+  expLoop: true,
+});
+
 dotCarousel = Carousel({
   parent: ".dots-parent .inner",
   child: ".dots-parent .slider",

@@ -1,6 +1,5 @@
 // finding the slider closest to the scroll offset to snap at
 export function getclosestSliderElement(offset, array) {
-  console.log(offset, "ogg");
   const differences = [];
   array.forEach(i => {
     differences.push(Math.abs(offset - i));

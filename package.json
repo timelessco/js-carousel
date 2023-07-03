@@ -58,8 +58,7 @@
   "dependencies": {
     "@use-gesture/vanilla": "^10.2.24",
     "animejs": "^3.2.1",
-    "embla-carousel": "^7.1.0",
-    "motion": "^10.15.5"
+    "embla-carousel": "^7.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",

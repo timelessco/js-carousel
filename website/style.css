@@ -446,7 +446,8 @@ video {
 .selected-state,
 .parent-1,
 .parent-0,
-.scroll-1 {
+.scroll-1,
+.loop-exp {
   /* max-width: 1090px; */
   max-width: 660px;
   z-index: 1;
@@ -574,7 +575,8 @@ img {
 
 .inner,
 .carousel-item,
-.selected-state-div {
+.selected-state-div,
+.loop-exp-div {
   display: flex;
   align-items: center;
   z-index: 1;
