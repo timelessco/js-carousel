@@ -28,3 +28,13 @@ export function getCurrentPosition(elem, y = false) {
   if (y) return matrix.m42;
   return matrix.m41;
 }
+
+export function getScrollProgress(elem, children) {
+  if (window.innerWidth > 700) {
+    return Math.abs(
+      getCurrentPosition(elem) /
+        (elem.clientWidth - children[children.length - 1].clientWidth),
+    );
+  }
+  return elem.scrollLeft / (elem.scrollWidth - elem.clientWidth);
+}

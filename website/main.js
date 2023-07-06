@@ -77,7 +77,7 @@ Carousel({
   dragFree: true,
 });
 
-loopCarousel = Carousel({
+Carousel({
   parent: ".carousel-item",
   child: ".carousel-item .slider",
   loop: true,
@@ -100,7 +100,20 @@ dotCarousel = Carousel({
   whileDragging: () => {
     displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
   },
-  selectedState: true,
+  selectedState: false,
+});
+
+Carousel({
+  parent: ".progress-inner",
+  child: ".progress-inner .slider",
+  whileScrolling: scrollProgress => {
+    document.getElementById("progress-bar").value = scrollProgress * 100;
+    console.log(scrollProgress, "scroll p");
+  },
+  whileDragging: scrollProgress => {
+    console.log(scrollProgress, "scroll p");
+  },
+  selectedState: false,
 });
 
 Carousel({

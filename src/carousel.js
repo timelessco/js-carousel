@@ -4,6 +4,7 @@ import anime from "animejs/lib/anime.es";
 import {
   getclosestSliderElement,
   getCurrentPosition,
+  getScrollProgress,
   isInViewport,
 } from "./helpers/actions";
 
@@ -35,6 +36,7 @@ function Carousel(props) {
   let dotsArray = [];
   let leftOffsetArray = [];
   let allLeftOffsets = [];
+  let scrollProgress = 0;
   let lastScrolledTo = getCurrentPosition(parent);
 
   if (axis === "y" && window.innerWidth > 700) {
@@ -112,6 +114,39 @@ function Carousel(props) {
     if (array && array[scrolledIndex])
       array?.[scrolledIndex]?.classList.add("selected-dot");
   }
+
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(function (mutation) {
+      if (mutation.attributeName === "style") {
+        if (window.innerWidth > 700)
+          dotsFunctionality(dotsArray, lastScrolledTo);
+        else {
+          dotsFunctionality(
+            dotsArray,
+            getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
+          );
+        }
+      }
+    });
+  });
+
+  parent.addEventListener("scroll", () => {
+    dotsFunctionality(
+      dotsArray,
+      getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
+    );
+    scrollProgress = getScrollProgress(parent, child);
+
+    whileScrolling(scrollProgress);
+  });
+
+  const demoElem = parent;
+  const observerConfig = {
+    attributes: true,
+    attributeFilter: ["style"],
+  };
+
+  observer.observe(demoElem, observerConfig);
 
   function handleWindowWidth() {
     removeScrollClassNames();
@@ -222,7 +257,6 @@ function Carousel(props) {
             moveToSnapPoint(-leftOffsetArray[currentIndex - 1], axis);
             lastScrolledTo = leftOffsetArray[currentIndex - 1];
             addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
-            dotsFunctionality(dotsArray, lastScrolledTo);
           } else {
             parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
             lastScrolledTo = leftOffsetArray[currentIndex + 1];
@@ -230,7 +264,6 @@ function Carousel(props) {
               addSelectedStateClassName(
                 leftOffsetArray.indexOf(lastScrolledTo),
               );
-            dotsFunctionality(dotsArray, lastScrolledTo);
           }
         } else if (currentIndex - 1 >= 0) {
           moveToSnapPoint(-leftOffsetArray[currentIndex - 1], axis);
@@ -246,7 +279,6 @@ function Carousel(props) {
           lastScrolledTo = leftOffsetArray[currentIndex - 1];
         }
         addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
-        dotsFunctionality(dotsArray, lastScrolledTo);
       }
     } else {
       let currentPosition = 0;
@@ -291,13 +323,11 @@ function Carousel(props) {
 
             lastScrolledTo = leftOffsetArray[currentIndex + 1];
             addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
-            dotsFunctionality(dotsArray, lastScrolledTo);
           }
         } else if (leftOffsetArray[currentIndex + 1]) {
           parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
           lastScrolledTo = leftOffsetArray[currentIndex + 1];
           addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
-          dotsFunctionality(dotsArray, lastScrolledTo);
         }
       } else if (leftOffsetArray[currentIndex + 1]) {
         if (axis === "x") {
@@ -307,7 +337,6 @@ function Carousel(props) {
           parent.scrollTo(0, leftOffsetArray[currentIndex + 1]);
         lastScrolledTo = leftOffsetArray[currentIndex + 1];
         addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
-        dotsFunctionality(dotsArray, lastScrolledTo);
       }
     } else {
       let currentPosition = 0;
@@ -367,7 +396,6 @@ function Carousel(props) {
         addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
         if (window.innerWidth > 700) moveToSnapPoint(-lastScrolledTo, axis);
         else parent.scrollTo(lastScrolledTo, 0);
-        dotsFunctionality(dotsArray, lastScrolledTo);
       });
     });
   }
@@ -426,13 +454,18 @@ function Carousel(props) {
     parent,
     {
       onDrag: ({ active, offset: [ox, oy], direction: [dx] }) => {
+        scrollProgress = getScrollProgress(parent, child);
         clearTimeout(timeout);
-        setTimeout(() => {
-          whileDragging();
-        }, 200);
+        // setTimeout(() => {
+        whileDragging(scrollProgress);
+        // }, 200);
 
         if (!canScrollNext() && expLoop) {
-          console.log("end");
+          child[0].style.transform = `translate3d(${parent.clientWidth}px, 0, 0)`;
+          setTimeout(() => {
+            child[0].style.transform = `translate3d(0, 0, 0)`;
+            parent.style.transform = `translate3d(0, 0, 0)`;
+          }, 1500);
         }
 
         leftOffsetArray = [];
@@ -477,7 +510,6 @@ function Carousel(props) {
               leftOffsetArray,
             );
             addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
-            dotsFunctionality(dotsArray, lastScrolledTo);
           }
 
           handleCursor(true);
@@ -495,7 +527,7 @@ function Carousel(props) {
           if (loop && parent.children[0].scrollLeft >= 0 && dx > 0)
             throttleFunction(scrollPrev(loop), 2500);
         } else {
-          whileScrolling();
+          whileScrolling(scrollProgress);
           if (axis === "x") {
             if (
               slidesToScroll !== 0 &&
@@ -509,10 +541,7 @@ function Carousel(props) {
                   0,
                 );
               }
-              dotsFunctionality(
-                dotsArray,
-                getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
-              );
+
               lastScrolledTo = getclosestSliderElement(
                 parent.scrollLeft,
                 leftOffsetArray,
@@ -531,10 +560,7 @@ function Carousel(props) {
                 getclosestSliderElement(parent.scrollTop, leftOffsetArray),
               );
             }
-            dotsFunctionality(
-              dotsArray,
-              getclosestSliderElement(parent.scrollTop, leftOffsetArray),
-            );
+
             setTimeout(() => {
               lastScrolledTo = getclosestSliderElement(
                 parent.scrollTop,
@@ -545,6 +571,8 @@ function Carousel(props) {
         }
       },
       onWheel: ({ offset: [ox, oy], active, direction: [dx] }) => {
+        scrollProgress = getScrollProgress(parent, child);
+
         const offsetValue = axis === "x" ? -ox : -oy;
 
         const lastChildren = parent.children[parent.children.length - 1];
@@ -575,10 +603,8 @@ function Carousel(props) {
             leftOffsetArray,
           );
           addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
-
-          dotsFunctionality(dotsArray, lastScrolledTo);
         }
-        whileScrolling();
+        whileScrolling(scrollProgress);
         if (
           loop &&
           isInViewport(lastChildren) &&
@@ -598,6 +624,8 @@ function Carousel(props) {
         }
       },
       onScroll: ({ offset: [ox, oy] }) => {
+        scrollProgress = getScrollProgress(parent, child);
+
         const offsetValue = axis === "x" ? -ox : -oy;
         if (axis === "y") parent.classList.add("scroll-snap-y");
         else parent.classList.add("scroll-snap-x");
@@ -608,18 +636,15 @@ function Carousel(props) {
       },
       onDragEnd: () => {
         handleCursor();
-        whileScrolling();
-        whileDragging();
+        whileScrolling(scrollProgress);
+        whileDragging(scrollProgress);
+
         if (window.innerWidth < 700) {
           // if (loop) {
           //   if (parent.scrollLeft >= parent.scrollWidth - parent.clientWidth) {
           //     scrollNext(loop);
           //   }
           // }
-          // dotsFunctionality(
-          //   dotsArray,
-          //   getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
-          // );
 
           if (axis === "x") {
             parent.scrollTo(
@@ -635,10 +660,6 @@ function Carousel(props) {
               // ) {
               // }
             }
-            dotsFunctionality(
-              dotsArray,
-              getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
-            );
             setTimeout(() => {
               lastScrolledTo = getclosestSliderElement(
                 parent.scrollLeft,
@@ -658,10 +679,6 @@ function Carousel(props) {
                 getclosestSliderElement(parent.scrollTop, leftOffsetArray),
               );
             }
-            dotsFunctionality(
-              dotsArray,
-              getclosestSliderElement(parent.scrollTop, leftOffsetArray),
-            );
             setTimeout(() => {
               lastScrolledTo = getclosestSliderElement(
                 parent.scrollTop,
@@ -675,10 +692,6 @@ function Carousel(props) {
                 leftOffsetArray,
               );
             }, 500);
-            dotsFunctionality(
-              dotsArray,
-              getclosestSliderElement(parent.scrollTop, leftOffsetArray),
-            );
           }
         }
       },
@@ -706,17 +719,19 @@ function Carousel(props) {
         axis,
       },
       drag: {
-        enabled: window.innerWidth > 700,
+        // enabled: window.innerWidth > 700,
         from: () => [
           getCurrentPosition(parent),
           getCurrentPosition(parent, true),
         ],
         bounds: {
-          left: -(
-            parent.children[parent.children.length - 1].offsetLeft -
-            parent.parentNode.clientWidth +
-            child[0].clientWidth
-          ),
+          left: !expLoop
+            ? -(
+                parent.children[parent.children.length - 1].offsetLeft -
+                parent.parentNode.clientWidth +
+                child[0].clientWidth
+              )
+            : undefined,
           bottom: parent.clientHeight - parent.parentNode.clientHeight,
         },
         rubberband: true,
@@ -774,6 +789,7 @@ function Carousel(props) {
     slideNodes,
     rootNode,
     containerNode,
+    getScrollProgress,
   };
   return self;
 }
