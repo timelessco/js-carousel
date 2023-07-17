@@ -10,6 +10,7 @@ let loopCarousel = "";
 let carouselValue1 = "";
 let carouselValues1 = "";
 const selectCarousel = "";
+let loopCarouselexp = "";
 let yAxis = "";
 let yAxisLoop = "";
 document.querySelector(".new-slide")?.addEventListener("click", () => {});
@@ -77,17 +78,24 @@ Carousel({
   dragFree: true,
 });
 
-Carousel({
+loopCarousel = Carousel({
   parent: ".carousel-item",
   child: ".carousel-item .slider",
   loop: true,
 });
 
-loopCarousel = Carousel({
+loopCarouselexp = Carousel({
   parent: ".loop-exp-div",
   child: ".loop-exp-div .slider",
   loop: false,
   expLoop: true,
+  autoplay: false,
+  // whileScrolling: () => {
+  //   displayOrHideArrows(loopCarouselexp, "#previous-loop", "#next-loop");
+  // },
+  // whileDragging: () => {
+  //   displayOrHideArrows(loopCarouselexp, "#previous-loop", "#next-loop");
+  // },
 });
 
 dotCarousel = Carousel({
@@ -119,7 +127,7 @@ Carousel({
 Carousel({
   parent: ".autoplay .inner",
   child: ".autoplay .slider",
-  autoplay: true,
+  autoplay: false,
   selectedState: true,
 });
 
@@ -175,6 +183,11 @@ document.querySelector(".left-arrow-s1").addEventListener("click", () => {
   displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
 });
 
+document.querySelector("#previous-loop").addEventListener("click", () => {
+  loopCarouselexp.scrollPrev();
+  // displayOrHideArrows(loopCarouselexp, "#previous-loop", "#next-loop");
+});
+
 document.querySelector(".right-arrow").addEventListener("click", () => {
   carouselValue.scrollNext();
   displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
@@ -188,20 +201,23 @@ document.querySelector(".right-arrow-1").addEventListener("click", () => {
   carouselValue1.scrollNext();
   displayOrHideArrows(carouselValue1, ".left-arrow-1", ".right-arrow-1");
 });
+
+document.querySelector("#next-loop").addEventListener("click", () => {
+  loopCarouselexp.scrollNext();
+  // displayOrHideArrows(loopCarouselexp, "#previous-loop", "#next-loop");
+});
+
 document.querySelector(".right-arrow-s1").addEventListener("click", () => {
   carouselValues1.scrollNext();
   displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
 });
 
 document.querySelector(".left-arrow.dots").addEventListener("click", () => {
-  console.log("dots =prev");
-
   dotCarousel.scrollPrev();
   displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
 });
 
 document.querySelector(".right-arrow.dots").addEventListener("click", () => {
-  console.log("dots next");
   dotCarousel.scrollNext();
   displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
 });
