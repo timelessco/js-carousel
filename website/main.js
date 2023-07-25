@@ -6,7 +6,7 @@ import Carousel from "../src/carousel";
 
 let carouselValue = "";
 let dotCarousel = "";
-let loopCarousel = "";
+const loopCarousel = "";
 let carouselValue1 = "";
 let carouselValues1 = "";
 const selectCarousel = "";
@@ -78,11 +78,11 @@ Carousel({
   dragFree: true,
 });
 
-loopCarousel = Carousel({
-  parent: ".carousel-item",
-  child: ".carousel-item .slider",
-  loop: true,
-});
+// loopCarousel = Carousel({
+//   parent: ".carousel-item",
+//   child: ".carousel-item .slider",
+//   loop: true,
+// });
 
 loopCarouselexp = Carousel({
   parent: ".loop-exp-div",
@@ -116,10 +116,9 @@ Carousel({
   child: ".progress-inner .slider",
   whileScrolling: scrollProgress => {
     document.getElementById("progress-bar").value = scrollProgress * 100;
-    console.log(scrollProgress, "scroll p");
   },
   whileDragging: scrollProgress => {
-    console.log(scrollProgress, "scroll p");
+    document.getElementById("progress-bar").value = scrollProgress * 100;
   },
   selectedState: false,
 });
@@ -127,7 +126,7 @@ Carousel({
 Carousel({
   parent: ".autoplay .inner",
   child: ".autoplay .slider",
-  autoplay: false,
+  autoplay: true,
   selectedState: true,
 });
 

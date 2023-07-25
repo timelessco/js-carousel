@@ -38,3 +38,43 @@ export function getScrollProgress(elem, children) {
   }
   return elem.scrollLeft / (elem.scrollWidth - elem.clientWidth);
 }
+
+export function addScrollClassNames(
+  axis,
+  parent,
+  slidesToScroll,
+  dragFree,
+  child,
+) {
+  if (axis === "x") {
+    parent.classList.add("scroll-x");
+    if (parent.classList.contains("scroll-snap-x")) {
+      parent.classList.remove("scroll-snap-x");
+    }
+    if (slidesToScroll !== 0) {
+      parent.classList.add("scroll-snap-x");
+      if (dragFree) {
+        parent.classList.add("drag-free");
+      } else {
+        parent.classList.add("snap-always");
+        child.forEach(i => {
+          i.classList.add("snap-always");
+        });
+      }
+    }
+  } else {
+    parent.classList.add("scroll-y");
+
+    if (slidesToScroll !== 0) {
+      parent.classList.add("scroll-snap-y");
+      if (dragFree) {
+        parent.classList.add("drag-free");
+      } else {
+        parent.classList.add("snap-always");
+        child.forEach(i => {
+          i.classList.add("snap-always");
+        });
+      }
+    }
+  }
+}

@@ -46,7 +46,7 @@ html {
 */
 h3 {
   color: white;
-  margin: 10px auto !important;
+  margin: 25px auto 10px auto !important;
   text-align: left;
   max-width: 660px;
   -webkit-user-select: none; /* Safari */
@@ -450,6 +450,7 @@ video {
 .loop-exp,
 .progress {
   /* max-width: 1090px; */
+
   max-width: 660px;
   z-index: 1;
   margin: auto;
