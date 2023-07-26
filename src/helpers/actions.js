@@ -1,4 +1,8 @@
 // finding the slider closest to the scroll offset to snap at
+import anime from "animejs/lib/anime.es";
+
+const springConfig = `spring(1,90,20,13)`;
+
 export function getclosestSliderElement(offset, array) {
   const differences = [];
   array.forEach(i => {
@@ -77,4 +81,88 @@ export function addScrollClassNames(
       }
     }
   }
+}
+
+// snapping of slides are handled by this function
+export function moveToSnapPoint(
+  snapValue,
+  axisValue,
+  parent,
+  slidesToScroll,
+  easing = springConfig,
+) {
+  if (axisValue === "x") {
+    if (slidesToScroll === 0 && snapValue > 0) {
+      anime({
+        targets: parent,
+        translateX: `${0}px`,
+        translateY: 0,
+        easing,
+      });
+    } else {
+      anime({
+        targets: parent,
+        translateX: `${snapValue}px`,
+        translateY: 0,
+        easing,
+      });
+    }
+  } else {
+    anime({
+      targets: parent,
+      translateX: 0,
+      translateY: `${snapValue}px`,
+      easing,
+    });
+  }
+}
+
+export function removeScrollClassNames(parent, child) {
+  if (parent.classList.contains("scroll-snap-x")) {
+    parent.classList.remove("scroll-snap-x");
+  }
+  if (parent.classList.contains("drag-free")) {
+    parent.classList.remove("drag-free");
+  }
+  if (parent.classList.contains("snap-always")) {
+    parent.classList.remove("snap-always");
+    child.forEach(i => {
+      i.classList.remove("snap-always");
+    });
+  }
+  if (parent.classList.contains("scroll-snap-y")) {
+    parent.classList.remove("scroll-snap-y");
+  }
+}
+
+export function mutationObserver(
+  dotsFunctionality,
+  dotsArray,
+  watchSlides,
+  lastScrolledTo,
+  parent,
+  leftOffsetArray,
+) {
+  return new MutationObserver(mutations => {
+    mutations.forEach(function x(mutation) {
+      if (mutation.attributeName === "style") {
+        if (window.innerWidth > 700)
+          dotsFunctionality(dotsArray, lastScrolledTo);
+        else {
+          dotsFunctionality(
+            dotsArray,
+            getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
+          );
+        }
+      } else if (mutation.type === "childList") {
+        watchSlides();
+      }
+    });
+  });
+}
+
+export function resizeListener(watchResize) {
+  window.addEventListener("resize", () => {
+    watchResize();
+  });
 }

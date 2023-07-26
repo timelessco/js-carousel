@@ -46,6 +46,7 @@ carouselValue = Carousel({
     displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
   },
 });
+
 carouselValue1 = Carousel({
   parent: ".parent-1 .inner",
   child: ".parent-1 .slider",
@@ -90,12 +91,12 @@ loopCarouselexp = Carousel({
   loop: false,
   expLoop: true,
   autoplay: false,
-  // whileScrolling: () => {
-  //   displayOrHideArrows(loopCarouselexp, "#previous-loop", "#next-loop");
-  // },
-  // whileDragging: () => {
-  //   displayOrHideArrows(loopCarouselexp, "#previous-loop", "#next-loop");
-  // },
+  watchSlides: () => {
+    console.log("watch slides");
+  },
+  watchResize: () => {
+    console.log("watch resie");
+  },
 });
 
 dotCarousel = Carousel({
@@ -128,6 +129,18 @@ Carousel({
   child: ".autoplay .slider",
   autoplay: true,
   selectedState: true,
+});
+
+Carousel({
+  parent: ".start-index-div",
+  child: ".start-index-div .slider",
+  startIndex: 2,
+  watchResize: () => {
+    console.log("watch resize");
+  },
+  watchSlides: () => {
+    console.log("watch slides");
+  },
 });
 
 yAxis = Carousel({

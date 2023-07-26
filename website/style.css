@@ -448,7 +448,8 @@ video {
 .parent-0,
 .scroll-1,
 .loop-exp,
-.progress {
+.progress,
+.start-index {
   /* max-width: 1090px; */
 
   max-width: 660px;
@@ -620,7 +621,8 @@ img {
 .carousel-item,
 .selected-state-div,
 .loop-exp-div,
-.progress-inner {
+.progress-inner,
+.start-index-div {
   display: flex;
   align-items: center;
   z-index: 1;
