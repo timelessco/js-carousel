@@ -38,7 +38,6 @@ carouselValue = Carousel({
   child: ".parent2 .slider",
   slidesToScroll: 2,
   dragFree: false,
-
   whileScrolling: () => {
     displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
   },
@@ -160,7 +159,7 @@ yAxisLoop = Carousel({
   parent: ".axis-loop",
   child: ".axis-loop .slider",
   axis: "y",
-  loop: true,
+  expLoop: true,
   whileScrolling: () => {
     displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
   },

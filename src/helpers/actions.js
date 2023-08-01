@@ -3,6 +3,7 @@ import anime from "animejs/lib/anime.es";
 
 const springConfig = `spring(1,90,20,13)`;
 
+// gets the closest slider element to the scrolled value for snapping
 export function getclosestSliderElement(offset, array) {
   const differences = [];
   array.forEach(i => {
@@ -14,12 +15,14 @@ export function getclosestSliderElement(offset, array) {
 }
 
 // checks if element is in viewport
-export function isInViewport(element) {
+export function isInViewport(element, parent) {
   const rect = element.getBoundingClientRect();
+  const parentRect = parent.parentNode.getBoundingClientRect();
   return (
-    rect.top >= 0 &&
-    rect.left >= -(element.clientWidth + 20) &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+    rect.top >= parentRect.top &&
+    rect.left >= parentRect.left &&
+    rect.bottom <= parentRect.bottom &&
+    rect.right <= parentRect.right
   );
 }
 
@@ -33,6 +36,7 @@ export function getCurrentPosition(elem, y = false) {
   return matrix.m41;
 }
 
+// gets scroll progress of slider
 export function getScrollProgress(elem, children) {
   if (window.innerWidth > 700) {
     return Math.abs(
@@ -43,6 +47,7 @@ export function getScrollProgress(elem, children) {
   return elem.scrollLeft / (elem.scrollWidth - elem.clientWidth);
 }
 
+// adding scroll snap classnames
 export function addScrollClassNames(
   axis,
   parent,
@@ -117,6 +122,7 @@ export function moveToSnapPoint(
   }
 }
 
+// remove scroll snap classnames
 export function removeScrollClassNames(parent, child) {
   if (parent.classList.contains("scroll-snap-x")) {
     parent.classList.remove("scroll-snap-x");
@@ -135,6 +141,7 @@ export function removeScrollClassNames(parent, child) {
   }
 }
 
+// mutation observer
 export function mutationObserver(
   dotsFunctionality,
   dotsArray,
@@ -161,6 +168,7 @@ export function mutationObserver(
   });
 }
 
+// resize listener
 export function resizeListener(watchResize) {
   window.addEventListener("resize", () => {
     watchResize();
