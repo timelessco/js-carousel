@@ -174,3 +174,10 @@ export function resizeListener(watchResize) {
     watchResize();
   });
 }
+
+// reverses the children of the parent - used for direction property
+export function reverseChildren(parent) {
+  for (let i = 1; i < parent.childNodes.length; i += 1) {
+    parent.insertBefore(parent.childNodes[i], parent.firstChild);
+  }
+}

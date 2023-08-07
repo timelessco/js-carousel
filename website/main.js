@@ -142,6 +142,12 @@ Carousel({
   },
 });
 
+Carousel({
+  parent: ".direction-div",
+  child: ".direction-div .slider",
+  direction: "rtl",
+});
+
 yAxis = Carousel({
   parent: ".axis",
   child: ".axis .slider",
@@ -250,15 +256,8 @@ document.querySelector(".right-arrow.select")?.addEventListener("click", () => {
   );
 });
 
-document
-  .querySelectorAll(".carousel-item .slider")[0]
-  .addEventListener("click", () => {});
-
 document.querySelector("#next-button")?.addEventListener("click", () => {
   loopCarousel.scrollNext(true);
-});
-document.querySelector("#previous-button").addEventListener("click", () => {
-  loopCarousel.scrollPrev(true);
 });
 
 document.querySelector(".up-arrow").addEventListener("click", () => {

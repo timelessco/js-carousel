@@ -11,32 +11,30 @@ import {
   mutationObserver,
   removeScrollClassNames,
   resizeListener,
+  reverseChildren,
 } from "./helpers/actions";
 
 function Carousel(props) {
-  const {
-    breakpoints = {
-      "min-width: 420": { autoplay: false, loop: true, dragFree: true },
-    },
-  } = props;
-
-  Object.keys(breakpoints).forEach(i => {
-    if (i.split(":")[0] === "min-width") {
-      if (window.innerWidth < i.split(":")[1]) {
-        Object.keys(breakpoints[i]).forEach(x => {
-          // eslint-disable-next-line no-param-reassign
-          props[x] = breakpoints[i][x];
-        });
+  const { breakpoints = {} } = props;
+  if (Object.keys(breakpoints).length > 0) {
+    Object.keys(breakpoints).forEach(i => {
+      if (i.split(":")[0] === "min-width") {
+        if (window.innerWidth < i.split(":")[1]) {
+          Object.keys(breakpoints[i]).forEach(x => {
+            // eslint-disable-next-line no-param-reassign
+            props[x] = breakpoints[i][x];
+          });
+        }
+      } else if (i.split(":")[0] === "max-width") {
+        if (window.innerWidth > i.split(":")[1]) {
+          Object.keys(breakpoints[i]).forEach(x => {
+            // eslint-disable-next-line no-param-reassign
+            props[x] = breakpoints[i][x];
+          });
+        }
       }
-    } else if (i.split(":")[0] === "max-width") {
-      if (window.innerWidth > i.split(":")[1]) {
-        Object.keys(breakpoints[i]).forEach(x => {
-          // eslint-disable-next-line no-param-reassign
-          props[x] = breakpoints[i][x];
-        });
-      }
-    }
-  });
+    });
+  }
   const {
     slidesToScroll = 1,
     whileScrolling = () => {},
@@ -52,7 +50,7 @@ function Carousel(props) {
     displayDots = false,
     selectedState = false,
     startIndex = 0,
-
+    direction = "ltr",
     dotsHTML = `<svg height="12" width="12" class="dots">
     <circle cx="5" cy="5" r="2.5" stroke="gray" stroke-width="3" fill="gray" />
   </svg>`,
@@ -60,22 +58,94 @@ function Carousel(props) {
     expLoop = false,
     dragActive = true,
     scrollActive = true,
+    springConfig = `spring(1,90,20,13)`,
+    child,
   } = props;
 
-  // const updateLoop = () => {
-  //   loop = true
-  // }
-
-  let { parent, child, selectedScrollSnapIndex = 0 } = props;
+  let { parent, selectedScrollSnapIndex = 0 } = props;
   parent = document.querySelector(parent);
-  child = document.querySelectorAll(child);
+  let children = document.querySelectorAll(child);
+  children[0].setAttribute("id", "first-child");
+
   let indexValue = 1;
   let dotsArray = [];
   let leftOffsetArray = [];
   let allLeftOffsets = [];
   let scrollProgress = 0;
   let lastScrolledTo = getCurrentPosition(parent);
-  const lastChild = child[child.length - 1];
+  const lastChild = children[children.length - 1];
+  // pushing all the offset values of slides into an array
+  function pushToOffsetArray() {
+    if (expLoop) leftOffsetArray.push(-lastChild.clientWidth);
+
+    children.forEach((i, index) => {
+      if (index % slidesToScroll === 0) {
+        if (axis === "x") leftOffsetArray.push(i.offsetLeft);
+        else leftOffsetArray.push(i.offsetTop);
+      }
+    });
+    if (expLoop)
+      leftOffsetArray.push(lastChild.offsetLeft + children[0].clientWidth);
+    children.forEach(i => {
+      allLeftOffsets.push(i.offsetLeft);
+    });
+  }
+
+  // appends 'selected slide' classname
+  function addSelectedStateClassName(childIndexValue) {
+    if (selectedState) {
+      children[childIndexValue]?.classList.add(selectedScrollClassName);
+    }
+  }
+
+  addSelectedStateClassName(selectedScrollSnapIndex);
+
+  pushToOffsetArray();
+
+  // scrolls the slider to a particular mentioned value
+  function scrollTo(scrollValue) {
+    if (window.innerWidth > 700) {
+      if (axis === "x")
+        parent.style.transform = `translateX(${-leftOffsetArray[
+          scrollValue
+        ]}px)`;
+      else
+        parent.style.transform = `translateY(${-leftOffsetArray[
+          scrollValue
+        ]}px)`;
+      lastScrolledTo = leftOffsetArray[scrollValue];
+    } else {
+      if (axis === "x") {
+        parent.scrollTo(leftOffsetArray[scrollValue], 0);
+      } else parent.scrollTo(0, leftOffsetArray[scrollValue]);
+      lastScrolledTo = leftOffsetArray[scrollValue];
+    }
+  }
+
+  if (direction === "rtl") {
+    reverseChildren(parent);
+    children = document.querySelectorAll(child);
+    let scrollToVal;
+    leftOffsetArray.forEach((i, index) => {
+      if (window.innerWidth > 700) {
+        if (i < parent.clientWidth - parent.parentNode.clientWidth) {
+          scrollToVal = index;
+        }
+      }
+    });
+    if (window.innerWidth > 700) {
+      scrollTo(scrollToVal);
+    }
+  }
+  if (window.innerWidth < 700)
+    document.querySelectorAll("#first-child").forEach(i => {
+      i.scrollIntoView({
+        behavior: "instant",
+        block: "nearest",
+        inline: "start",
+      });
+      window.scrollTo(0, 0);
+    });
 
   if (axis === "y" && window.innerWidth > 700) {
     parent.style.height = "100%";
@@ -93,25 +163,6 @@ function Carousel(props) {
 
   // resize listerner
   if (watchResize) resizeListener(watchResize);
-
-  // scrolls the slider to a particular mentioned value
-  function scrollTo(scrollValue) {
-    if (window.innerWidth > 700) {
-      if (axis === "x")
-        parent.style.transform = `translateX(${-leftOffsetArray[
-          scrollValue
-        ]}px)`;
-      else
-        parent.style.transform = `translateY(${-leftOffsetArray[
-          scrollValue
-        ]}px)`;
-      lastScrolledTo = leftOffsetArray[scrollValue];
-    } else {
-      if (axis === "x") parent.scrollTo(leftOffsetArray[scrollValue], 0);
-      else parent.scrollTo(0, leftOffsetArray[scrollValue]);
-      lastScrolledTo = leftOffsetArray[scrollValue];
-    }
-  }
 
   function throttle(fn, delay) {
     let lastCall = 0;
@@ -174,9 +225,9 @@ function Carousel(props) {
   // returns the slides that are not in view
   function slidesNotInView() {
     const visibleElements = [];
-    child.forEach(i => {
+    children.forEach(i => {
       if (!isInViewport(i, parent)) {
-        visibleElements.push(Array.from(child).indexOf(i));
+        visibleElements.push(Array.from(children).indexOf(i));
       }
     });
     return visibleElements;
@@ -191,8 +242,8 @@ function Carousel(props) {
         slidesNotInViewArray = slidesNotInView();
 
         slidesNotInViewArray.forEach(i => {
-          if (lastScrolledTo > child[i].offsetLeft) {
-            child[
+          if (lastScrolledTo > children[i].offsetLeft) {
+            children[
               i
             ].style.transform = `translate3d(${parent.clientWidth}px, 0, 0)`;
           }
@@ -201,7 +252,7 @@ function Carousel(props) {
         setTimeout(() => {
           if (-ox > parent.clientWidth - lastChild.clientWidth / 2) {
             slidesNotInViewArray.forEach(i => {
-              child[i].style.transform = `translate3d(0, 0, 0)`;
+              children[i].style.transform = `translate3d(0, 0, 0)`;
             });
             parent.style.transform = `translateX(0)`;
             parent.style.transition = `none 0s ease 0s`;
@@ -227,7 +278,7 @@ function Carousel(props) {
       } else {
         lastChildX.style.transform = `translate3d(${-parent.clientWidth}px, 0, 0)`;
         setTimeout(() => {
-          if (ox > child[0].clientWidth / 2) {
+          if (ox > children[0].clientWidth / 2) {
             lastChildX.style.transform = `translate3d(0, 0, 0)`;
             parent.style.transform = `translateX(${-lastChildX.offsetLeft}px)`;
             parent.style.transition = `none 0s ease 0s`;
@@ -304,7 +355,7 @@ function Carousel(props) {
       dotsArray,
       getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
     );
-    scrollProgress = getScrollProgress(parent, child);
+    scrollProgress = getScrollProgress(parent, children);
 
     whileScrolling(scrollProgress);
   });
@@ -322,17 +373,10 @@ function Carousel(props) {
   function handleWindowWidth() {
     removeScrollClassNames(parent);
     if (window.innerWidth < 700) {
-      addScrollClassNames(axis, parent, slidesToScroll, dragFree, child);
+      addScrollClassNames(axis, parent, slidesToScroll, dragFree, children);
     }
   }
   handleWindowWidth();
-
-  // appends 'selected slide' classname
-  function addSelectedStateClassName(childIndexValue) {
-    if (selectedState) {
-      child[childIndexValue]?.classList.add(selectedScrollClassName);
-    }
-  }
 
   onInit();
 
@@ -368,9 +412,10 @@ function Carousel(props) {
             axis,
             parent,
             slidesToScroll,
+            springConfig,
           );
           selectedScrollSnapIndex += 1;
-          child.forEach(i => {
+          children.forEach(i => {
             if (i.classList.contains(selectedScrollClassName)) {
               i?.classList?.remove(selectedScrollClassName);
             }
@@ -387,9 +432,10 @@ function Carousel(props) {
               axis,
               parent,
               slidesToScroll,
+              springConfig,
             );
             selectedScrollSnapIndex += 1;
-            child.forEach(i => {
+            children.forEach(i => {
               if (i.classList.contains(selectedScrollClassName)) {
                 i?.classList?.remove(selectedScrollClassName);
               }
@@ -412,9 +458,10 @@ function Carousel(props) {
             axis,
             parent,
             slidesToScroll,
+            springConfig,
           );
           selectedScrollSnapIndex += 1;
-          child.forEach(i => {
+          children.forEach(i => {
             if (i.classList.contains(selectedScrollClassName)) {
               i?.classList?.remove(selectedScrollClassName);
             }
@@ -439,9 +486,15 @@ function Carousel(props) {
       const carouselItems = parent.children;
       currentPosition += carouselItems[0].offsetWidth;
 
-      moveToSnapPoint(currentPosition, axis, parent, slidesToScroll);
+      moveToSnapPoint(
+        currentPosition,
+        axis,
+        parent,
+        slidesToScroll,
+        springConfig,
+      );
       selectedScrollSnapIndex += 1;
-      child.forEach(i => {
+      children.forEach(i => {
         if (i.classList.contains(selectedScrollClassName)) {
           i?.classList?.remove(selectedScrollClassName);
         }
@@ -453,9 +506,15 @@ function Carousel(props) {
       parent.insertBefore(lastItem, carouselItems[0]);
       currentPosition -= carouselItems[0].offsetWidth;
 
-      moveToSnapPoint(currentPosition, axis, parent, slidesToScroll);
+      moveToSnapPoint(
+        currentPosition,
+        axis,
+        parent,
+        slidesToScroll,
+        springConfig,
+      );
       selectedScrollSnapIndex += 1;
-      child.forEach(i => {
+      children.forEach(i => {
         if (i.classList.contains(selectedScrollClassName)) {
           i?.classList?.remove(selectedScrollClassName);
         }
@@ -493,10 +552,11 @@ function Carousel(props) {
             axis,
             parent,
             slidesToScroll,
+            springConfig,
           );
 
           selectedScrollSnapIndex += 1;
-          child.forEach(i => {
+          children.forEach(i => {
             if (i.classList.contains(selectedScrollClassName)) {
               i?.classList?.remove(selectedScrollClassName);
             }
@@ -524,9 +584,10 @@ function Carousel(props) {
               axis,
               parent,
               slidesToScroll,
+              springConfig,
             );
             selectedScrollSnapIndex += 1;
-            child.forEach(i => {
+            children.forEach(i => {
               if (i.classList.contains(selectedScrollClassName)) {
                 i?.classList?.remove(selectedScrollClassName);
               }
@@ -563,9 +624,15 @@ function Carousel(props) {
       const carouselItems = parent.children;
       currentPosition -= carouselItems[0].offsetWidth;
       if (window.innerWidth > 700) {
-        moveToSnapPoint(currentPosition, axis, parent, slidesToScroll);
+        moveToSnapPoint(
+          currentPosition,
+          axis,
+          parent,
+          slidesToScroll,
+          springConfig,
+        );
         selectedScrollSnapIndex += 1;
-        child.forEach(i => {
+        children.forEach(i => {
           if (i.classList.contains(selectedScrollClassName)) {
             i?.classList?.remove(selectedScrollClassName);
           }
@@ -579,9 +646,15 @@ function Carousel(props) {
       if (window.innerWidth > 700) {
         parent.appendChild(firstItem);
 
-        moveToSnapPoint(currentPosition, axis, parent, slidesToScroll);
+        moveToSnapPoint(
+          currentPosition,
+          axis,
+          parent,
+          slidesToScroll,
+          springConfig,
+        );
         selectedScrollSnapIndex += 1;
-        child.forEach(i => {
+        children.forEach(i => {
           if (i.classList.contains(selectedScrollClassName)) {
             i?.classList?.remove(selectedScrollClassName);
           }
@@ -596,27 +669,6 @@ function Carousel(props) {
       }
     }
   }
-
-  // pushing all the offset values of slides into an array
-  function pushToOffsetArray() {
-    if (expLoop) leftOffsetArray.push(-lastChild.clientWidth);
-
-    child.forEach((i, index) => {
-      if (index % slidesToScroll === 0) {
-        if (axis === "x") leftOffsetArray.push(i.offsetLeft);
-        else leftOffsetArray.push(i.offsetTop);
-      }
-    });
-    if (expLoop)
-      leftOffsetArray.push(lastChild.offsetLeft + child[0].clientWidth);
-    child.forEach(i => {
-      allLeftOffsets.push(i.offsetLeft);
-    });
-  }
-
-  addSelectedStateClassName(selectedScrollSnapIndex);
-
-  pushToOffsetArray();
 
   function handleDots() {
     const dotsFlex = document.createElement("div");
@@ -635,9 +687,15 @@ function Carousel(props) {
         lastScrolledTo = leftOffsetArray[index];
         addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
         if (window.innerWidth > 700) {
-          moveToSnapPoint(-lastScrolledTo, axis, parent, slidesToScroll);
+          moveToSnapPoint(
+            -lastScrolledTo,
+            axis,
+            parent,
+            slidesToScroll,
+            springConfig,
+          );
           selectedScrollSnapIndex += 1;
-          child.forEach(x => {
+          children.forEach(x => {
             if (x.classList.contains(selectedScrollClassName)) {
               x?.classList?.remove(selectedScrollClassName);
             }
@@ -670,9 +728,10 @@ function Carousel(props) {
             axis,
             parent,
             slidesToScroll,
+            springConfig,
           );
           selectedScrollSnapIndex += 1;
-          child.forEach(i => {
+          children.forEach(i => {
             if (i.classList.contains(selectedScrollClassName)) {
               i?.classList?.remove(selectedScrollClassName);
             }
@@ -715,14 +774,14 @@ function Carousel(props) {
     };
   };
 
-  if (!expLoop) scrollTo(startIndex);
+  if (!expLoop && direction === "ltr") scrollTo(startIndex);
 
   // adding gestures like drag, scroll
   Gesture(
     parent,
     {
       onDrag: ({ active, offset: [ox, oy], direction: [dx] }) => {
-        scrollProgress = getScrollProgress(parent, child);
+        scrollProgress = getScrollProgress(parent, children);
         clearTimeout(timeout);
         // setTimeout(() => {
         whileDragging(scrollProgress);
@@ -738,9 +797,15 @@ function Carousel(props) {
         ) {
           if (active) {
             if (offsetValue < 10) {
-              moveToSnapPoint(offsetValue, axis, parent, slidesToScroll);
+              moveToSnapPoint(
+                offsetValue,
+                axis,
+                parent,
+                slidesToScroll,
+                springConfig,
+              );
               selectedScrollSnapIndex += 1;
-              child.forEach(i => {
+              children.forEach(i => {
                 if (i.classList.contains(selectedScrollClassName)) {
                   i?.classList?.remove(selectedScrollClassName);
                 }
@@ -755,7 +820,7 @@ function Carousel(props) {
               -(
                 parent.children[parent.children.length - 1].offsetLeft -
                 parent.parentNode.clientWidth +
-                child[0].clientWidth
+                children[0].clientWidth
               ) === offsetValue
             )
               scrollNext(loop);
@@ -783,9 +848,15 @@ function Carousel(props) {
                 leftOffsetArray,
               );
             }
-            moveToSnapPoint(snapValue, axis, parent, slidesToScroll);
+            moveToSnapPoint(
+              snapValue,
+              axis,
+              parent,
+              slidesToScroll,
+              springConfig,
+            );
             selectedScrollSnapIndex += 1;
-            child.forEach(i => {
+            children.forEach(i => {
               if (i.classList.contains(selectedScrollClassName)) {
                 i?.classList?.remove(selectedScrollClassName);
               }
@@ -807,7 +878,7 @@ function Carousel(props) {
             -(
               parent.children[parent.children.length - 1].offsetLeft -
               parent.parentNode.clientWidth +
-              child[0].clientWidth
+              children[0].clientWidth
             ) === offsetValue
           )
             scrollNext(loop);
@@ -861,7 +932,7 @@ function Carousel(props) {
         }
       },
       onWheel: ({ offset: [ox, oy], active, direction: [dx] }) => {
-        scrollProgress = getScrollProgress(parent, child);
+        scrollProgress = getScrollProgress(parent, children);
 
         const offsetValue = axis === "x" ? -ox : -oy;
 
@@ -875,9 +946,15 @@ function Carousel(props) {
         loopingActionNextNew(ox);
         loopingActionPrev(ox);
         if (active) {
-          moveToSnapPoint(offsetValue, axis, parent, slidesToScroll);
+          moveToSnapPoint(
+            offsetValue,
+            axis,
+            parent,
+            slidesToScroll,
+            springConfig,
+          );
           selectedScrollSnapIndex += 1;
-          child.forEach(i => {
+          children.forEach(i => {
             if (i.classList.contains(selectedScrollClassName)) {
               i?.classList?.remove(selectedScrollClassName);
             }
@@ -897,9 +974,15 @@ function Carousel(props) {
             snapValue = -getclosestSliderElement(-offsetValue, leftOffsetArray);
           }
 
-          moveToSnapPoint(snapValue, axis, parent, slidesToScroll);
+          moveToSnapPoint(
+            snapValue,
+            axis,
+            parent,
+            slidesToScroll,
+            springConfig,
+          );
           selectedScrollSnapIndex += 1;
-          child.forEach(i => {
+          children.forEach(i => {
             if (i.classList.contains(selectedScrollClassName)) {
               i?.classList?.remove(selectedScrollClassName);
             }
@@ -920,7 +1003,7 @@ function Carousel(props) {
           -(
             parent.children[parent.children.length - 1].offsetLeft -
             parent.parentNode.clientWidth +
-            child[0].clientWidth
+            children[0].clientWidth
           ) === offsetValue
         )
           scrollNext(loop);
@@ -997,7 +1080,7 @@ function Carousel(props) {
           right: !expLoop
             ? parent.children[parent.children.length - 1].offsetLeft -
               parent.parentNode.clientWidth +
-              child[0].clientWidth
+              children[0].clientWidth
             : undefined,
           top: 0,
           bottom: parent.clientHeight - parent.parentNode.clientHeight,
@@ -1015,7 +1098,7 @@ function Carousel(props) {
             ? -(
                 parent.children[parent.children.length - 1].offsetLeft -
                 parent.parentNode.clientWidth +
-                child[0].clientWidth
+                children[0].clientWidth
               )
             : undefined,
           bottom: parent.clientHeight - parent.parentNode.clientHeight,
@@ -1029,9 +1112,9 @@ function Carousel(props) {
   // returns the slides that are in view
   function slidesInView() {
     const visibleElements = [];
-    child.forEach(i => {
+    children.forEach(i => {
       if (isInViewport(i, parent)) {
-        visibleElements.push(Array.from(child).indexOf(i));
+        visibleElements.push(Array.from(children).indexOf(i));
       }
     });
     return visibleElements;
@@ -1039,7 +1122,7 @@ function Carousel(props) {
 
   // returns slides
   function slideNodes() {
-    return Array.from(child);
+    return Array.from(children);
   }
 
   // returns the root node

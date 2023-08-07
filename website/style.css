@@ -449,7 +449,8 @@ video {
 .scroll-1,
 .loop-exp,
 .progress,
-.start-index {
+.start-index,
+.direction {
   /* max-width: 1090px; */
 
   max-width: 660px;
@@ -562,7 +563,8 @@ video {
 }
 
 .dots-parent .slider,
-.progress .slider {
+.progress .slider,
+.loop-exp .slider {
   width: 660px;
   max-width: 100%;
   max-height: 300px;
@@ -621,7 +623,8 @@ img {
 .selected-state-div,
 .loop-exp-div,
 .progress-inner,
-.start-index-div {
+.start-index-div,
+.direction-div {
   display: flex;
   align-items: center;
   z-index: 1;
