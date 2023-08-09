@@ -2,17 +2,24 @@ import { Gesture } from "@use-gesture/vanilla";
 import anime from "animejs/lib/anime.es";
 
 import {
-  addScrollClassNames,
+  autoplayLoop,
   getclosestSliderElement,
   getCurrentPosition,
   getScrollProgress,
   isInViewport,
   moveToSnapPoint,
   mutationObserver,
-  removeScrollClassNames,
+  pushToOffsetArray,
   resizeListener,
   reverseChildren,
+  throttle,
 } from "./helpers/actions";
+import {
+  addScrollClassNames,
+  addSelectedStateClassName,
+  removeScrollClassNames,
+  removeSelectedStateClassName,
+} from "./helpers/classes";
 
 function Carousel(props) {
   const { breakpoints = {} } = props;
@@ -60,6 +67,7 @@ function Carousel(props) {
     scrollActive = true,
     springConfig = `spring(1,90,20,13)`,
     child,
+    alignment = "start",
   } = props;
 
   let { parent, selectedScrollSnapIndex = 0 } = props;
@@ -67,44 +75,45 @@ function Carousel(props) {
   let children = document.querySelectorAll(child);
   children[0].setAttribute("id", "first-child");
 
-  let indexValue = 1;
+  const indexValue = 1;
   let dotsArray = [];
   let leftOffsetArray = [];
   let allLeftOffsets = [];
   let scrollProgress = 0;
   let lastScrolledTo = getCurrentPosition(parent);
   const lastChild = children[children.length - 1];
-  // pushing all the offset values of slides into an array
-  function pushToOffsetArray() {
-    if (expLoop) leftOffsetArray.push(-lastChild.clientWidth);
+  const minWebWidth = 700;
 
-    children.forEach((i, index) => {
-      if (index % slidesToScroll === 0) {
-        if (axis === "x") leftOffsetArray.push(i.offsetLeft);
-        else leftOffsetArray.push(i.offsetTop);
-      }
-    });
-    if (expLoop)
-      leftOffsetArray.push(lastChild.offsetLeft + children[0].clientWidth);
-    children.forEach(i => {
-      allLeftOffsets.push(i.offsetLeft);
-    });
-  }
+  addSelectedStateClassName(
+    selectedScrollClassName,
+    children,
+    selectedScrollSnapIndex,
+    selectedState,
+  );
 
-  // appends 'selected slide' classname
-  function addSelectedStateClassName(childIndexValue) {
-    if (selectedState) {
-      children[childIndexValue]?.classList.add(selectedScrollClassName);
-    }
-  }
+  pushToOffsetArray(
+    leftOffsetArray,
+    expLoop,
+    lastChild,
+    children,
+    slidesToScroll,
+    allLeftOffsets,
+    axis,
+    alignment,
+  );
+  const throttleClick = throttle(function () {
+    const firstChild =
+      parent.childNodes[0].nodeType === Node.ELEMENT_NODE
+        ? parent.childNodes[0]
+        : parent.childNodes[1];
 
-  addSelectedStateClassName(selectedScrollSnapIndex);
-
-  pushToOffsetArray();
+    parent.removeChild(firstChild);
+    parent.appendChild(firstChild);
+  }, 200);
 
   // scrolls the slider to a particular mentioned value
   function scrollTo(scrollValue) {
-    if (window.innerWidth > 700) {
+    if (window.innerWidth > minWebWidth) {
       if (axis === "x")
         parent.style.transform = `translateX(${-leftOffsetArray[
           scrollValue
@@ -127,17 +136,18 @@ function Carousel(props) {
     children = document.querySelectorAll(child);
     let scrollToVal;
     leftOffsetArray.forEach((i, index) => {
-      if (window.innerWidth > 700) {
+      if (window.innerWidth > minWebWidth) {
         if (i < parent.clientWidth - parent.parentNode.clientWidth) {
           scrollToVal = index;
         }
       }
     });
-    if (window.innerWidth > 700) {
+    if (window.innerWidth > minWebWidth) {
       scrollTo(scrollToVal);
     }
   }
-  if (window.innerWidth < 700)
+
+  if (window.innerWidth < minWebWidth)
     document.querySelectorAll("#first-child").forEach(i => {
       i.scrollIntoView({
         behavior: "instant",
@@ -147,7 +157,7 @@ function Carousel(props) {
       window.scrollTo(0, 0);
     });
 
-  if (axis === "y" && window.innerWidth > 700) {
+  if (axis === "y" && window.innerWidth > minWebWidth) {
     parent.style.height = "100%";
   }
 
@@ -164,35 +174,13 @@ function Carousel(props) {
   // resize listerner
   if (watchResize) resizeListener(watchResize);
 
-  function throttle(fn, delay) {
-    let lastCall = 0;
-    return function () {
-      const now = new Date().getTime();
-      if (now - lastCall < delay) {
-        return;
-      }
-      lastCall = now;
-      // eslint-disable-next-line consistent-return
-      return fn();
-    };
-  }
-  const throttleClick = throttle(function () {
-    const firstChild =
-      parent.childNodes[0].nodeType === Node.ELEMENT_NODE
-        ? parent.childNodes[0]
-        : parent.childNodes[1];
-
-    parent.removeChild(firstChild);
-    parent.appendChild(firstChild);
-  }, 200);
-
   // checks if slider can be scrolled towards left direction
   function canScrollPrev() {
-    if (window.innerWidth < 700 && axis === "y") {
+    if (window.innerWidth < minWebWidth && axis === "y") {
       if (parent.scrollTop === 0) return false;
       return true;
     }
-    if (window.innerWidth < 700 && axis === "x") {
+    if (window.innerWidth < minWebWidth && axis === "x") {
       return parent.scrollLeft !== 0;
     }
     if (leftOffsetArray.indexOf(lastScrolledTo) > 0) return true;
@@ -202,7 +190,7 @@ function Carousel(props) {
   // checking if the slides can be scrolled anymore
   function canScrollNext() {
     if (axis === "x") {
-      if (window.innerWidth > 700) {
+      if (window.innerWidth > minWebWidth) {
         if (
           parent.clientWidth - lastScrolledTo >=
           parent.parentNode.clientWidth + 30
@@ -212,7 +200,7 @@ function Carousel(props) {
       }
       return parent.scrollLeft < parent.scrollWidth - parent.clientWidth - 20;
     }
-    if (window.innerWidth > 700) {
+    if (window.innerWidth > minWebWidth) {
       if (
         parent.clientHeight - lastScrolledTo >=
         parent.parentNode.clientHeight + 30
@@ -236,7 +224,7 @@ function Carousel(props) {
   let slidesNotInViewArray = slidesNotInView();
   function loopingActionNext(ox) {
     if (!canScrollNext() && expLoop) {
-      if (window.innerWidth < 700) {
+      if (window.innerWidth < minWebWidth) {
         throttleClick();
       } else {
         slidesNotInViewArray = slidesNotInView();
@@ -271,7 +259,7 @@ function Carousel(props) {
     const lastChildX = parent.childNodes[parent.childNodes.length - 1];
 
     if (!canScrollPrev() && expLoop) {
-      if (window.innerWidth < 700) {
+      if (window.innerWidth < minWebWidth) {
         parent.removeChild(lastChildX);
 
         parent.prepend(lastChildX);
@@ -295,23 +283,24 @@ function Carousel(props) {
     }
   }
 
-  function loopingActionNextNew() {
-    if (!canScrollPrev() && expLoop) {
-      lastChild.style.transform = `translate3d(${-parent.clientWidth}px, 0, 0)`;
-      setTimeout(() => {
-        lastChild.style.transform = `translate3d(0, 0, 0)`;
-        parent.style.transform = `translateX(${-lastChild.offsetLeft}px)`;
-        parent.style.transition = `none 0s ease 0s`;
-        lastChild.style.transition = `none 0s ease 0s`;
-        anime({
-          targets: parent,
-          translateX: -lastChild.offsetLeft,
-          translateY: 0,
-        });
-        lastScrolledTo = 0;
-      }, 600);
-    }
-  }
+  // function loopingActionNextNew() {
+  //   if (!canScrollPrev() && expLoop) {
+  //     lastChild.style.transform = `translate3d(${-parent.clientWidth}px, 0, 0)`;
+  //     setTimeout(() => {
+  //       lastChild.style.transform = `translate3d(0, 0, 0)`;
+  //       parent.style.transform = `translateX(${-lastChild.offsetLeft}px)`;
+  //       parent.style.transition = `none 0s ease 0s`;
+  //       lastChild.style.transition = `none 0s ease 0s`;
+  //       anime({
+  //         targets: parent,
+  //         translateX: -lastChild.offsetLeft,
+  //         translateY: 0,
+  //       });
+  //       lastScrolledTo = 0;
+  //     }, 600);
+  //   }
+  // }
+
   function loopingActionPrevious() {
     if (Math.abs(lastScrolledTo) === 0 && expLoop) {
       lastChild.style.transform = `translate3d(${-parent.clientWidth}px, 0, 0)`;
@@ -372,7 +361,7 @@ function Carousel(props) {
 
   function handleWindowWidth() {
     removeScrollClassNames(parent);
-    if (window.innerWidth < 700) {
+    if (window.innerWidth < minWebWidth) {
       addScrollClassNames(axis, parent, slidesToScroll, dragFree, children);
     }
   }
@@ -385,7 +374,13 @@ function Carousel(props) {
     let currentIndex;
     if (selectedScrollSnapIndex !== 0) {
       selectedScrollSnapIndex -= 1;
-      addSelectedStateClassName(selectedScrollSnapIndex);
+
+      addSelectedStateClassName(
+        selectedScrollClassName,
+        children,
+        selectedScrollSnapIndex,
+        selectedState,
+      );
     }
     if (!looping) {
       leftOffsetArray.forEach((i, index) => {
@@ -394,7 +389,7 @@ function Carousel(props) {
         }
       });
 
-      if (window.innerWidth > 700) {
+      if (window.innerWidth > minWebWidth) {
         if (expLoop) {
           const uniqueArray = [];
           leftOffsetArray.forEach(i => {
@@ -415,15 +410,22 @@ function Carousel(props) {
             springConfig,
           );
           selectedScrollSnapIndex += 1;
-          children.forEach(i => {
-            if (i.classList.contains(selectedScrollClassName)) {
-              i?.classList?.remove(selectedScrollClassName);
-            }
-          });
+          removeSelectedStateClassName(children, selectedScrollClassName);
 
-          addSelectedStateClassName(selectedScrollSnapIndex);
+          addSelectedStateClassName(
+            selectedScrollClassName,
+            children,
+            selectedScrollSnapIndex,
+            selectedState,
+          );
           lastScrolledTo = uniqueArray[currentIndex - 1];
-          addSelectedStateClassName(uniqueArray.indexOf(lastScrolledTo));
+
+          addSelectedStateClassName(
+            selectedScrollClassName,
+            children,
+            uniqueArray.indexOf(lastScrolledTo),
+            selectedState,
+          );
         }
         if (axis === "x") {
           if (currentIndex - 1 >= 0) {
@@ -435,22 +437,32 @@ function Carousel(props) {
               springConfig,
             );
             selectedScrollSnapIndex += 1;
-            children.forEach(i => {
-              if (i.classList.contains(selectedScrollClassName)) {
-                i?.classList?.remove(selectedScrollClassName);
-              }
-            });
+            removeSelectedStateClassName(children, selectedScrollClassName);
 
-            addSelectedStateClassName(selectedScrollSnapIndex);
+            addSelectedStateClassName(
+              selectedScrollClassName,
+              children,
+              selectedScrollSnapIndex,
+              selectedState,
+            );
             lastScrolledTo = leftOffsetArray[currentIndex - 1];
-            addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
+
+            addSelectedStateClassName(
+              selectedScrollClassName,
+              children,
+              leftOffsetArray.indexOf(lastScrolledTo),
+              selectedState,
+            );
           } else {
             parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
             lastScrolledTo = leftOffsetArray[currentIndex + 1];
-            if (selectedState)
-              addSelectedStateClassName(
-                leftOffsetArray.indexOf(lastScrolledTo),
-              );
+
+            addSelectedStateClassName(
+              selectedScrollClassName,
+              children,
+              leftOffsetArray.indexOf(lastScrolledTo),
+              selectedState,
+            );
           }
         } else if (currentIndex - 1 >= 0) {
           moveToSnapPoint(
@@ -461,13 +473,14 @@ function Carousel(props) {
             springConfig,
           );
           selectedScrollSnapIndex += 1;
-          children.forEach(i => {
-            if (i.classList.contains(selectedScrollClassName)) {
-              i?.classList?.remove(selectedScrollClassName);
-            }
-          });
+          removeSelectedStateClassName(children, selectedScrollClassName);
 
-          addSelectedStateClassName(selectedScrollSnapIndex);
+          addSelectedStateClassName(
+            selectedScrollClassName,
+            children,
+            selectedScrollSnapIndex,
+            selectedState,
+          );
           lastScrolledTo = leftOffsetArray[currentIndex - 1];
         }
       } else {
@@ -479,7 +492,13 @@ function Carousel(props) {
             parent.scrollTo(0, leftOffsetArray[currentIndex - 1]);
           lastScrolledTo = leftOffsetArray[currentIndex - 1];
         }
-        addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
+
+        addSelectedStateClassName(
+          selectedScrollClassName,
+          children,
+          leftOffsetArray.indexOf(lastScrolledTo),
+          selectedState,
+        );
       }
     } else {
       let currentPosition = 0;
@@ -500,7 +519,12 @@ function Carousel(props) {
         }
       });
 
-      addSelectedStateClassName(selectedScrollSnapIndex);
+      addSelectedStateClassName(
+        selectedScrollClassName,
+        children,
+        selectedScrollSnapIndex,
+        selectedState,
+      );
       lastScrolledTo = currentPosition;
       const lastItem = carouselItems[carouselItems.length - 1];
       parent.insertBefore(lastItem, carouselItems[0]);
@@ -520,7 +544,12 @@ function Carousel(props) {
         }
       });
 
-      addSelectedStateClassName(selectedScrollSnapIndex);
+      addSelectedStateClassName(
+        selectedScrollClassName,
+        children,
+        selectedScrollSnapIndex,
+        selectedState,
+      );
       lastScrolledTo = currentPosition;
     }
   }
@@ -528,7 +557,13 @@ function Carousel(props) {
   // scrolling to next slide
   function scrollNext(looping) {
     let currentIndex;
-    addSelectedStateClassName(selectedScrollSnapIndex);
+
+    addSelectedStateClassName(
+      selectedScrollClassName,
+      children,
+      selectedScrollSnapIndex,
+      selectedState,
+    );
     if (!looping) {
       leftOffsetArray.forEach((i, index) => {
         if (i === lastScrolledTo) {
@@ -542,7 +577,7 @@ function Carousel(props) {
         }
       }
 
-      if (window.innerWidth > 700) {
+      if (window.innerWidth > minWebWidth) {
         if (expLoop) {
           if (currentIndex === undefined) currentIndex = 0;
           loopingActionNext(-leftOffsetArray[currentIndex + 1], true);
@@ -556,15 +591,22 @@ function Carousel(props) {
           );
 
           selectedScrollSnapIndex += 1;
-          children.forEach(i => {
-            if (i.classList.contains(selectedScrollClassName)) {
-              i?.classList?.remove(selectedScrollClassName);
-            }
-          });
+          removeSelectedStateClassName(children, selectedScrollClassName);
 
-          addSelectedStateClassName(selectedScrollSnapIndex);
+          addSelectedStateClassName(
+            selectedScrollClassName,
+            children,
+            selectedScrollSnapIndex,
+            selectedState,
+          );
           lastScrolledTo = leftOffsetArray[currentIndex + 1];
-          addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
+
+          addSelectedStateClassName(
+            selectedScrollClassName,
+            children,
+            leftOffsetArray.indexOf(lastScrolledTo),
+            selectedState,
+          );
         }
         if (
           parent.parentNode.clientWidth -
@@ -587,29 +629,38 @@ function Carousel(props) {
               springConfig,
             );
             selectedScrollSnapIndex += 1;
-            children.forEach(i => {
-              if (i.classList.contains(selectedScrollClassName)) {
-                i?.classList?.remove(selectedScrollClassName);
-              }
-            });
+            removeSelectedStateClassName(children, selectedScrollClassName);
 
-            addSelectedStateClassName(selectedScrollSnapIndex);
+            addSelectedStateClassName(
+              selectedScrollClassName,
+              children,
+              selectedScrollSnapIndex,
+              selectedState,
+            );
             lastScrolledTo = leftOffsetArray[currentIndex + 1];
-            addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
+
+            addSelectedStateClassName(
+              selectedScrollClassName,
+              children,
+              leftOffsetArray.indexOf(lastScrolledTo),
+              selectedState,
+            );
           }
         } else if (leftOffsetArray[currentIndex + 1]) {
           parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
           lastScrolledTo = leftOffsetArray[currentIndex + 1];
-          addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
+
+          addSelectedStateClassName(
+            selectedScrollClassName,
+            children,
+            leftOffsetArray.indexOf(lastScrolledTo),
+            selectedState,
+          );
         }
       } else if (leftOffsetArray[currentIndex + 1]) {
         if (expLoop) {
           if (currentIndex === undefined) currentIndex = 0;
           loopingActionNext(-leftOffsetArray[currentIndex + 1], true);
-
-          // moveToSnapPoint(-leftOffsetArray[currentIndex + 1], axis);
-          // lastScrolledTo = leftOffsetArray[currentIndex + 1];
-          // addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
         }
         if (axis === "x") {
           if (parent.scrollLeft !== leftOffsetArray[currentIndex + 1])
@@ -617,13 +668,19 @@ function Carousel(props) {
         } else if (parent.scrolTop !== leftOffsetArray[currentIndex + 1])
           parent.scrollTo(0, leftOffsetArray[currentIndex + 1]);
         lastScrolledTo = leftOffsetArray[currentIndex + 1];
-        addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
+
+        addSelectedStateClassName(
+          selectedScrollClassName,
+          children,
+          leftOffsetArray.indexOf(lastScrolledTo),
+          selectedState,
+        );
       }
     } else {
       let currentPosition = 0;
       const carouselItems = parent.children;
       currentPosition -= carouselItems[0].offsetWidth;
-      if (window.innerWidth > 700) {
+      if (window.innerWidth > minWebWidth) {
         moveToSnapPoint(
           currentPosition,
           axis,
@@ -638,12 +695,17 @@ function Carousel(props) {
           }
         });
 
-        addSelectedStateClassName(selectedScrollSnapIndex);
+        addSelectedStateClassName(
+          selectedScrollClassName,
+          children,
+          selectedScrollSnapIndex,
+          selectedState,
+        );
       } else if (axis === "x") parent.scrollTo(currentPosition, 0);
       else parent.scrollTo(0, currentPosition);
       const firstItem = carouselItems[0];
       currentPosition += carouselItems[0].offsetWidth;
-      if (window.innerWidth > 700) {
+      if (window.innerWidth > minWebWidth) {
         parent.appendChild(firstItem);
 
         moveToSnapPoint(
@@ -660,7 +722,12 @@ function Carousel(props) {
           }
         });
 
-        addSelectedStateClassName(selectedScrollSnapIndex);
+        addSelectedStateClassName(
+          selectedScrollClassName,
+          children,
+          selectedScrollSnapIndex,
+          selectedState,
+        );
       } else {
         parent.appendChild(firstItem);
 
@@ -685,8 +752,14 @@ function Carousel(props) {
     dotsArray.forEach((i, index) => {
       i.addEventListener("click", () => {
         lastScrolledTo = leftOffsetArray[index];
-        addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
-        if (window.innerWidth > 700) {
+
+        addSelectedStateClassName(
+          selectedScrollClassName,
+          children,
+          leftOffsetArray.indexOf(lastScrolledTo),
+          selectedState,
+        );
+        if (window.innerWidth > minWebWidth) {
           moveToSnapPoint(
             -lastScrolledTo,
             axis,
@@ -701,7 +774,12 @@ function Carousel(props) {
             }
           });
 
-          addSelectedStateClassName(selectedScrollSnapIndex);
+          addSelectedStateClassName(
+            selectedScrollClassName,
+            children,
+            selectedScrollSnapIndex,
+            selectedState,
+          );
         } else parent.scrollTo(lastScrolledTo, 0);
       });
     });
@@ -713,53 +791,22 @@ function Carousel(props) {
   }
   let timeout;
 
-  // autoplay slides functionality
-  function autoplayLoop() {
-    timeout = setTimeout(() => {
-      if (window.innerWidth > 700) {
-        if (
-          parent.clientWidth - leftOffsetArray[indexValue] >
-            parent.parentNode.clientWidth ||
-          parent.clientHeight - leftOffsetArray[indexValue] + 100 >
-            parent.parentNode.clientHeight
-        ) {
-          moveToSnapPoint(
-            -leftOffsetArray[indexValue],
-            axis,
-            parent,
-            slidesToScroll,
-            springConfig,
-          );
-          selectedScrollSnapIndex += 1;
-          children.forEach(i => {
-            if (i.classList.contains(selectedScrollClassName)) {
-              i?.classList?.remove(selectedScrollClassName);
-            }
-          });
-
-          addSelectedStateClassName(selectedScrollSnapIndex);
-          lastScrolledTo = leftOffsetArray[indexValue];
-          addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
-          dotsArray[indexValue]?.classList.add("selected-dot");
-        } else {
-          indexValue = 0;
-        }
-      } else {
-        if (indexValue === leftOffsetArray.length) {
-          indexValue = 0;
-        }
-        parent.scrollTo(leftOffsetArray[indexValue], 0);
-      }
-      indexValue += 1;
-
-      if (indexValue < leftOffsetArray.length) {
-        autoplayLoop();
-      }
-    }, autoplayTimeout);
-  }
-
   if (autoplay && indexValue !== null) {
-    autoplayLoop();
+    autoplayLoop(
+      autoplayTimeout,
+      timeout,
+      leftOffsetArray,
+      indexValue,
+      parent,
+      axis,
+      slidesToScroll,
+      selectedScrollSnapIndex,
+      children,
+      selectedScrollClassName,
+      lastScrolledTo,
+      dotsArray,
+      selectedState,
+    );
   }
 
   // throttle function
@@ -790,11 +837,17 @@ function Carousel(props) {
         allLeftOffsets = [];
         const offsetValue = axis === "x" ? ox : oy;
         const lastChildren = parent.children[parent.children.length - 1];
-        pushToOffsetArray();
-        if (
-          window.innerWidth > 700
-          // -ox < parent.clientWidth - lastChild.clientWidth + 700
-        ) {
+        pushToOffsetArray(
+          leftOffsetArray,
+          expLoop,
+          lastChild,
+          children,
+          slidesToScroll,
+          allLeftOffsets,
+          axis,
+          alignment,
+        );
+        if (window.innerWidth > minWebWidth) {
           if (active) {
             if (offsetValue < 10) {
               moveToSnapPoint(
@@ -811,7 +864,12 @@ function Carousel(props) {
                 }
               });
 
-              addSelectedStateClassName(selectedScrollSnapIndex);
+              addSelectedStateClassName(
+                selectedScrollClassName,
+                children,
+                selectedScrollSnapIndex,
+                selectedState,
+              );
             }
             if (
               loop &&
@@ -856,18 +914,25 @@ function Carousel(props) {
               springConfig,
             );
             selectedScrollSnapIndex += 1;
-            children.forEach(i => {
-              if (i.classList.contains(selectedScrollClassName)) {
-                i?.classList?.remove(selectedScrollClassName);
-              }
-            });
+            removeSelectedStateClassName(children, selectedScrollClassName);
 
-            addSelectedStateClassName(selectedScrollSnapIndex);
+            addSelectedStateClassName(
+              selectedScrollClassName,
+              children,
+              selectedScrollSnapIndex,
+              selectedState,
+            );
             lastScrolledTo = getclosestSliderElement(
               -snapValue,
               leftOffsetArray,
             );
-            addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
+
+            addSelectedStateClassName(
+              selectedScrollClassName,
+              children,
+              leftOffsetArray.indexOf(lastScrolledTo),
+              selectedState,
+            );
           }
 
           handleCursor(true);
@@ -941,9 +1006,18 @@ function Carousel(props) {
         clearTimeout(timeout);
         leftOffsetArray = [];
         allLeftOffsets = [];
-        pushToOffsetArray();
+        pushToOffsetArray(
+          leftOffsetArray,
+          expLoop,
+          lastChild,
+          children,
+          slidesToScroll,
+          allLeftOffsets,
+          axis,
+          alignment,
+        );
 
-        loopingActionNextNew(ox);
+        loopingActionNext(ox);
         loopingActionPrev(ox);
         if (active) {
           moveToSnapPoint(
@@ -954,13 +1028,14 @@ function Carousel(props) {
             springConfig,
           );
           selectedScrollSnapIndex += 1;
-          children.forEach(i => {
-            if (i.classList.contains(selectedScrollClassName)) {
-              i?.classList?.remove(selectedScrollClassName);
-            }
-          });
+          removeSelectedStateClassName(children, selectedScrollClassName);
 
-          addSelectedStateClassName(selectedScrollSnapIndex);
+          addSelectedStateClassName(
+            selectedScrollClassName,
+            children,
+            selectedScrollSnapIndex,
+            selectedState,
+          );
         } else {
           let snapValue;
           if (axis === "x") {
@@ -982,18 +1057,25 @@ function Carousel(props) {
             springConfig,
           );
           selectedScrollSnapIndex += 1;
-          children.forEach(i => {
-            if (i.classList.contains(selectedScrollClassName)) {
-              i?.classList?.remove(selectedScrollClassName);
-            }
-          });
+          removeSelectedStateClassName(children, selectedScrollClassName);
 
-          addSelectedStateClassName(selectedScrollSnapIndex);
+          addSelectedStateClassName(
+            selectedScrollClassName,
+            children,
+            selectedScrollSnapIndex,
+            selectedState,
+          );
           lastScrolledTo = getclosestSliderElement(
             -offsetValue,
             leftOffsetArray,
           );
-          addSelectedStateClassName(leftOffsetArray.indexOf(lastScrolledTo));
+
+          addSelectedStateClassName(
+            selectedScrollClassName,
+            children,
+            leftOffsetArray.indexOf(lastScrolledTo),
+            selectedState,
+          );
         }
         whileScrolling(scrollProgress);
         if (
@@ -1018,11 +1100,11 @@ function Carousel(props) {
         handleCursor();
         whileScrolling(scrollProgress);
         whileDragging(scrollProgress);
-        if (window.innerWidth > 700) {
+        if (window.innerWidth > minWebWidth) {
           if (dx < 0) loopingActionNext(ox);
           else loopingActionPrev(ox);
         }
-        if (window.innerWidth < 700 && !expLoop) {
+        if (window.innerWidth < minWebWidth && !expLoop) {
           if (axis === "x") {
             parent.scrollTo(
               getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
@@ -1074,7 +1156,7 @@ function Carousel(props) {
     },
     {
       wheel: {
-        enabled: window.innerWidth > 700 && scrollActive,
+        enabled: window.innerWidth > minWebWidth && scrollActive,
         bounds: {
           left: 0,
           right: !expLoop

@@ -1,6 +1,8 @@
 // finding the slider closest to the scroll offset to snap at
 import anime from "animejs/lib/anime.es";
 
+import { addSelectedStateClassName } from "./classes";
+
 const springConfig = `spring(1,90,20,13)`;
 
 // gets the closest slider element to the scrolled value for snapping
@@ -47,47 +49,6 @@ export function getScrollProgress(elem, children) {
   return elem.scrollLeft / (elem.scrollWidth - elem.clientWidth);
 }
 
-// adding scroll snap classnames
-export function addScrollClassNames(
-  axis,
-  parent,
-  slidesToScroll,
-  dragFree,
-  child,
-) {
-  if (axis === "x") {
-    parent.classList.add("scroll-x");
-    if (parent.classList.contains("scroll-snap-x")) {
-      parent.classList.remove("scroll-snap-x");
-    }
-    if (slidesToScroll !== 0) {
-      parent.classList.add("scroll-snap-x");
-      if (dragFree) {
-        parent.classList.add("drag-free");
-      } else {
-        parent.classList.add("snap-always");
-        child.forEach(i => {
-          i.classList.add("snap-always");
-        });
-      }
-    }
-  } else {
-    parent.classList.add("scroll-y");
-
-    if (slidesToScroll !== 0) {
-      parent.classList.add("scroll-snap-y");
-      if (dragFree) {
-        parent.classList.add("drag-free");
-      } else {
-        parent.classList.add("snap-always");
-        child.forEach(i => {
-          i.classList.add("snap-always");
-        });
-      }
-    }
-  }
-}
-
 // snapping of slides are handled by this function
 export function moveToSnapPoint(
   snapValue,
@@ -119,25 +80,6 @@ export function moveToSnapPoint(
       translateY: `${snapValue}px`,
       easing,
     });
-  }
-}
-
-// remove scroll snap classnames
-export function removeScrollClassNames(parent, child) {
-  if (parent.classList.contains("scroll-snap-x")) {
-    parent.classList.remove("scroll-snap-x");
-  }
-  if (parent.classList.contains("drag-free")) {
-    parent.classList.remove("drag-free");
-  }
-  if (parent.classList.contains("snap-always")) {
-    parent.classList.remove("snap-always");
-    child.forEach(i => {
-      i.classList.remove("snap-always");
-    });
-  }
-  if (parent.classList.contains("scroll-snap-y")) {
-    parent.classList.remove("scroll-snap-y");
   }
 }
 
@@ -180,4 +122,147 @@ export function reverseChildren(parent) {
   for (let i = 1; i < parent.childNodes.length; i += 1) {
     parent.insertBefore(parent.childNodes[i], parent.firstChild);
   }
+}
+
+// throttle
+export function throttle(fn, delay) {
+  let lastCall = 0;
+  return function () {
+    const now = new Date().getTime();
+    if (now - lastCall < delay) {
+      return;
+    }
+    lastCall = now;
+    // eslint-disable-next-line consistent-return
+    return fn();
+  };
+}
+
+// autoplay slides functionality
+export function autoplayLoop(
+  autoplayTimeout,
+  timeout,
+  leftOffsetArray,
+  indexValue,
+  parent,
+  axis,
+  slidesToScroll,
+  selectedScrollSnapIndex,
+  children,
+  selectedScrollClassName,
+  lastScrolledTo,
+  dotsArray,
+  selectedState,
+) {
+  // eslint-disable-next-line no-param-reassign
+  timeout = setTimeout(() => {
+    if (window.innerWidth > 700) {
+      if (
+        parent.clientWidth - leftOffsetArray[indexValue] >
+          parent.parentNode.clientWidth ||
+        parent.clientHeight - leftOffsetArray[indexValue] + 100 >
+          parent.parentNode.clientHeight
+      ) {
+        moveToSnapPoint(
+          -leftOffsetArray[indexValue],
+          axis,
+          parent,
+          slidesToScroll,
+          springConfig,
+        );
+        // eslint-disable-next-line no-param-reassign
+        selectedScrollSnapIndex += 1;
+        children.forEach(i => {
+          if (i.classList.contains(selectedScrollClassName)) {
+            i?.classList?.remove(selectedScrollClassName);
+          }
+        });
+        addSelectedStateClassName(
+          selectedScrollClassName,
+          children,
+          selectedScrollSnapIndex,
+          selectedState,
+        );
+        // eslint-disable-next-line no-param-reassign
+        lastScrolledTo = leftOffsetArray[indexValue];
+        addSelectedStateClassName(
+          selectedScrollClassName,
+          children,
+          leftOffsetArray.indexOf(lastScrolledTo),
+          selectedState,
+        );
+        dotsArray[indexValue]?.classList.add("selected-dot");
+      } else {
+        // eslint-disable-next-line no-param-reassign
+        indexValue = 0;
+      }
+    } else {
+      if (indexValue === leftOffsetArray.length) {
+        // eslint-disable-next-line no-param-reassign
+        indexValue = 0;
+      }
+      parent.scrollTo(leftOffsetArray[indexValue], 0);
+    }
+    // eslint-disable-next-line no-param-reassign
+    indexValue += 1;
+
+    if (indexValue < leftOffsetArray.length) {
+      autoplayLoop(
+        autoplayTimeout,
+        timeout,
+        leftOffsetArray,
+        indexValue,
+        parent,
+        axis,
+        slidesToScroll,
+        selectedScrollSnapIndex,
+        children,
+        selectedScrollClassName,
+        lastScrolledTo,
+        dotsArray,
+        selectedState,
+      );
+    }
+  }, autoplayTimeout);
+}
+
+// pushing all the offset values of slides into an array
+export function pushToOffsetArray(
+  leftOffsetArray,
+  expLoop,
+  lastChild,
+  children,
+  slidesToScroll,
+  allLeftOffsets,
+  axis,
+  alignment,
+) {
+  if (expLoop) leftOffsetArray.push(-lastChild.clientWidth);
+
+  children.forEach((i, index) => {
+    if (index % slidesToScroll === 0) {
+      if (axis === "x") {
+        if (index === 0) {
+          leftOffsetArray.push(i.offsetLeft);
+        } else if (alignment === "start") leftOffsetArray.push(i.offsetLeft);
+        else if (alignment === "end") {
+          leftOffsetArray.push(i.clientWidth + i.offsetLeft);
+        } else {
+          leftOffsetArray.push(i.clientWidth / 2 + i.offsetLeft);
+        }
+      } else if (index === 0) {
+        leftOffsetArray.push(i.offsetTop);
+      } else if (alignment === "start") leftOffsetArray.push(i.offsetTop);
+      else if (alignment === "end") {
+        leftOffsetArray.push(i.clientHeight + i.offsetTop);
+      } else {
+        leftOffsetArray.push(i.clientHeight / 2 + i.offsetTop);
+      }
+    }
+  });
+  if (expLoop)
+    leftOffsetArray.push(lastChild.offsetLeft + children[0].clientWidth);
+  children.forEach(i => {
+    allLeftOffsets.push(i.offsetLeft);
+  });
 }

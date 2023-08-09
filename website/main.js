@@ -148,6 +148,12 @@ Carousel({
   direction: "rtl",
 });
 
+Carousel({
+  parent: ".align-c-div",
+  child: ".align-c-div .slider",
+  alignment: "center",
+});
+
 yAxis = Carousel({
   parent: ".axis",
   child: ".axis .slider",

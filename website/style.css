@@ -450,7 +450,8 @@ video {
 .loop-exp,
 .progress,
 .start-index,
-.direction {
+.direction,
+.align-c {
   /* max-width: 1090px; */
 
   max-width: 660px;
@@ -624,7 +625,8 @@ img {
 .loop-exp-div,
 .progress-inner,
 .start-index-div,
-.direction-div {
+.direction-div,
+.align-c-div {
   display: flex;
   align-items: center;
   z-index: 1;
