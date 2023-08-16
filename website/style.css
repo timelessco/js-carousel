@@ -428,7 +428,7 @@ video {
   overflow-x: hidden;
   scroll-behavior: smooth;
   cursor: grab;
-  touch-action: none;
+  /* touch-action: none; */
   /* max-width: 1200px;
   margin: auto; */
   -webkit-user-drag: none;
@@ -451,7 +451,9 @@ video {
 .progress,
 .start-index,
 .direction,
-.align-c {
+.align-c,
+.thumbnail,
+.thumb-top {
   /* max-width: 1090px; */
 
   max-width: 660px;
@@ -477,7 +479,9 @@ video {
   position: relative;
 }
 .inner {
+  /* touch-action: none; */
   padding-bottom: 20px;
+  /* pointer-events: none; */
 }
 .dots-flex {
   display: flex;
@@ -560,15 +564,25 @@ video {
   height: auto;
   flex: 0 0 auto;
   scroll-snap-align: start;
-  pointer-events: none;
+  /* pointer-events: none; */
+  z-index: 800;
+  position: relative;
 }
 
 .dots-parent .slider,
 .progress .slider,
-.loop-exp .slider {
+.loop-exp .slider,
+.thumb-top-div .slider {
   width: 660px;
   max-width: 100%;
   max-height: 300px;
+}
+
+.axis-loop .slider,
+.axis-loop .slider img {
+  height: 480px;
+  /* max-width: 100%; */
+  /* max-height: 700px; */
 }
 
 /* .loop-exp .slider {
@@ -626,12 +640,20 @@ img {
 .progress-inner,
 .start-index-div,
 .direction-div,
-.align-c-div {
+.align-c-div,
+.thumbnail-inner,
+.thumb-top-div {
   display: flex;
   align-items: center;
   z-index: 1;
 }
-
+.thumbnail-inner .slider.selected {
+  transform: scale(1);
+  opacity: 1;
+}
+.thumbnail-inner .slider:not(.selected) {
+  opacity: 0.3;
+}
 .axis-container,
 .axis-loop-container {
   max-height: 500px;

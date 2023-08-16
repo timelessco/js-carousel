@@ -95,9 +95,9 @@ export function mutationObserver(
   return new MutationObserver(mutations => {
     mutations.forEach(function x(mutation) {
       if (mutation.attributeName === "style") {
-        if (window.innerWidth > 700)
+        if (window.innerWidth > 700) {
           dotsFunctionality(dotsArray, lastScrolledTo);
-        else {
+        } else {
           dotsFunctionality(
             dotsArray,
             getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
@@ -237,7 +237,10 @@ export function pushToOffsetArray(
   axis,
   alignment,
 ) {
-  if (expLoop) leftOffsetArray.push(-lastChild.clientWidth);
+  if (expLoop) {
+    if (axis === "x") leftOffsetArray.push(-lastChild.clientWidth);
+    else leftOffsetArray.push(-lastChild.clientHeight);
+  }
 
   children.forEach((i, index) => {
     if (index % slidesToScroll === 0) {
@@ -260,8 +263,12 @@ export function pushToOffsetArray(
       }
     }
   });
-  if (expLoop)
-    leftOffsetArray.push(lastChild.offsetLeft + children[0].clientWidth);
+  if (expLoop) {
+    if (axis === "x")
+      leftOffsetArray.push(lastChild.offsetLeft + children[0].clientWidth);
+    else leftOffsetArray.push(lastChild.offsetTop + children[0].clientHeight);
+  }
+
   children.forEach(i => {
     allLeftOffsets.push(i.offsetLeft);
   });

@@ -13,6 +13,10 @@ const selectCarousel = "";
 let loopCarouselexp = "";
 let yAxis = "";
 let yAxisLoop = "";
+let startIndex = "";
+let thumbnail = "";
+let thumbTop = "";
+let scrollProgressV = "";
 document.querySelector(".new-slide")?.addEventListener("click", () => {});
 
 function displayOrHideArrows(carousel, leftArrow, rightArrow) {
@@ -111,14 +115,33 @@ dotCarousel = Carousel({
   selectedState: false,
 });
 
-Carousel({
+startIndex = Carousel({
+  parent: ".start-index-div",
+  child: ".start-index-div .slider",
+  startIndex: 0,
+  watchResize: () => {
+    console.log("watch resize");
+  },
+  watchSlides: () => {
+    console.log("watch slides");
+  },
+  whileDragging: (scrollProgress, lastScrolledTo) => {
+    scrollProgressV.scrollTo(lastScrolledTo, true);
+  },
+  whileScrolling: (scrollProgress, lastScrolledTo) => {
+    scrollProgressV.scrollTo(lastScrolledTo, true);
+  },
+});
+scrollProgressV = Carousel({
   parent: ".progress-inner",
   child: ".progress-inner .slider",
-  whileScrolling: scrollProgress => {
+  whileScrolling: (scrollProgress, lastScrolledTo) => {
     document.getElementById("progress-bar").value = scrollProgress * 100;
+    startIndex.scrollTo(lastScrolledTo, true);
   },
-  whileDragging: scrollProgress => {
+  whileDragging: (scrollProgress, lastScrolledTo) => {
     document.getElementById("progress-bar").value = scrollProgress * 100;
+    startIndex.scrollTo(lastScrolledTo, true);
   },
   selectedState: false,
 });
@@ -131,27 +154,36 @@ Carousel({
 });
 
 Carousel({
-  parent: ".start-index-div",
-  child: ".start-index-div .slider",
-  startIndex: 2,
-  watchResize: () => {
-    console.log("watch resize");
-  },
-  watchSlides: () => {
-    console.log("watch slides");
-  },
-});
-
-Carousel({
   parent: ".direction-div",
   child: ".direction-div .slider",
   direction: "rtl",
+});
+thumbnail = Carousel({
+  parent: ".thumbnail-inner",
+  child: ".thumbnail-inner .slider",
+  whileDragging: (scrollProgress, lastScrolledTo) => {
+    thumbTop.scrollTo(lastScrolledTo, true);
+  },
+  selectedState: true,
+  whileScrolling: (scrollProgress, lastScrolledTo) => {
+    thumbTop.scrollTo(lastScrolledTo, true);
+  },
 });
 
 Carousel({
   parent: ".align-c-div",
   child: ".align-c-div .slider",
   alignment: "center",
+});
+thumbTop = Carousel({
+  parent: ".thumb-top-div",
+  child: ".thumb-top-div .slider",
+  whileDragging: (scrollProgress, lastScrolledTo) => {
+    thumbnail.scrollTo(lastScrolledTo, true, true);
+  },
+  whileScrolling: (scrollProgress, lastScrolledTo) => {
+    thumbnail.scrollTo(lastScrolledTo, true, true);
+  },
 });
 
 yAxis = Carousel({
@@ -167,6 +199,7 @@ yAxis = Carousel({
   selectedState: false,
   // autoplay: true,
 });
+
 yAxisLoop = Carousel({
   parent: ".axis-loop",
   child: ".axis-loop .slider",
