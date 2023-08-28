@@ -13,10 +13,10 @@ const selectCarousel = "";
 let loopCarouselexp = "";
 let yAxis = "";
 let yAxisLoop = "";
-let startIndex = "";
+// let startIndex = "";
 let thumbnail = "";
 let thumbTop = "";
-let scrollProgressV = "";
+// let scrollProgressV = "";
 document.querySelector(".new-slide")?.addEventListener("click", () => {});
 
 function displayOrHideArrows(carousel, leftArrow, rightArrow) {
@@ -98,7 +98,7 @@ loopCarouselexp = Carousel({
     console.log("watch slides");
   },
   watchResize: () => {
-    console.log("watch resie");
+    console.log("watch resize");
   },
 });
 
@@ -115,7 +115,7 @@ dotCarousel = Carousel({
   selectedState: false,
 });
 
-startIndex = Carousel({
+Carousel({
   parent: ".start-index-div",
   child: ".start-index-div .slider",
   startIndex: 0,
@@ -125,23 +125,16 @@ startIndex = Carousel({
   watchSlides: () => {
     console.log("watch slides");
   },
-  whileDragging: (scrollProgress, lastScrolledTo) => {
-    scrollProgressV.scrollTo(lastScrolledTo, true);
-  },
-  whileScrolling: (scrollProgress, lastScrolledTo) => {
-    scrollProgressV.scrollTo(lastScrolledTo, true);
-  },
 });
-scrollProgressV = Carousel({
+Carousel({
   parent: ".progress-inner",
   child: ".progress-inner .slider",
-  whileScrolling: (scrollProgress, lastScrolledTo) => {
+  whileScrolling: scrollProgress => {
     document.getElementById("progress-bar").value = scrollProgress * 100;
-    startIndex.scrollTo(lastScrolledTo, true);
   },
-  whileDragging: (scrollProgress, lastScrolledTo) => {
+  whileDragging: scrollProgress => {
+    console.log(scrollProgress, "scrollprog");
     document.getElementById("progress-bar").value = scrollProgress * 100;
-    startIndex.scrollTo(lastScrolledTo, true);
   },
   selectedState: false,
 });
@@ -161,12 +154,21 @@ Carousel({
 thumbnail = Carousel({
   parent: ".thumbnail-inner",
   child: ".thumbnail-inner .slider",
-  whileDragging: (scrollProgress, lastScrolledTo) => {
-    thumbTop.scrollTo(lastScrolledTo, true);
-  },
   selectedState: true,
+  clickEvent: true,
+  whileDragging: (scrollProgress, lastScrolledTo, lastIndex) => {
+    console.log("draggingThumbnail", lastIndex);
+
+    thumbTop.scrollTo(lastScrolledTo, true, true);
+    thumbnail.addSelectedStateClass(lastScrolledTo);
+  },
   whileScrolling: (scrollProgress, lastScrolledTo) => {
-    thumbTop.scrollTo(lastScrolledTo, true);
+    thumbTop.scrollTo(lastScrolledTo, true, true);
+  },
+  onClicking: (scrollProgress, lastScrolledTo) => {
+    console.log(lastScrolledTo, "akljsvbc");
+    thumbnail.scrollTo(lastScrolledTo, true, true);
+    thumbTop.scrollTo(lastScrolledTo, true, true);
   },
 });
 
@@ -180,6 +182,7 @@ thumbTop = Carousel({
   child: ".thumb-top-div .slider",
   whileDragging: (scrollProgress, lastScrolledTo) => {
     thumbnail.scrollTo(lastScrolledTo, true, true);
+    // console.log("draggingThumb top");
   },
   whileScrolling: (scrollProgress, lastScrolledTo) => {
     thumbnail.scrollTo(lastScrolledTo, true, true);

@@ -718,7 +718,7 @@ span {
 .up-arrow-loop {
   transform: rotateZ(270deg);
   position: absolute;
-  z-index: 1;
+  z-index: 970;
   cursor: pointer;
 }
 
