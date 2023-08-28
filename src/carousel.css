@@ -29,3 +29,11 @@
 .snap-always {
   scroll-snap-stop: always;
 }
+
+.scroll-snap-center {
+  scroll-snap-align: center;
+}
+
+.scroll-snap-end {
+  scroll-snap-align: end;
+}

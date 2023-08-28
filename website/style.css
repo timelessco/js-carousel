@@ -437,6 +437,10 @@ video {
   -o-user-drag: none;
 }
 
+.axis-container {
+  margin-bottom: 60px;
+}
+
 .parent2,
 .loop,
 .autoplay,
@@ -726,7 +730,7 @@ span {
 .down-arrow-loop {
   transform: rotateZ(90deg);
   position: absolute;
-  z-index: 1;
+  z-index: 970;
   cursor: pointer;
   bottom: 0;
 }

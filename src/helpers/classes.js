@@ -28,6 +28,7 @@ export function addScrollClassNames(
   slidesToScroll,
   dragFree,
   child,
+  alignment,
 ) {
   if (axis === "x") {
     parent.classList.add("scroll-x");
@@ -59,6 +60,15 @@ export function addScrollClassNames(
         });
       }
     }
+  }
+  if (alignment === "center") {
+    child.forEach(i => {
+      i.classList.add("scroll-snap-center");
+    });
+  } else if (alignment === "end") {
+    child.forEach(i => {
+      i.classList.add("scroll-snap-end");
+    });
   }
 }
 

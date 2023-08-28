@@ -11,7 +11,6 @@ specifiers:
   '@use-gesture/vanilla': ^10.2.24
   animejs: ^3.2.1
   browserslist-to-esbuild: ^1.2.0
-  embla-carousel: ^7.1.0
   eslint: ^8.36.0
   eslint-config-airbnb-base: ^15.0.0
   eslint-config-prettier: ^8.8.0
@@ -33,7 +32,6 @@ specifiers:
 dependencies:
   '@use-gesture/vanilla': 10.2.24
   animejs: 3.2.1
-  embla-carousel: 7.1.0
 
 devDependencies:
   '@babel/core': 7.21.3
@@ -3282,10 +3280,6 @@ packages:
   /electron-to-chromium/1.4.333:
     resolution: {integrity: sha512-YyE8+GKyGtPEP1/kpvqsdhD6rA/TP1DUFDN4uiU/YI52NzDxmwHkEb3qjId8hLBa5siJvG0sfC3O66501jMruQ==}
     dev: true
-
-  /embla-carousel/7.1.0:
-    resolution: {integrity: sha512-Bh8Pa8NWzgugLkf8sAGexQlBCNDFaej5BXiKgQdRJ1mUC9NWBrw9Z23YVPVGkguWoz5LMjZXXFVGCobl3UPt/Q==}
-    dev: false
 
   /emoji-regex/8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}

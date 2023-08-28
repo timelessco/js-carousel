@@ -1,7 +1,5 @@
 import "./style.css";
 import "../src/carousel.css";
-import EmblaCarousel from "embla-carousel";
-
 import Carousel from "../src/carousel";
 
 let carouselValue = "";
@@ -10,13 +8,7 @@ const loopCarousel = "";
 let carouselValue1 = "";
 let carouselValues1 = "";
 const selectCarousel = "";
-let loopCarouselexp = "";
 let yAxis = "";
-let yAxisLoop = "";
-// let startIndex = "";
-let thumbnail = "";
-let thumbTop = "";
-// let scrollProgressV = "";
 document.querySelector(".new-slide")?.addEventListener("click", () => {});
 
 function displayOrHideArrows(carousel, leftArrow, rightArrow) {
@@ -82,26 +74,6 @@ Carousel({
   dragFree: true,
 });
 
-// loopCarousel = Carousel({
-//   parent: ".carousel-item",
-//   child: ".carousel-item .slider",
-//   loop: true,
-// });
-
-loopCarouselexp = Carousel({
-  parent: ".loop-exp-div",
-  child: ".loop-exp-div .slider",
-  loop: false,
-  expLoop: true,
-  autoplay: false,
-  watchSlides: () => {
-    console.log("watch slides");
-  },
-  watchResize: () => {
-    console.log("watch resize");
-  },
-});
-
 dotCarousel = Carousel({
   parent: ".dots-parent .inner",
   child: ".dots-parent .slider",
@@ -151,42 +123,11 @@ Carousel({
   child: ".direction-div .slider",
   direction: "rtl",
 });
-thumbnail = Carousel({
-  parent: ".thumbnail-inner",
-  child: ".thumbnail-inner .slider",
-  selectedState: true,
-  clickEvent: true,
-  whileDragging: (scrollProgress, lastScrolledTo, lastIndex) => {
-    console.log("draggingThumbnail", lastIndex);
-
-    thumbTop.scrollTo(lastScrolledTo, true, true);
-    thumbnail.addSelectedStateClass(lastScrolledTo);
-  },
-  whileScrolling: (scrollProgress, lastScrolledTo) => {
-    thumbTop.scrollTo(lastScrolledTo, true, true);
-  },
-  onClicking: (scrollProgress, lastScrolledTo) => {
-    console.log(lastScrolledTo, "akljsvbc");
-    thumbnail.scrollTo(lastScrolledTo, true, true);
-    thumbTop.scrollTo(lastScrolledTo, true, true);
-  },
-});
 
 Carousel({
   parent: ".align-c-div",
   child: ".align-c-div .slider",
   alignment: "center",
-});
-thumbTop = Carousel({
-  parent: ".thumb-top-div",
-  child: ".thumb-top-div .slider",
-  whileDragging: (scrollProgress, lastScrolledTo) => {
-    thumbnail.scrollTo(lastScrolledTo, true, true);
-    // console.log("draggingThumb top");
-  },
-  whileScrolling: (scrollProgress, lastScrolledTo) => {
-    thumbnail.scrollTo(lastScrolledTo, true, true);
-  },
 });
 
 yAxis = Carousel({
@@ -200,32 +141,7 @@ yAxis = Carousel({
     displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
   },
   selectedState: false,
-  // autoplay: true,
 });
-
-yAxisLoop = Carousel({
-  parent: ".axis-loop",
-  child: ".axis-loop .slider",
-  axis: "y",
-  expLoop: true,
-  whileScrolling: () => {
-    displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
-  },
-  whileDragging: () => {
-    displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
-  },
-});
-
-const emblaNode = document.querySelector(".embla");
-const options = {
-  align: "start",
-  loop: true,
-  containScroll: "trimSnaps",
-  dragFree: false,
-};
-
-EmblaCarousel(emblaNode, options);
-
 document.querySelector(".left-arrow").addEventListener("click", () => {
   carouselValue.scrollPrev();
   displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
@@ -242,11 +158,6 @@ document.querySelector(".left-arrow-s1").addEventListener("click", () => {
   displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
 });
 
-document.querySelector("#previous-loop").addEventListener("click", () => {
-  loopCarouselexp.scrollPrev();
-  // displayOrHideArrows(loopCarouselexp, "#previous-loop", "#next-loop");
-});
-
 document.querySelector(".right-arrow").addEventListener("click", () => {
   carouselValue.scrollNext();
   displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
@@ -259,11 +170,6 @@ document.querySelector(".right-arrow").addEventListener("click", () => {
 document.querySelector(".right-arrow-1").addEventListener("click", () => {
   carouselValue1.scrollNext();
   displayOrHideArrows(carouselValue1, ".left-arrow-1", ".right-arrow-1");
-});
-
-document.querySelector("#next-loop").addEventListener("click", () => {
-  loopCarouselexp.scrollNext();
-  // displayOrHideArrows(loopCarouselexp, "#previous-loop", "#next-loop");
 });
 
 document.querySelector(".right-arrow-s1").addEventListener("click", () => {
@@ -310,12 +216,4 @@ document.querySelector(".up-arrow").addEventListener("click", () => {
 document.querySelector(".down-arrow").addEventListener("click", () => {
   yAxis.scrollNext();
   displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
-});
-
-document.querySelector(".up-arrow-loop").addEventListener("click", () => {
-  yAxisLoop.scrollPrev(true);
-});
-
-document.querySelector(".down-arrow-loop").addEventListener("click", () => {
-  yAxisLoop.scrollNext(true);
 });
