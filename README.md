@@ -105,13 +105,15 @@ right' or 'right to left'.
 ### breakpoints:
     This prop is helpful in altering props at different breakpoints. 
 
- eg: Carousel({
+ eg: 
+```
+Carousel({
       dragActive: true, 
      breakpoints: {
     'max-width: 768px': { dragActive: false },
      },
     })
-    
+```    
 ### displayDots:
 
 Boolean to decide whether or not to display the carousel indicators
@@ -124,11 +126,11 @@ HTML element that would be displayed instead of each dot - Number of dots are
 calculated based on the number of slides.
 
 > Type: HTML element as a string Default:
-> `<svg height="12" width="12" class="dots">
-
-    <circle cx="5" cy="5" r="2.5" stroke="gray" stroke-width="3" fill="gray" />
-
-</svg>`
+ ```
+<svg height="12" width="12" class="dots">
+ <circle cx="5" cy="5" r="2.5" stroke="gray" stroke-width="3" fill="gray" />
+</svg>
+```
 
 
  ## Lifecycle methods
