@@ -153,13 +153,15 @@ eg: Carousel({
  
 > Type: function
 
-eg: Carousel({
+eg: ``` 
+Carousel({
   whileDragging: (scrollProgress, currentSlideIndex, currentSlidePos) => {
     // scrollProgress - returns progress value of the carousel from 0 to 1
     // currentSlideIndex - the index of current slide
     // currentSlidePos - position of current slide
   },
 })
+```
 
 ### onInit:
     This callback function can be used to perform operations during the
