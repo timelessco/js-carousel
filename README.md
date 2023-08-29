@@ -1,73 +1,73 @@
-# Introduction
+# Js Carousel
 
-This project is a frontend library package built using Vite. Vite is a
-lightweight, fast, and modern build tool for modern JavaScript applications,
-designed for performance and ease of use. It allows you to focus on writing code
-and not on the build process.
+A pure Js customisable carousel, that snaps! uses CSS scroll snap on mobile.
 
-## Setup
+## features
 
-To get started with this project, follow these steps:
+### dragActive:
 
-1. Clone the repository:
+This prop decides whether the carousel is draggable or not.
 
-```
-git clone https://github.com/timelessco/browser-js-library-template
-```
+> Type: boolean Default: true
 
-2. Install the dependencies:
+### scrollActive:
 
-```
-pnpm install
-```
+This prop decides whether the carousel is scrollable or not.
 
-3. Start the development server:
+> Type: boolean Default: true
 
-```
-pnpm run dev
-```
+### slidesToScroll:
 
-This will start a development server at `http://localhost:5173`, and you can
-view the application in your browser. Any changes you make to the code will be
-automatically reloaded in the browser.
+Depicts the number of slides that would scroll together.
 
-## Build Website
+> Type: number Default: 1
 
-To build the project for production, run the following command:
+### axis:
 
-```
-pnpm run build:website
-```
+    Depicts the axis in which the carousel would scroll.
 
-This will generate a production-ready build in the `dist` folder.
+> Type: string Default: 'x'
 
-## Build Library
+### dragFree:
 
-To build the project for production, run the following command:
+    This boolean is used to decide whether to stop at the snappoint or not. when true, this prop allows free dragging without stopping at snappoints.
 
-```
-pnpm run build
-```
+> Type: boolean Default: false
 
-This will generate a production-ready build library in the `lib` folder.
+### alignment:
 
-## Other Commands
+Decides the alignment of each child of the carousel. Alignment: 'center' allows
+the carousel to snap at the center of each child of the carousel.
 
-In addition to the dev and build commands, there may be other commands
-available, such as:
+> Type: string Options: 'start'||'center'||'end' Default: 'start'
 
-`check`: Run the linters & formatters to check the code for style and syntax
-errors.
+### direction:
 
-`fix`: Run the linters & formatters to check the code for style and syntax
-errors. If any errors are found, they will be fixed automatically.
+Decides the direction of the carousel's movement which would be from 'left to
+right' or 'right to left'.
 
-`test`: Run the test suite for the project.
+> Type: string Options: 'ltr' || 'rtl'
 
-`commit`: Run the commit wizard to generate a commit message.
+### startIndex:
 
-`release`: Run the `release-it` tool to generate a new release.
+The child index at which the carousel begins.
 
-## License
+> Type: number Default: 1
 
-This project is licensed under the [MIT License](./LICENSE).
+### displayDots:
+
+Boolean to decide whether or not to display the carousel indicators
+
+> Type: boolean Default: false
+
+### dotsHtml:
+
+HTML element that would be displayed instead of each dot - Number of dots are
+calculated based on the number of slides.
+
+> Type: HTML element as a string Default:
+> `<svg height="12" width="12" class="dots">
+
+    <circle cx="5" cy="5" r="2.5" stroke="gray" stroke-width="3" fill="gray" />
+
+</svg>`
