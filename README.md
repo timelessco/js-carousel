@@ -140,7 +140,8 @@ calculated based on the number of slides.
 
 > Type: function
 
-eg: Carousel({
+eg: ```
+ Carousel({
   whileScrolling: (scrollProgress, currentSlideIndex, currentSlidePos) => {
     // scrollProgress - returns progress value of the carousel from 0 to 1
     // currentSlideIndex - the index of current slide
@@ -148,12 +149,15 @@ eg: Carousel({
   },
 })
 
+```
+
 ### whileDragging:
  This callback function can be used to perform operations while Dragging the carousel. 
  
 > Type: function
 
-eg: ``` 
+eg: 
+``` 
 Carousel({
   whileDragging: (scrollProgress, currentSlideIndex, currentSlidePos) => {
     // scrollProgress - returns progress value of the carousel from 0 to 1
@@ -161,6 +165,7 @@ Carousel({
     // currentSlidePos - position of current slide
   },
 })
+
 ```
 
 ### onInit:
