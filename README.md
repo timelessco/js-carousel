@@ -3,7 +3,19 @@
 A pure Js customisable carousel, that snaps!
 uses CSS scroll snap on mobile.
 
-## features
+## Props
+
+### parent:
+    A selector for an existing DOM element that wraps all the carousel elements/items. This is a required prop.
+
+> Type: string
+> Example: '.parent' || '#parent'
+
+### child: 
+     A selector for each carousel element sharing the same class, wrapped by the parent element. This is a required prop.
+
+> Type: string
+> Example: '.child'
 
 ### dragActive:
    This prop decides whether the carousel is draggable or not.
@@ -67,6 +79,102 @@ uses CSS scroll snap on mobile.
 > Default: `<svg height="12" width="12" class="dots">
     <circle cx="5" cy="5" r="2.5" stroke="gray" stroke-width="3" fill="gray" />
   </svg>`
+
+### autoplay:
+  Boolean that decides whether the carousel progresses automatically or not at a specified interval. 
+
+> Type: Boolean
+> Default: false
+
+### autoplayTimeout:
+    The interval between the automatic progression of each slide in the carousel. 
+
+> Type: number (in ms)
+> Default: 2000
+
+### springConfig:
+   The spring animation value is configurable using this prop. 
+
+> Type: string
+> Default: `spring(1,90,20,13)` which is `spring(mass, stiffness, damping, velocity)`
+
+### selectedState:
+    Boolean that decides whether a selected state exists - one slide is highlighted at a time, while scrolling of the carousel.
+
+> Type: boolean
+> Default: false
+
+### selectedScrollClassName:
+     The classname that would be added to the particular slide that is highlighted.
+
+> Type: string
+> Default: 'selected'
+
+### selectedScrollSnapIndex:
+   The index of the selected/ highlighted slide is decided by this prop.
+
+> Type: number
+> Default: 0 (starts from the 1st slide)
+
+
+### breakpoints:
+    This prop is helpful in altering props at different breakpoints. 
+
+ eg: Carousel({
+      dragActive: true, 
+     breakpoints: {
+    'max-width: 768px': { dragActive: false },
+     },
+    })
+
+
+ ## Lifecycle methods
+
+### whileScrolling:
+  This callback function can be used to perform operations while scrolling the carousel.
+
+> Type: function
+
+eg: Carousel({
+  whileScrolling: (scrollProgress, currentSlideIndex, currentSlidePos) => {
+    // scrollProgress - returns progress value of the carousel from 0 to 1
+    // currentSlideIndex - the index of current slide
+    // currentSlidePos - position of current slide
+  },
+})
+
+### whileDragging:
+ This callback function can be used to perform operations while Dragging the carousel. 
+ 
+> Type: function
+
+eg: Carousel({
+  whileDragging: (scrollProgress, currentSlideIndex, currentSlidePos) => {
+    // scrollProgress - returns progress value of the carousel from 0 to 1
+    // currentSlideIndex - the index of current slide
+    // currentSlidePos - position of current slide
+  },
+})
+
+### onInit:
+    This callback function can be used to perform operations during the
+initialization of the carousel.
+
+
+### onClicking:
+     This callback function can be used to perform operations while clicking on each carousel. 
+
+
+### watchResize:
+     The callback function can be used to perform operations while resizing the window
+
+
+### watchSlides:
+     The callback function can be used to perform operations while the child list of the carousel is altered.
+
+
+
+
 
 
 
