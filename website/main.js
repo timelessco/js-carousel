@@ -1,5 +1,3 @@
-import "./style.css";
-import "../src/carousel.css";
 import Carousel from "../src/carousel";
 
 let carouselValue = "";
