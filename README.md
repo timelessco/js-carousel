@@ -160,11 +160,12 @@ calculated based on the number of slides.
  ## Lifecycle methods
 
 ### whileScrolling:
-  This callback function can be used to perform operations while scrolling the carousel.
+This callback function can be used to perform operations while scrolling the carousel.
 
 > Type: function
 
-eg: ```
+eg: 
+```
  Carousel({
   whileScrolling: (scrollProgress, currentSlideIndex, currentSlidePos) => {
     // scrollProgress - returns progress value of the carousel from 0 to 1
@@ -176,7 +177,7 @@ eg: ```
 ```
 
 ### whileDragging:
- This callback function can be used to perform operations while Dragging the carousel. 
+This callback function can be used to perform operations while Dragging the carousel. 
  
 > Type: function
 
@@ -193,20 +194,20 @@ Carousel({
 ```
 
 ### onInit:
-    This callback function can be used to perform operations during the
+This callback function can be used to perform operations during the
 initialization of the carousel.
 
 
 ### onClicking:
-     This callback function can be used to perform operations while clicking on each carousel. 
+This callback function can be used to perform operations while clicking on each carousel. 
 
 
 ### watchResize:
-     The callback function can be used to perform operations while resizing the window
+The callback function can be used to perform operations while resizing the window
 
 
 ### watchSlides:
-     The callback function can be used to perform operations while the child list of the carousel is altered.
+The callback function can be used to perform operations while the child list of the carousel is altered.
 
 
 
