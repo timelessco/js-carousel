@@ -52,7 +52,6 @@ function Carousel(props) {
     axis = "x",
     loop = false,
     dragFree = false,
-    autoplay = false,
     autoplayTimeout = 2000,
     onInit = () => {},
     displayDots = false,
@@ -73,7 +72,7 @@ function Carousel(props) {
     onClicking = () => {},
   } = props;
 
-  let { parent, selectedScrollSnapIndex = 0 } = props;
+  let { parent, selectedScrollSnapIndex = 0, autoplay = false } = props;
   parent = document.querySelector(parent);
   let children = document.querySelectorAll(child);
   children[0].setAttribute("id", "first-child");
@@ -925,6 +924,7 @@ function Carousel(props) {
     parent,
     {
       onDrag: ({ active, offset: [ox, oy], direction: [dx] }) => {
+        autoplay = false;
         isDragging = true;
         scrollProgress = getScrollProgress(parent, children);
         clearTimeout(timeout);
