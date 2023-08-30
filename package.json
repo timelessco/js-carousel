@@ -119,5 +119,5 @@
       "pnpm format:fix"
     ]
   },
-  "source": "website/main.js"
+  "source": "src/carousel.js"
 }
