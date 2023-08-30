@@ -70,7 +70,7 @@ function Carousel(props) {
     springConfig = `spring(1,90,20,13)`,
     child,
     alignment = "start",
-    clickEvent = false,
+    // clickEvent = false,
     onClicking = () => {},
   } = props;
 
@@ -117,15 +117,17 @@ function Carousel(props) {
     parent.appendChild(firstChild);
   }, 200);
 
-  if (clickEvent) {
-    children.forEach((i, index) => {
-      i.addEventListener("click", () => {
-        if (!isDragging) {
-          onClicking(scrollProgress, index);
-        }
-      });
+  // if (clickEvent) {
+  children.forEach((i, index) => {
+    i.addEventListener("click", () => {
+      console.log(i, isDragging);
+
+      if (!isDragging) {
+        onClicking(scrollProgress, index);
+      }
     });
-  }
+  });
+  // }
 
   // scrolls the slider to a particular mentioned value
   function scrollTo(scrollValue, animate, selectedStateValue) {
@@ -1180,6 +1182,7 @@ function Carousel(props) {
         whileScrolling(
           getScrollProgress(parent, children),
           leftOffsetArray.indexOf(lastScrolledTo),
+          lastScrolledTo,
         );
         if (
           loop &&

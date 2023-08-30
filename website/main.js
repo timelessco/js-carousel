@@ -90,7 +90,8 @@ dotCarousel = Carousel({
 Carousel({
   parent: ".start-index-div",
   child: ".start-index-div .slider",
-  startIndex: 0,
+  startIndex: 2,
+  clickEvent: true,
   watchResize: () => {
     console.log("watch resize");
   },
@@ -116,6 +117,7 @@ Carousel({
   child: ".autoplay .slider",
   autoplay: true,
   selectedState: true,
+  selectedScrollSnapIndex: 3,
 });
 
 Carousel({
