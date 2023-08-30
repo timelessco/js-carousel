@@ -31,6 +31,14 @@ export default defineConfig(() => {
         formats: ["es", "umd"],
         fileName: format => fileName[format],
       },
+      rollupOptions: {
+        external: ["animejs/lib/anime.es"],
+        output: {
+          globals: {
+            "animejs/lib/anime.es": "anime",
+          },
+        },
+      },
     },
   };
 });
