@@ -117,7 +117,6 @@ Carousel({
   child: ".autoplay .slider",
   autoplay: true,
   selectedState: true,
-  selectedScrollSnapIndex: 3,
 });
 
 Carousel({
