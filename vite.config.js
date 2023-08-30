@@ -10,7 +10,7 @@ export default defineConfig(() => {
     build: {
       target: browserslistToEsbuild(),
       outDir: resolve(__dirname, "dist"),
-      // emptyOutDir: true,
+      emptyOutDir: true,
       rollupOptions: {
         input: {
           main: resolve(__dirname, "website/index.html"),
