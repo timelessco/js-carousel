@@ -20,7 +20,8 @@
     ".": {
       "import": "./lib/browser-js-library-template.es.js",
       "require": "./lib/browser-js-library-template.umd.js"
-    }
+    },
+    "./src/carousel.css": "./lib/index.css"
   },
   "browser": "./lib/browser-js-library-template.umd.js",
   "unpkg": "./lib/browser-js-library-template.umd.js",
