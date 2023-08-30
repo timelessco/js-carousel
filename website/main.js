@@ -1,5 +1,3 @@
-import "./style.css";
-import "../src/carousel.css";
 import Carousel from "../src/carousel";
 
 let carouselValue = "";
@@ -117,7 +115,6 @@ Carousel({
   child: ".autoplay .slider",
   autoplay: true,
   selectedState: true,
-  selectedScrollSnapIndex: 3,
 });
 
 Carousel({

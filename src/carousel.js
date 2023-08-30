@@ -1,7 +1,6 @@
 import { Gesture } from "@use-gesture/vanilla";
 import anime from "animejs/lib/anime.es";
 
-import "../website/style.css";
 import "./carousel.css";
 import {
   autoplayLoop,
