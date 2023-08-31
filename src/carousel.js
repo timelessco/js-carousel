@@ -118,8 +118,6 @@ function Carousel(props) {
   // if (clickEvent) {
   children.forEach((i, index) => {
     i.addEventListener("click", () => {
-      console.log(i, isDragging);
-
       if (!isDragging) {
         onClicking(scrollProgress, index);
       }
@@ -411,10 +409,7 @@ function Carousel(props) {
     lastScrolledTo,
     parent,
     leftOffsetArray,
-    selectedScrollClassName,
-    children,
-    selectedScrollSnapIndex,
-    selectedState,
+    scrollProgress,
   );
 
   parent.addEventListener("scroll", () => {
@@ -422,12 +417,21 @@ function Carousel(props) {
       dotsArray,
       getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
     );
-    scrollProgress = getScrollProgress(parent, children);
     lastScrolledTo = getclosestSliderElement(
       parent.scrollLeft,
       leftOffsetArray,
     );
-    // whileScrolling(scrollProgress, leftOffsetArray.indexOf(lastScrolledTo));
+    scrollProgress = getScrollProgress(
+      parent,
+      children,
+      leftOffsetArray,
+      lastScrolledTo,
+    );
+    whileDragging(
+      scrollProgress,
+      leftOffsetArray.indexOf(lastScrolledTo),
+      lastScrolledTo,
+    );
   });
 
   const demoElem = parent;
@@ -443,7 +447,6 @@ function Carousel(props) {
   function handleWindowWidth() {
     removeScrollClassNames(parent);
     if (window.innerWidth < minWebWidth && slidesToScroll < 2) {
-      console.log("aligmn, alignment", alignment);
       addScrollClassNames(
         axis,
         parent,
@@ -926,7 +929,12 @@ function Carousel(props) {
       onDrag: ({ active, offset: [ox, oy], direction: [dx] }) => {
         autoplay = false;
         isDragging = true;
-        scrollProgress = getScrollProgress(parent, children);
+        scrollProgress = getScrollProgress(
+          parent,
+          children,
+          leftOffsetArray,
+          lastScrolledTo,
+        );
         clearTimeout(timeout);
         // setTimeout(() => {
 
@@ -1092,14 +1100,24 @@ function Carousel(props) {
 
         setTimeout(() => {
           whileDragging(
-            getScrollProgress(parent, children),
+            getScrollProgress(
+              parent,
+              children,
+              leftOffsetArray,
+              lastScrolledTo,
+            ),
             leftOffsetArray.indexOf(lastScrolledTo),
             lastScrolledTo,
           );
         }, 100);
       },
       onWheel: ({ offset: [ox, oy], active, direction: [dx] }) => {
-        scrollProgress = getScrollProgress(parent, children);
+        scrollProgress = getScrollProgress(
+          parent,
+          children,
+          leftOffsetArray,
+          lastScrolledTo,
+        );
 
         const offsetValue = axis === "x" ? -ox : -oy;
 
@@ -1179,7 +1197,7 @@ function Carousel(props) {
           );
         }
         whileScrolling(
-          getScrollProgress(parent, children),
+          getScrollProgress(parent, children, leftOffsetArray, lastScrolledTo),
           leftOffsetArray.indexOf(lastScrolledTo),
           lastScrolledTo,
         );
@@ -1203,6 +1221,12 @@ function Carousel(props) {
         dotsFunctionality(dotsArray, lastScrolledTo);
       },
       onDragEnd: ({ offset: [ox, oy], direction: [dx] }) => {
+        scrollProgress = getScrollProgress(
+          parent,
+          children,
+          leftOffsetArray,
+          lastScrolledTo,
+        );
         handleCursor();
         whileDragging(
           scrollProgress,
@@ -1256,7 +1280,12 @@ function Carousel(props) {
         }
         setTimeout(() => {
           whileDragging(
-            getScrollProgress(parent, children),
+            getScrollProgress(
+              parent,
+              children,
+              leftOffsetArray,
+              lastScrolledTo,
+            ),
             leftOffsetArray.indexOf(lastScrolledTo),
             lastScrolledTo,
           );
