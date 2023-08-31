@@ -104,7 +104,6 @@ Carousel({
     document.getElementById("progress-bar").value = scrollProgress * 100;
   },
   whileDragging: scrollProgress => {
-    console.log(scrollProgress, "scrollprog");
     document.getElementById("progress-bar").value = scrollProgress * 100;
   },
   selectedState: false,
@@ -113,7 +112,7 @@ Carousel({
 Carousel({
   parent: ".autoplay .inner",
   child: ".autoplay .slider",
-  autoplay: true,
+  // autoplay: true,
   selectedState: true,
 });
 
