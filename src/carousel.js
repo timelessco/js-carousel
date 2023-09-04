@@ -69,6 +69,7 @@ function Carousel(props) {
     child,
     alignment = "start",
     // clickEvent = false,
+    minWebWidth = 100,
     onClicking = () => {},
   } = props;
 
@@ -85,7 +86,6 @@ function Carousel(props) {
   let scrollProgress = 0;
   let lastScrolledTo = getCurrentPosition(parent);
   const lastChild = children[children.length - 1];
-  const minWebWidth = 700;
 
   addSelectedStateClassName(
     selectedScrollClassName,
@@ -129,7 +129,7 @@ function Carousel(props) {
   function scrollTo(scrollValue, animate, selectedStateValue) {
     if (window.innerWidth > minWebWidth) {
       if (selectedStateValue) {
-        removeSelectedStateClassName(children, selectedScrollClassName);
+        // removeSelectedStateClassName(children, selectedScrollClassName);
 
         addSelectedStateClassName(
           selectedScrollClassName,
@@ -166,7 +166,7 @@ function Carousel(props) {
       lastScrolledTo = leftOffsetArray[scrollValue];
 
       if (selectedStateValue) {
-        removeSelectedStateClassName(children, selectedScrollClassName);
+        // removeSelectedStateClassName(children, selectedScrollClassName);
 
         addSelectedStateClassName(
           selectedScrollClassName,
@@ -417,9 +417,17 @@ function Carousel(props) {
       dotsArray,
       getclosestSliderElement(parent.scrollLeft, leftOffsetArray),
     );
+
     lastScrolledTo = getclosestSliderElement(
       parent.scrollLeft,
       leftOffsetArray,
+    );
+    // removeSelectedStateClassName(children, selectedScrollClassName);
+    addSelectedStateClassName(
+      selectedScrollClassName,
+      children,
+      leftOffsetArray.indexOf(lastScrolledTo),
+      selectedState,
     );
     scrollProgress = getScrollProgress(
       parent,
@@ -505,7 +513,7 @@ function Carousel(props) {
             springConfig,
           );
           selectedScrollSnapIndex += 1;
-          removeSelectedStateClassName(children, selectedScrollClassName);
+          // removeSelectedStateClassName(children, selectedScrollClassName);
 
           addSelectedStateClassName(
             selectedScrollClassName,
@@ -532,7 +540,7 @@ function Carousel(props) {
               springConfig,
             );
             selectedScrollSnapIndex += 1;
-            removeSelectedStateClassName(children, selectedScrollClassName);
+            // removeSelectedStateClassName(children, selectedScrollClassName);
 
             addSelectedStateClassName(
               selectedScrollClassName,
@@ -568,7 +576,7 @@ function Carousel(props) {
             springConfig,
           );
           selectedScrollSnapIndex += 1;
-          removeSelectedStateClassName(children, selectedScrollClassName);
+          // removeSelectedStateClassName(children, selectedScrollClassName);
 
           addSelectedStateClassName(
             selectedScrollClassName,
@@ -608,11 +616,11 @@ function Carousel(props) {
         springConfig,
       );
       selectedScrollSnapIndex += 1;
-      children.forEach(i => {
-        if (i.classList.contains(selectedScrollClassName)) {
-          i?.classList?.remove(selectedScrollClassName);
-        }
-      });
+      // children.forEach(i => {
+      //   if (i.classList.contains(selectedScrollClassName)) {
+      //     i?.classList?.remove(selectedScrollClassName);
+      //   }
+      // });
 
       addSelectedStateClassName(
         selectedScrollClassName,
@@ -633,11 +641,11 @@ function Carousel(props) {
         springConfig,
       );
       selectedScrollSnapIndex += 1;
-      children.forEach(i => {
-        if (i.classList.contains(selectedScrollClassName)) {
-          i?.classList?.remove(selectedScrollClassName);
-        }
-      });
+      // children.forEach(i => {
+      //   if (i.classList.contains(selectedScrollClassName)) {
+      //     i?.classList?.remove(selectedScrollClassName);
+      //   }
+      // });
 
       addSelectedStateClassName(
         selectedScrollClassName,
@@ -689,7 +697,7 @@ function Carousel(props) {
           );
 
           selectedScrollSnapIndex += 1;
-          removeSelectedStateClassName(children, selectedScrollClassName);
+          // removeSelectedStateClassName(children, selectedScrollClassName);
 
           addSelectedStateClassName(
             selectedScrollClassName,
@@ -727,7 +735,7 @@ function Carousel(props) {
               springConfig,
             );
             selectedScrollSnapIndex += 1;
-            removeSelectedStateClassName(children, selectedScrollClassName);
+            // removeSelectedStateClassName(children, selectedScrollClassName);
 
             addSelectedStateClassName(
               selectedScrollClassName,
@@ -787,11 +795,11 @@ function Carousel(props) {
           springConfig,
         );
         selectedScrollSnapIndex += 1;
-        children.forEach(i => {
-          if (i.classList.contains(selectedScrollClassName)) {
-            i?.classList?.remove(selectedScrollClassName);
-          }
-        });
+        // children.forEach(i => {
+        //   if (i.classList.contains(selectedScrollClassName)) {
+        //     i?.classList?.remove(selectedScrollClassName);
+        //   }
+        // });
 
         addSelectedStateClassName(
           selectedScrollClassName,
@@ -814,11 +822,11 @@ function Carousel(props) {
           springConfig,
         );
         selectedScrollSnapIndex += 1;
-        children.forEach(i => {
-          if (i.classList.contains(selectedScrollClassName)) {
-            i?.classList?.remove(selectedScrollClassName);
-          }
-        });
+        // children.forEach(i => {
+        //   if (i.classList.contains(selectedScrollClassName)) {
+        //     i?.classList?.remove(selectedScrollClassName);
+        //   }
+        // });
 
         addSelectedStateClassName(
           selectedScrollClassName,
@@ -867,11 +875,11 @@ function Carousel(props) {
             springConfig,
           );
           selectedScrollSnapIndex += 1;
-          children.forEach(x => {
-            if (x.classList.contains(selectedScrollClassName)) {
-              x?.classList?.remove(selectedScrollClassName);
-            }
-          });
+          // children.forEach(x => {
+          //   if (x.classList.contains(selectedScrollClassName)) {
+          //     x?.classList?.remove(selectedScrollClassName);
+          //   }
+          // });
 
           addSelectedStateClassName(
             selectedScrollClassName,
@@ -967,11 +975,11 @@ function Carousel(props) {
                 springConfig,
               );
               selectedScrollSnapIndex += 1;
-              children.forEach(i => {
-                if (i.classList.contains(selectedScrollClassName)) {
-                  i?.classList?.remove(selectedScrollClassName);
-                }
-              });
+              // children.forEach(i => {
+              //   if (i.classList.contains(selectedScrollClassName)) {
+              //     i?.classList?.remove(selectedScrollClassName);
+              //   }
+              // });
               addSelectedStateClassName(
                 selectedScrollClassName,
                 children,
@@ -1022,7 +1030,7 @@ function Carousel(props) {
               springConfig,
             );
             selectedScrollSnapIndex += 1;
-            removeSelectedStateClassName(children, selectedScrollClassName);
+            // removeSelectedStateClassName(children, selectedScrollClassName);
 
             addSelectedStateClassName(
               selectedScrollClassName,
@@ -1147,7 +1155,7 @@ function Carousel(props) {
             springConfig,
           );
           selectedScrollSnapIndex += 1;
-          removeSelectedStateClassName(children, selectedScrollClassName);
+          // removeSelectedStateClassName(children, selectedScrollClassName);
 
           addSelectedStateClassName(
             selectedScrollClassName,
@@ -1176,7 +1184,7 @@ function Carousel(props) {
             springConfig,
           );
           selectedScrollSnapIndex += 1;
-          removeSelectedStateClassName(children, selectedScrollClassName);
+          // removeSelectedStateClassName(children, selectedScrollClassName);
 
           addSelectedStateClassName(
             selectedScrollClassName,
@@ -1227,6 +1235,7 @@ function Carousel(props) {
           leftOffsetArray,
           lastScrolledTo,
         );
+
         handleCursor();
         whileDragging(
           scrollProgress,
@@ -1294,6 +1303,13 @@ function Carousel(props) {
         setTimeout(() => {
           isDragging = false;
         }, 200);
+        removeSelectedStateClassName(children, selectedScrollClassName);
+        addSelectedStateClassName(
+          selectedScrollClassName,
+          children,
+          leftOffsetArray.indexOf(lastScrolledTo),
+          selectedState,
+        );
       },
       onWheelEnd: ({ offset: [ox, oy], direction: [dx] }) => {
         if (axis === "y") {
@@ -1373,7 +1389,7 @@ function Carousel(props) {
   }
 
   function addSelectedStateClass(childIndexValue) {
-    removeSelectedStateClassName(children, selectedScrollClassName);
+    // removeSelectedStateClassName(children, selectedScrollClassName);
     if (selectedState) {
       children[childIndexValue]?.classList.add(selectedScrollClassName);
     }
