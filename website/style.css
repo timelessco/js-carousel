@@ -49,6 +49,7 @@ img {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none;
+  object-fit: cover;
 }
 
 /*
@@ -343,9 +344,9 @@ video {
   justify-content: stretch;
   width: 100%;
   flex-wrap: nowrap;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   cursor: grab;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   white-space: nowrap;
   touch-action: none;
   will-change: transform;
@@ -432,7 +433,7 @@ video {
 .skew .inner {
   /* margin-left: 20px;
   margin-top: 28px; */
-  perspective: 480px;
+  perspective: 100px;
   perspective-origin: center;
   padding-bottom: 50px;
   padding-right: 50px;
@@ -472,7 +473,6 @@ video {
 .skew .slider:nth-of-type(10) {
   margin-left: 65px;
 }
-
 .skew-section {
   /* margin-left: 20px; */
   color: black;
@@ -544,20 +544,24 @@ video {
 .skew .slider {
   transition: transform 0.5s ease;
 
+  /* perspective: 100px; */
+
   /* max-width: 249px;
   max-height: 249px; */
   width: 249px;
   height: 249px;
 
-  /* will-change: transform;
-  transform:rotateY(0);
-  transition: transform 0.3s ease;
+  /* will-change: transform;*/
+  /* transform:rotateY(0) translateX(0) scale(1);
+  transition: transform 1s ease; */
+
+  /* transition: transform 0.3s ease;
   backface-visibility: hidden; */
 }
 
 .skew .slider.rotate-opp {
   /* transform:rotateY(24deg) !important; */
-  transition: transform 0.3s ease;
+  /* transition: transform 0.3s ease; */
 }
 .skew {
   max-width: none;
@@ -649,17 +653,33 @@ progress::-webkit-progress-value {
 .thumbnail-inner .slider:not(.selected) {
   opacity: 0.3;
 }
-
-.skew .slider:not(.selected) {
-  transform: rotateY(-10deg) scale(0.96);
-  transform-origin: center;
+.skew .slider.selected {
   transition: transform 0.5s ease;
 }
 
+.skew .slider:not(.selected) {
+  /* margin-left:-30px;  */
+  transform: rotateY(-3deg);
+
+  /* transform-origin: center; */
+  transition: transform 0.5s ease;
+}
+.skew .slider.whileDrag {
+  transform: rotateY(-2deg);
+}
+.skew .slider:not(.selected) .album-name {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
 .album-name {
-  position: relative;
-  top: -24px;
-  padding-left: 20px;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.album-name {
+  padding-top: 23px;
+  /* position: relative; */
+  /* top: -24px; */
 }
 
 .axis-container,

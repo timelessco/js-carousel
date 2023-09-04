@@ -57,6 +57,7 @@ function Carousel(props) {
     displayDots = false,
     selectedState = false,
     startIndex = 0,
+    whileDragEnd = () => {},
     direction = "ltr",
     dotsHTML = `<svg height="12" width="12" class="dots">
     <circle cx="5" cy="5" r="2.5" stroke="gray" stroke-width="3" fill="gray" />
@@ -1235,13 +1236,12 @@ function Carousel(props) {
           leftOffsetArray,
           lastScrolledTo,
         );
-
         handleCursor();
-        whileDragging(
-          scrollProgress,
-          leftOffsetArray.indexOf(lastScrolledTo),
-          lastScrolledTo,
-        );
+        // whileDragging(
+        //   scrollProgress,
+        //   leftOffsetArray.indexOf(lastScrolledTo),
+        //   lastScrolledTo,
+        // );
         if (
           window.innerWidth > minWebWidth ||
           (window.innerWidth < minWebWidth && slidesToScroll > 1)
@@ -1287,18 +1287,18 @@ function Carousel(props) {
             }, 100);
           }
         }
-        setTimeout(() => {
-          whileDragging(
-            getScrollProgress(
-              parent,
-              children,
-              leftOffsetArray,
-              lastScrolledTo,
-            ),
-            leftOffsetArray.indexOf(lastScrolledTo),
-            lastScrolledTo,
-          );
-        }, 100);
+        // setTimeout(() => {
+        //   whileDragging(
+        //     getScrollProgress(
+        //       parent,
+        //       children,
+        //       leftOffsetArray,
+        //       lastScrolledTo,
+        //     ),
+        //     leftOffsetArray.indexOf(lastScrolledTo),
+        //     lastScrolledTo,
+        //   );
+        // }, 100);
 
         setTimeout(() => {
           isDragging = false;
@@ -1310,6 +1310,9 @@ function Carousel(props) {
           leftOffsetArray.indexOf(lastScrolledTo),
           selectedState,
         );
+        setTimeout(() => {
+          whileDragEnd();
+        }, 100);
       },
       onWheelEnd: ({ offset: [ox, oy], direction: [dx] }) => {
         if (axis === "y") {

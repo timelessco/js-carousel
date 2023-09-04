@@ -6,15 +6,20 @@ Carousel({
   // direction: "ltr",
   selectedState: true,
   minWebWidth: 100,
-  // whileDragging: () => {
-  //   document.querySelectorAll(".skew .slider").forEach((i, index) => {
-  //     if (i.classList.contains("selected")) {
-  //       if (index > 0) {
-  //         document
-  //           .querySelectorAll(".skew .slider")
-  //           [index - 1].classList.add("rotate-opp");
-  //       }
-  //     }
-  //   });
-  // },
+  springConfig: `spring(1,90,20,16)`,
+  whileDragging: () => {
+    document.querySelectorAll(".skew .slider").forEach(i => {
+      console.log("whileee");
+      i.classList.add("whileDrag");
+    });
+  },
+  whileDragEnd: () => {
+    document.querySelectorAll(".skew .slider").forEach(i => {
+      if (i.classList.contains("whileDrag")) {
+        console.log("drag end", i);
+
+        i.classList.remove("whileDrag");
+      }
+    });
+  },
 });
