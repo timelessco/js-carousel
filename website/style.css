@@ -559,6 +559,9 @@ video {
   /* transform:rotateY(24deg) !important; */
   transition: transform 0.3s ease;
 }
+.skew {
+  max-width: none;
+}
 
 .dots-parent .slider,
 .progress .slider,
