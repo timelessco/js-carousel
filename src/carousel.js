@@ -70,7 +70,7 @@ function Carousel(props) {
     child,
     alignment = "start",
     // clickEvent = false,
-    minWebWidth = 100,
+    minWebWidth = 700,
     onClicking = () => {},
   } = props;
 
