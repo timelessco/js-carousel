@@ -55,6 +55,7 @@ export function moveToSnapPoint(
   axisValue,
   parent,
   slidesToScroll,
+  customDragAction,
   easing = springConfig,
 ) {
   if (axisValue === "x") {
@@ -65,14 +66,19 @@ export function moveToSnapPoint(
         translateY: 0,
         easing,
       });
-    } else {
+    } else if (customDragAction === "rotate") {
+      anime({
+        targets: parent,
+        rotateY: `${snapValue}`,
+        easing,
+      });
+    } else
       anime({
         targets: parent,
         translateX: `${snapValue}px`,
         translateY: 0,
         easing,
       });
-    }
   } else {
     anime({
       targets: parent,

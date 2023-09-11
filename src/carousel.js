@@ -69,6 +69,7 @@ function Carousel(props) {
     springConfig = `spring(1,90,20,13)`,
     child,
     alignment = "start",
+    customDragAction = "translate",
     // clickEvent = false,
     minWebWidth = 700,
     onClicking = () => {},
@@ -87,7 +88,7 @@ function Carousel(props) {
   let scrollProgress = 0;
   let lastScrolledTo = getCurrentPosition(parent);
   const lastChild = children[children.length - 1];
-
+  let clienXval = 0;
   addSelectedStateClassName(
     selectedScrollClassName,
     children,
@@ -141,13 +142,15 @@ function Carousel(props) {
       }
       if (axis === "x") {
         if (animate) {
-          moveToSnapPoint(
-            -leftOffsetArray[scrollValue],
-            axis,
-            parent,
-            slidesToScroll,
-            springConfig,
-          );
+          if (customDragAction !== "rotate")
+            moveToSnapPoint(
+              -leftOffsetArray[scrollValue],
+              axis,
+              parent,
+              slidesToScroll,
+              customDragAction,
+              springConfig,
+            );
         } else {
           parent.style.transform = `translateX(${-leftOffsetArray[
             scrollValue
@@ -505,14 +508,15 @@ function Carousel(props) {
           if (currentIndex === undefined || currentIndex === 0)
             currentIndex = uniqueArray.length - 1;
           loopingActionPrevious(-uniqueArray[currentIndex - 1]);
-
-          moveToSnapPoint(
-            -uniqueArray[currentIndex - 1],
-            axis,
-            parent,
-            slidesToScroll,
-            springConfig,
-          );
+          if (customDragAction !== "rotate")
+            moveToSnapPoint(
+              -uniqueArray[currentIndex - 1],
+              axis,
+              parent,
+              slidesToScroll,
+              customDragAction,
+              springConfig,
+            );
           selectedScrollSnapIndex += 1;
           // removeSelectedStateClassName(children, selectedScrollClassName);
 
@@ -533,13 +537,15 @@ function Carousel(props) {
         }
         if (axis === "x") {
           if (currentIndex - 1 >= 0) {
-            moveToSnapPoint(
-              -leftOffsetArray[currentIndex - 1],
-              axis,
-              parent,
-              slidesToScroll,
-              springConfig,
-            );
+            if (customDragAction !== "rotate")
+              moveToSnapPoint(
+                -leftOffsetArray[currentIndex - 1],
+                axis,
+                parent,
+                slidesToScroll,
+                customDragAction,
+                springConfig,
+              );
             selectedScrollSnapIndex += 1;
             // removeSelectedStateClassName(children, selectedScrollClassName);
 
@@ -569,13 +575,15 @@ function Carousel(props) {
             );
           }
         } else if (currentIndex - 1 >= 0) {
-          moveToSnapPoint(
-            -leftOffsetArray[currentIndex - 1],
-            axis,
-            parent,
-            slidesToScroll,
-            springConfig,
-          );
+          if (customDragAction !== "rotate")
+            moveToSnapPoint(
+              -leftOffsetArray[currentIndex - 1],
+              axis,
+              parent,
+              slidesToScroll,
+              customDragAction,
+              springConfig,
+            );
           selectedScrollSnapIndex += 1;
           // removeSelectedStateClassName(children, selectedScrollClassName);
 
@@ -608,14 +616,15 @@ function Carousel(props) {
       let currentPosition = 0;
       const carouselItems = parent.children;
       currentPosition += carouselItems[0].offsetWidth;
-
-      moveToSnapPoint(
-        currentPosition,
-        axis,
-        parent,
-        slidesToScroll,
-        springConfig,
-      );
+      if (customDragAction !== "rotate")
+        moveToSnapPoint(
+          currentPosition,
+          axis,
+          parent,
+          slidesToScroll,
+          customDragAction,
+          springConfig,
+        );
       selectedScrollSnapIndex += 1;
       // children.forEach(i => {
       //   if (i.classList.contains(selectedScrollClassName)) {
@@ -633,14 +642,15 @@ function Carousel(props) {
       const lastItem = carouselItems[carouselItems.length - 1];
       parent.insertBefore(lastItem, carouselItems[0]);
       currentPosition -= carouselItems[0].offsetWidth;
-
-      moveToSnapPoint(
-        currentPosition,
-        axis,
-        parent,
-        slidesToScroll,
-        springConfig,
-      );
+      if (customDragAction !== "rotate")
+        moveToSnapPoint(
+          currentPosition,
+          axis,
+          parent,
+          slidesToScroll,
+          customDragAction,
+          springConfig,
+        );
       selectedScrollSnapIndex += 1;
       // children.forEach(i => {
       //   if (i.classList.contains(selectedScrollClassName)) {
@@ -688,14 +698,15 @@ function Carousel(props) {
         if (expLoop) {
           if (currentIndex === undefined) currentIndex = 0;
           loopingActionNext(-leftOffsetArray[currentIndex + 1], true);
-
-          moveToSnapPoint(
-            -leftOffsetArray[currentIndex + 1],
-            axis,
-            parent,
-            slidesToScroll,
-            springConfig,
-          );
+          if (customDragAction !== "rotate")
+            moveToSnapPoint(
+              -leftOffsetArray[currentIndex + 1],
+              axis,
+              parent,
+              slidesToScroll,
+              customDragAction,
+              springConfig,
+            );
 
           selectedScrollSnapIndex += 1;
           // removeSelectedStateClassName(children, selectedScrollClassName);
@@ -728,13 +739,15 @@ function Carousel(props) {
               parent.clientHeight - leftOffsetArray[currentIndex] >
                 parent.parentNode.clientHeight)
           ) {
-            moveToSnapPoint(
-              -leftOffsetArray[currentIndex + 1],
-              axis,
-              parent,
-              slidesToScroll,
-              springConfig,
-            );
+            if (customDragAction !== "rotate")
+              moveToSnapPoint(
+                -leftOffsetArray[currentIndex + 1],
+                axis,
+                parent,
+                slidesToScroll,
+                customDragAction,
+                springConfig,
+              );
             selectedScrollSnapIndex += 1;
             // removeSelectedStateClassName(children, selectedScrollClassName);
 
@@ -788,13 +801,15 @@ function Carousel(props) {
       const carouselItems = parent.children;
       currentPosition -= carouselItems[0].offsetWidth;
       if (window.innerWidth > minWebWidth) {
-        moveToSnapPoint(
-          currentPosition,
-          axis,
-          parent,
-          slidesToScroll,
-          springConfig,
-        );
+        if (customDragAction !== "rotate")
+          moveToSnapPoint(
+            currentPosition,
+            axis,
+            parent,
+            slidesToScroll,
+            customDragAction,
+            springConfig,
+          );
         selectedScrollSnapIndex += 1;
         // children.forEach(i => {
         //   if (i.classList.contains(selectedScrollClassName)) {
@@ -814,14 +829,15 @@ function Carousel(props) {
       currentPosition += carouselItems[0].offsetWidth;
       if (window.innerWidth > minWebWidth) {
         parent.appendChild(firstItem);
-
-        moveToSnapPoint(
-          currentPosition,
-          axis,
-          parent,
-          slidesToScroll,
-          springConfig,
-        );
+        if (customDragAction !== "rotate")
+          moveToSnapPoint(
+            currentPosition,
+            axis,
+            parent,
+            slidesToScroll,
+            customDragAction,
+            springConfig,
+          );
         selectedScrollSnapIndex += 1;
         // children.forEach(i => {
         //   if (i.classList.contains(selectedScrollClassName)) {
@@ -868,13 +884,15 @@ function Carousel(props) {
           selectedState,
         );
         if (window.innerWidth > minWebWidth) {
-          moveToSnapPoint(
-            -lastScrolledTo,
-            axis,
-            parent,
-            slidesToScroll,
-            springConfig,
-          );
+          if (customDragAction !== "rotate")
+            moveToSnapPoint(
+              -lastScrolledTo,
+              axis,
+              parent,
+              slidesToScroll,
+              customDragAction,
+              springConfig,
+            );
           selectedScrollSnapIndex += 1;
           // children.forEach(x => {
           //   if (x.classList.contains(selectedScrollClassName)) {
@@ -931,11 +949,35 @@ function Carousel(props) {
 
   if (!expLoop && direction === "ltr") scrollTo(startIndex);
 
+  // function getRotatedValue() {
+  //   var el = parent;
+  //   console.log(el, "el");
+
+  //   var st = window.getComputedStyle(el, null);
+
+  //   var tr =
+  //     st.getPropertyValue("-webkit-transform") ||
+  //     st.getPropertyValue("-moz-transform") ||
+  //     st.getPropertyValue("-ms-transform") ||
+  //     st.getPropertyValue("-o-transform") ||
+  //     st.getPropertyValue("transform");
+  //   var values = tr.split("(")[1],
+  //     values = values.split(")")[0],
+  //     values = values.split(",");
+
+  //   var a = values[0];
+  //   var b = values[1];
+  //   var c = values[2];
+  //   var d = values[3];
+  //   console.log(a, b, c, d, "thse");
+  //   var angle = Math.round(Math.asin(d) * (180 / Math.PI));
+  //   return angle;
+  // }
   // adding gestures like drag, scroll
   Gesture(
     parent,
     {
-      onDrag: ({ active, offset: [ox, oy], direction: [dx] }) => {
+      onDrag: ({ active, offset: [ox, oy], direction: [dx], xy: [xy0] }) => {
         autoplay = false;
         isDragging = true;
         scrollProgress = getScrollProgress(
@@ -944,10 +986,21 @@ function Carousel(props) {
           leftOffsetArray,
           lastScrolledTo,
         );
-        clearTimeout(timeout);
-        // setTimeout(() => {
 
-        // }, 200);
+        if (customDragAction === "rotate") {
+          moveToSnapPoint(
+            `-=${((Math.round(xy0) - clienXval) * 1.2) % 360}`,
+            axis,
+            parent,
+            slidesToScroll,
+            customDragAction,
+            springConfig,
+          );
+          clienXval = xy0;
+        }
+
+        clearTimeout(timeout);
+
         leftOffsetArray = [];
         allLeftOffsets = [];
         const offsetValue = axis === "x" ? ox : oy;
@@ -968,13 +1021,15 @@ function Carousel(props) {
         ) {
           if (active) {
             if (offsetValue < 10) {
-              moveToSnapPoint(
-                offsetValue,
-                axis,
-                parent,
-                slidesToScroll,
-                springConfig,
-              );
+              if (customDragAction !== "rotate")
+                moveToSnapPoint(
+                  offsetValue,
+                  axis,
+                  parent,
+                  slidesToScroll,
+                  customDragAction,
+                  springConfig,
+                );
               selectedScrollSnapIndex += 1;
               // children.forEach(i => {
               //   if (i.classList.contains(selectedScrollClassName)) {
@@ -1023,13 +1078,15 @@ function Carousel(props) {
                 leftOffsetArray,
               );
             }
-            moveToSnapPoint(
-              snapValue,
-              axis,
-              parent,
-              slidesToScroll,
-              springConfig,
-            );
+            if (customDragAction !== "rotate")
+              moveToSnapPoint(
+                snapValue,
+                axis,
+                parent,
+                slidesToScroll,
+                customDragAction,
+                springConfig,
+              );
             selectedScrollSnapIndex += 1;
             // removeSelectedStateClassName(children, selectedScrollClassName);
 
@@ -1148,13 +1205,15 @@ function Carousel(props) {
         if (dx > 0) loopingActionNext(axis === "x" ? -ox : oy);
         else loopingActionPrev(axis === "x" ? ox : oy);
         if (active) {
-          moveToSnapPoint(
-            offsetValue,
-            axis,
-            parent,
-            slidesToScroll,
-            springConfig,
-          );
+          if (customDragAction !== "rotate")
+            moveToSnapPoint(
+              offsetValue,
+              axis,
+              parent,
+              slidesToScroll,
+              customDragAction,
+              springConfig,
+            );
           selectedScrollSnapIndex += 1;
           // removeSelectedStateClassName(children, selectedScrollClassName);
 
@@ -1176,14 +1235,15 @@ function Carousel(props) {
           } else {
             snapValue = -getclosestSliderElement(-offsetValue, leftOffsetArray);
           }
-
-          moveToSnapPoint(
-            snapValue,
-            axis,
-            parent,
-            slidesToScroll,
-            springConfig,
-          );
+          if (customDragAction !== "rotate")
+            moveToSnapPoint(
+              snapValue,
+              axis,
+              parent,
+              slidesToScroll,
+              customDragAction,
+              springConfig,
+            );
           selectedScrollSnapIndex += 1;
           // removeSelectedStateClassName(children, selectedScrollClassName);
 
