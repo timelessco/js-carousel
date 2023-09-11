@@ -514,6 +514,7 @@ function Carousel(props) {
             selectedState,
           );
           lastScrolledTo = uniqueArray[currentIndex - 1];
+          dotsFunctionality(dotsArray, lastScrolledTo);
 
           addSelectedStateClassName(
             selectedScrollClassName,
@@ -541,7 +542,7 @@ function Carousel(props) {
               selectedState,
             );
             lastScrolledTo = leftOffsetArray[currentIndex - 1];
-
+            dotsFunctionality(dotsArray, lastScrolledTo);
             addSelectedStateClassName(
               selectedScrollClassName,
               children,
@@ -551,7 +552,7 @@ function Carousel(props) {
           } else {
             parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
             lastScrolledTo = leftOffsetArray[currentIndex + 1];
-
+            dotsFunctionality(dotsArray, lastScrolledTo);
             addSelectedStateClassName(
               selectedScrollClassName,
               children,
@@ -577,6 +578,8 @@ function Carousel(props) {
             selectedState,
           );
           lastScrolledTo = leftOffsetArray[currentIndex - 1];
+          dotsFunctionality(dotsArray, lastScrolledTo);
+
         }
       } else {
         if (currentIndex >= 0) {
@@ -586,6 +589,8 @@ function Carousel(props) {
           } else if (parent.scrolTop !== leftOffsetArray[currentIndex - 1])
             parent.scrollTo(0, leftOffsetArray[currentIndex - 1]);
           lastScrolledTo = leftOffsetArray[currentIndex - 1];
+           dotsFunctionality(dotsArray, lastScrolledTo);
+
         }
 
         addSelectedStateClassName(
@@ -621,6 +626,8 @@ function Carousel(props) {
         selectedState,
       );
       lastScrolledTo = currentPosition;
+      dotsFunctionality(dotsArray, lastScrolledTo);
+
       const lastItem = carouselItems[carouselItems.length - 1];
       parent.insertBefore(lastItem, carouselItems[0]);
       currentPosition -= carouselItems[0].offsetWidth;
@@ -646,6 +653,8 @@ function Carousel(props) {
         selectedState,
       );
       lastScrolledTo = currentPosition;
+       dotsFunctionality(dotsArray, lastScrolledTo);
+
     }
   }
 
@@ -698,6 +707,7 @@ function Carousel(props) {
             selectedState,
           );
           lastScrolledTo = leftOffsetArray[currentIndex + 1];
+        dotsFunctionality(dotsArray, lastScrolledTo);
 
           addSelectedStateClassName(
             selectedScrollClassName,
@@ -736,6 +746,7 @@ function Carousel(props) {
               selectedState,
             );
             lastScrolledTo = leftOffsetArray[currentIndex + 1];
+        dotsFunctionality(dotsArray, lastScrolledTo);
 
             addSelectedStateClassName(
               selectedScrollClassName,
@@ -747,6 +758,7 @@ function Carousel(props) {
         } else if (leftOffsetArray[currentIndex + 1]) {
           parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
           lastScrolledTo = leftOffsetArray[currentIndex + 1];
+          dotsFunctionality(dotsArray, lastScrolledTo);
 
           addSelectedStateClassName(
             selectedScrollClassName,
