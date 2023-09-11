@@ -112,7 +112,7 @@ Carousel({
 Carousel({
   parent: ".autoplay .inner",
   child: ".autoplay .slider",
-  // autoplay: true,
+  autoplay: true,
   selectedState: true,
 });
 
