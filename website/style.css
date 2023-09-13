@@ -73,10 +73,7 @@ h3 {
   position: relative;
   perspective: 1000px;
 }
-.skew-section {
-  overflow-x: hidden;
-  overflow-y: visible;
-}
+
 .carousel {
   height: 100%;
   width: 100%;
@@ -492,6 +489,10 @@ video {
   position: relative;
 }
 @media only screen and (min-width: 700px) {
+  .skew-section {
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
   .skew {
     display: none;
     transform-style: preserve-3d;
