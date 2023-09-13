@@ -88,7 +88,6 @@ function Carousel(props) {
   let scrollProgress = 0;
   let lastScrolledTo = getCurrentPosition(parent);
   const lastChild = children[children.length - 1];
-  let clienXval = 0;
   addSelectedStateClassName(
     selectedScrollClassName,
     children,
@@ -977,7 +976,7 @@ function Carousel(props) {
   Gesture(
     parent,
     {
-      onDrag: ({ active, offset: [ox, oy], direction: [dx], xy: [xy0] }) => {
+      onDrag: ({ active, offset: [ox, oy], direction: [dx], delta }) => {
         autoplay = false;
         isDragging = true;
         scrollProgress = getScrollProgress(
@@ -987,16 +986,19 @@ function Carousel(props) {
           lastScrolledTo,
         );
 
-        if (customDragAction === "rotate") {
+        if (customDragAction === "rotate" && active) {
           moveToSnapPoint(
-            `-=${((Math.round(xy0) - clienXval) * 1.2) % 360}`,
+            `-=${Math.round(delta[0]) % 360}`,
             axis,
             parent,
             slidesToScroll,
             customDragAction,
-            springConfig,
+            function (el, i, total) {
+              return function (t) {
+                return Math.sin(t * (i + 100)) ** total;
+              };
+            },
           );
-          clienXval = xy0;
         }
 
         clearTimeout(timeout);
