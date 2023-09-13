@@ -1179,13 +1179,27 @@ function Carousel(props) {
           );
         }, 100);
       },
-      onWheel: ({ offset: [ox, oy], active, direction: [dx] }) => {
+      onWheel: ({ offset: [ox, oy], active, direction: [dx], delta }) => {
         scrollProgress = getScrollProgress(
           parent,
           children,
           leftOffsetArray,
           lastScrolledTo,
         );
+        if (customDragAction === "rotate" && active) {
+          moveToSnapPoint(
+            `-=${Math.round(delta[0]) % 360}`,
+            axis,
+            parent,
+            slidesToScroll,
+            customDragAction,
+            function (el, i, total) {
+              return function (t) {
+                return Math.sin(t * (i + 100)) ** total;
+              };
+            },
+          );
+        }
 
         const offsetValue = axis === "x" ? -ox : -oy;
 

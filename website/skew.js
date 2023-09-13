@@ -13,8 +13,6 @@ Carousel({
     });
   },
   whileDragEnd: () => {
-    console.log("darg end", window.innerWidth);
-
     if (window.innerWidth < 700) {
       document.querySelectorAll(".skew .slider").forEach(i => {
         console.log("darg end");

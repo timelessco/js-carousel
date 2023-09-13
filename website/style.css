@@ -69,11 +69,14 @@ h3 {
 .container {
   margin: 0 auto;
   width: 1050px;
-  height: 200px;
+  height: 500px;
   position: relative;
   perspective: 1000px;
 }
-
+.skew-section {
+  overflow-x: hidden;
+  overflow-y: visible;
+}
 .carousel {
   height: 100%;
   width: 100%;
@@ -91,8 +94,10 @@ h3 {
   font-size: 5em;
   text-align: center;
   color: #fff;
-  opacity: 0.95;
   border-radius: 10px;
+  /* flex: 0 0 auto; */
+
+  z-index: 800;
 }
 
 .next,
