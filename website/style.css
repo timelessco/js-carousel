@@ -110,35 +110,31 @@ h3 {
   box-shadow: 0 5px 0 #999;
   transition: box-shadow 0.1s, top 0.1s;
 }
+
 .next:hover,
 .prev:hover {
   color: #000;
 }
+
 .next:active,
 .prev:active {
   top: 104px;
   box-shadow: 0 1px 0 #999;
 }
+
 .next {
   right: 5em;
 }
+
 .prev {
   left: 5em;
 }
+
 body {
   margin: 0;
   line-height: inherit;
   background: white;
-}
-
-hr {
-  height: 0;
-  color: inherit;
-  border-top-width: 1px;
-}
-
-abbr:where([title]) {
-  text-decoration: underline dotted;
+  overflow-x: hidden;
 }
 
 h1,
@@ -220,42 +216,6 @@ textarea {
 button,
 select {
   text-transform: none;
-}
-
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-  -webkit-appearance: button;
-  background-color: transparent;
-  background-image: none;
-}
-
-:-moz-focusring {
-  outline: auto;
-}
-
-:-moz-ui-invalid {
-  box-shadow: none;
-}
-
-::-webkit-inner-spin-button,
-::-webkit-outer-spin-button {
-  height: auto;
-}
-
-[type="search"] {
-  -webkit-appearance: textfield;
-  outline-offset: -2px;
-}
-
-::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-
-::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  font: inherit;
 }
 
 summary {
@@ -479,6 +439,35 @@ video {
   cursor: grabbing;
 }
 
+.each-artist {
+  margin-right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 90px;
+  scroll-snap-align: start;
+}
+
+.each-artist:last-of-type {
+  margin-right: 0;
+}
+
+.artist-text {
+  font-family: Inter Variable;
+  font-style: normal;
+  font-weight: 415;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: 0.03em;
+  padding-top: 10px;
+  color: #979797;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
 .slider {
   width: 150px;
   margin: 10px;
@@ -488,18 +477,39 @@ video {
   z-index: 800;
   position: relative;
 }
+
+.artists-carousel {
+  width: 100vw;
+  overflow: scroll;
+  display: flex;
+  justify-content: space-between;
+  /* margin-left: 20px; */
+  margin-top: 16px;
+}
+
+.artists-container {
+  padding-top: 65px;
+  padding-left: 20px;
+}
+
+.skew-section {
+  overflow-x: hidden;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
 @media only screen and (min-width: 700px) {
   .skew-section {
     overflow-x: hidden;
     overflow-y: visible;
   }
+
   .skew {
     display: none;
     transform-style: preserve-3d;
     transform: translate(-50%, -50%);
     left: 80%;
     top: 50%;
-
     position: absolute;
   }
 
@@ -507,6 +517,7 @@ video {
     transform-origin: 50% 50% 500px;
     position: absolute;
   }
+
   .skew .inner {
     position: absolute;
   }
@@ -608,11 +619,11 @@ video {
   perspective-origin: center;
   padding-bottom: 50px;
   padding-right: 50px;
-
   /* transform: translateZ(0); 
   transform-style: preserve-3d;
   transition: transform 0.5s ease-in-out; */
 }
+
 .carousel img {
   box-shadow: 0px 2.767256498336792px 2.2138051986694336px 0px #00000005,
     0px 6.650102138519287px 5.32008171081543px 0px #00000007,
@@ -628,9 +639,24 @@ video {
   .container {
     display: none;
   }
+
+  .artists-container {
+    display: block !important;
+  }
+
+  .skew-section {
+    margin-left: 20px;
+    /* padding-left: 20px; */
+  }
+
+  .skew-section .flex {
+    padding-right: 0;
+  }
+
   .skew .slider:nth-of-type(2) {
     margin-left: -27px;
   }
+
   .skew .slider.selected {
     transition: transform 0.5s ease;
   }
@@ -642,6 +668,7 @@ video {
     /* transform-origin: center; */
     transition: transform 0.5s ease;
   }
+
   .skew .slider.whileDrag {
     transform: rotateY(-1deg);
   }
@@ -695,7 +722,9 @@ video {
 
   .skew-section p {
     /* color:black */
+    text-wrap: nowrap;
   }
+
   .skew .slider.extra {
     width: 20px;
   }
@@ -708,6 +737,7 @@ video {
       0px 41.777610778808594px 33.422088623046875px 0px #0000000d;
   }
 }
+
 .skew-p {
   font-family: Inter Variable;
   font-size: 22px;
@@ -717,8 +747,9 @@ video {
   text-align: left;
   color: #171717;
 }
+
 .skew-p2 {
-  font-family: "Inter Variable";
+  font-family: Inter Variable;
   font-style: normal;
   font-weight: 415;
   font-size: 15px;
@@ -965,4 +996,8 @@ span {
 .axis-loop-containe .slider:first-of-type {
   margin: 0 !important;
   margin-left: 13px !important;
+}
+
+.artists-container {
+  display: none;
 }

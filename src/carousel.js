@@ -457,6 +457,8 @@ function Carousel(props) {
 
   function handleWindowWidth() {
     removeScrollClassNames(parent);
+    console.log("handle", window.innerWidth < minWebWidth, window.innerWidth);
+
     if (window.innerWidth < minWebWidth && slidesToScroll < 2) {
       addScrollClassNames(
         axis,
@@ -466,6 +468,7 @@ function Carousel(props) {
         children,
         alignment,
       );
+      console.log("handle", parent.classList);
     }
   }
   handleWindowWidth();

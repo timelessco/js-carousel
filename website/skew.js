@@ -36,6 +36,15 @@ Carousel({
   customDragAction: "rotate",
 });
 
+Carousel({
+  parent: ".artists-carousel",
+  child: ".each-artist",
+  // minWebWidth: 200,
+  whileDragging: () => {
+    console.log("dragging");
+  },
+});
+
 document.querySelectorAll(".carousel .item").forEach((i, index) => {
   const element = i;
   if (index === 0) {
@@ -47,3 +56,9 @@ document.querySelectorAll(".carousel .item").forEach((i, index) => {
       (index - 1) * -36
     }deg) translatez(${-window.innerWidth}px)`;
 });
+
+// carouselValue1 = Carousel({
+//   parent: ".parent-1 .inner",
+//   child: ".parent-1 .each-artist",
+//   slidesToScroll: 1,
+// });
