@@ -9,15 +9,15 @@ Carousel({
   springConfig: `spring(1,90,20,19)`,
   whileDragging: () => {
     document.querySelectorAll(".skew .slider").forEach(i => {
-      i.classList.add("whileDrag");
+      i.classList.add("while-drag");
     });
   },
   whileDragEnd: () => {
     if (window.innerWidth < 700) {
       document.querySelectorAll(".skew .slider").forEach(i => {
         console.log("darg end");
-        if (i.classList.contains("whileDrag")) {
-          i.classList.remove("whileDrag");
+        if (i.classList.contains("while-drag")) {
+          i.classList.remove("while-drag");
         }
       });
     } else {
