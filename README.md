@@ -2,6 +2,55 @@
 
 A pure Js customisable carousel, that snaps! uses CSS scroll snap on mobile.
 
+## Usage:
+
+Here's a simple usage of the Carousel. Note: parent element should be wrapped by
+a wrapper element.
+
+HTML:
+
+```
+<div class="wrapper">
+      <ul class="carousel-parent">
+      <li class="carousel-item"> carousel element</li>
+      <li class="carousel-item"> carousel element</li>
+      </ul>
+</div>
+```
+
+JS:
+
+```
+Carousel({
+  parent: ".carousel-parent",
+  child: ".carousel-item",
+});
+```
+
+CSS:
+
+```
+.wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+}
+
+.carousel-parent{
+  display: flex;
+  align-items: center;
+}
+
+.carousel-item{
+  width: 150px;
+  height: auto;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  position: relative
+}
+```
+
 ## Props
 
 ### parent:
@@ -70,7 +119,9 @@ the carousel to snap at the center of each child of the carousel.
 
 > Type: string
 
-> Options: 'start'||'center'||'end' Default: 'start'
+> Options: 'start'||'center'||'end'
+
+> Default: 'start'
 
 ### direction:
 
