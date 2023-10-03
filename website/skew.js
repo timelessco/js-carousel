@@ -3,7 +3,6 @@ import Carousel from "../src/carousel";
 Carousel({
   parent: ".skew .inner",
   child: ".skew .slider",
-  // direction: "ltr",
   selectedState: true,
   minWebWidth: 100,
   springConfig: `spring(1,90,20,19)`,
@@ -15,7 +14,6 @@ Carousel({
   whileDragEnd: () => {
     if (window.innerWidth < 700) {
       document.querySelectorAll(".skew .slider").forEach(i => {
-        console.log("darg end");
         if (i.classList.contains("while-drag")) {
           i.classList.remove("while-drag");
         }
@@ -39,10 +37,6 @@ Carousel({
 Carousel({
   parent: ".artists-carousel",
   child: ".each-artist",
-  // minWebWidth: 200,
-  whileDragging: () => {
-    console.log("dragging");
-  },
 });
 
 document.querySelectorAll(".carousel .item").forEach((i, index) => {
@@ -56,9 +50,3 @@ document.querySelectorAll(".carousel .item").forEach((i, index) => {
       (index - 1) * -36
     }deg) translatez(${-window.innerWidth}px)`;
 });
-
-// carouselValue1 = Carousel({
-//   parent: ".parent-1 .inner",
-//   child: ".parent-1 .each-artist",
-//   slidesToScroll: 1,
-// });

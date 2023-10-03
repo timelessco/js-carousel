@@ -457,7 +457,6 @@ function Carousel(props) {
 
   function handleWindowWidth() {
     removeScrollClassNames(parent);
-    console.log("handle", window.innerWidth < minWebWidth, window.innerWidth);
 
     if (window.innerWidth < minWebWidth && slidesToScroll < 2) {
       addScrollClassNames(
@@ -468,7 +467,6 @@ function Carousel(props) {
         children,
         alignment,
       );
-      console.log("handle", parent.classList);
     }
   }
   handleWindowWidth();
@@ -673,7 +671,6 @@ function Carousel(props) {
   // scrolling to next slide
   function scrollNext(looping) {
     let currentIndex;
-
     addSelectedStateClassName(
       selectedScrollClassName,
       children,
@@ -730,7 +727,7 @@ function Carousel(props) {
         }
         if (
           parent.parentNode.clientWidth -
-            document.querySelector(".inner").getBoundingClientRect().right <=
+            parent.getBoundingClientRect().right <=
           0
         ) {
           if (
@@ -771,7 +768,6 @@ function Carousel(props) {
         } else if (leftOffsetArray[currentIndex + 1]) {
           parent.scrollTo(leftOffsetArray[currentIndex + 1], 0);
           lastScrolledTo = leftOffsetArray[currentIndex + 1];
-
           addSelectedStateClassName(
             selectedScrollClassName,
             children,
@@ -878,7 +874,6 @@ function Carousel(props) {
       i.addEventListener("click", () => {
         lastScrolledTo = leftOffsetArray[index];
         dotsFunctionality(dotsArray, lastScrolledTo);
-
         addSelectedStateClassName(
           selectedScrollClassName,
           children,
@@ -951,31 +946,6 @@ function Carousel(props) {
 
   if (!expLoop && direction === "ltr") scrollTo(startIndex);
 
-  // function getRotatedValue() {
-  //   var el = parent;
-  //   console.log(el, "el");
-
-  //   var st = window.getComputedStyle(el, null);
-
-  //   var tr =
-  //     st.getPropertyValue("-webkit-transform") ||
-  //     st.getPropertyValue("-moz-transform") ||
-  //     st.getPropertyValue("-ms-transform") ||
-  //     st.getPropertyValue("-o-transform") ||
-  //     st.getPropertyValue("transform");
-  //   var values = tr.split("(")[1],
-  //     values = values.split(")")[0],
-  //     values = values.split(",");
-
-  //   var a = values[0];
-  //   var b = values[1];
-  //   var c = values[2];
-  //   var d = values[3];
-  //   console.log(a, b, c, d, "thse");
-  //   var angle = Math.round(Math.asin(d) * (180 / Math.PI));
-  //   return angle;
-  // }
-  // adding gestures like drag, scroll
   Gesture(
     parent,
     {
@@ -1168,7 +1138,6 @@ function Carousel(props) {
           }
         }
         dotsFunctionality(dotsArray, lastScrolledTo);
-
         setTimeout(() => {
           whileDragging(
             getScrollProgress(
