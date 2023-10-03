@@ -1,6 +1,6 @@
 import Carousel from "../src/carousel";
 
-const carouselValue = "";
+let carouselValue = "";
 let dotCarousel = "";
 const loopCarousel = "";
 let carouselValue1 = "";
@@ -27,18 +27,18 @@ document.querySelector(".left-arrow").style.display = "none";
 document.querySelector(".left-arrow.dots").style.display = "none";
 document.querySelector(".left-arrow-1").style.display = "none";
 
-// carouselValue = Carousel({
-//   parent: ".parent2 .inner",
-//   child: ".parent2 .slider",
-//   slidesToScroll: 2,
-//   dragFree: false,
-//   whileScrolling: () => {
-//     displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
-//   },
-//   whileDragging: () => {
-//     displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
-//   },
-// });
+carouselValue = Carousel({
+  parent: ".parent2 .inner",
+  child: ".parent2 .slider",
+  slidesToScroll: 2,
+  dragFree: false,
+  whileScrolling: () => {
+    displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
+  },
+  whileDragging: () => {
+    displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
+  },
+});
 
 carouselValue1 = Carousel({
   parent: ".parent-1 .inner",
