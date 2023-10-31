@@ -1456,6 +1456,20 @@ function Carousel(props) {
     }
   }
 
+  function displayOrHideArrows(carousel, leftArrow, rightArrow) {
+    if (!carousel.canScrollPrev()) {
+      document.querySelector(leftArrow).style.display = "none";
+    } else {
+      document.querySelector(leftArrow).style.display = "block";
+    }
+
+    if (!carousel.canScrollNext()) {
+      document.querySelector(rightArrow).style.display = "none";
+    } else {
+      document.querySelector(rightArrow).style.display = "block";
+    }
+  }
+
   const self = {
     scrollPrev,
     scrollNext,
@@ -1469,6 +1483,7 @@ function Carousel(props) {
     containerNode,
     getScrollProgress,
     addSelectedStateClass,
+    displayOrHideArrows,
   };
   return self;
 }
