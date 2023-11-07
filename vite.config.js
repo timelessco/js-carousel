@@ -15,6 +15,7 @@ export default defineConfig(() => {
         input: {
           main: resolve(__dirname, "website/index.html"),
           skew: resolve(__dirname, "website/skew.html"),
+          example: resolve(__dirname, "website/example.html"),
         },
       },
     },
