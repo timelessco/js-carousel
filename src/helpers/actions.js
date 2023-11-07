@@ -37,6 +37,36 @@ export function getCurrentPosition(elem, y = false) {
   if (y) return matrix.m42;
   return matrix.m41;
 }
+export function getCurrentRotation(elem) {
+  const el = elem;
+  const st = window.getComputedStyle(el, null);
+  const tr =
+    st.getPropertyValue("-webkit-transform") ||
+    st.getPropertyValue("-moz-transform") ||
+    st.getPropertyValue("-ms-transform") ||
+    st.getPropertyValue("-o-transform") ||
+    st.getPropertyValue("transform") ||
+    "fail...";
+  // eslint-disable-next-line no-use-before-define
+  let values = tr.split("(")[1];
+  // eslint-disable-next-line no-use-before-define
+  values = values.split(")")[0]; //  eslint-disable-line
+  // eslint-disable-next-line no-use-before-define
+  values = values.split(",");
+  const a = values[0];
+  const b = values[1];
+  let angle;
+  if (tr !== "none") {
+    angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+    /**/
+  } else {
+    angle = 0;
+  }
+
+  // works!
+  return angle;
+  // $('#results').append('<p>Rotate: ' + angle + 'deg</p>');
+}
 
 // gets scroll progress of slider
 export function getScrollProgress(elem, children) {
@@ -57,6 +87,7 @@ export function moveToSnapPoint(
   slidesToScroll,
   customDragAction,
   easing = springConfig,
+  duration = 1000,
 ) {
   if (axisValue === "x") {
     if (slidesToScroll === 0 && snapValue > 0) {
@@ -65,12 +96,14 @@ export function moveToSnapPoint(
         translateX: `${0}px`,
         translateY: 0,
         easing,
+        duration,
       });
     } else if (customDragAction === "rotate") {
       anime({
         targets: parent,
         rotateY: `${snapValue}`,
         easing,
+        duration,
       });
     } else
       anime({
@@ -78,13 +111,22 @@ export function moveToSnapPoint(
         translateX: `${snapValue}px`,
         translateY: 0,
         easing,
+        duration,
       });
+  } else if (customDragAction === "rotate") {
+    anime({
+      targets: parent,
+      rotateZ: `${snapValue}`,
+      easing,
+      duration,
+    });
   } else {
     anime({
       targets: parent,
       translateX: 0,
       translateY: `${snapValue}px`,
       easing,
+      duration,
     });
   }
 }
