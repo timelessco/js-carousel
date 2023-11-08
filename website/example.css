@@ -15,11 +15,9 @@ li {
   list-style-type: none;
   font-weight: var(--framer-font-weight, 400);
   font-style: var(--framer-font-style, normal);
-
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none;
-
   z-index: 800;
 }
 
