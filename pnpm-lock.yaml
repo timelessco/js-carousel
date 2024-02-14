@@ -13,11 +13,11 @@ specifiers:
   browserslist-to-esbuild: ^1.2.0
   eslint: ^8.36.0
   eslint-config-airbnb-base: ^15.0.0
-  eslint-config-prettier: ^8.8.0
+  eslint-config-prettier: ^9.1.0
   eslint-plugin-import: ^2.27.5
   eslint-plugin-prettier: ^4.2.1
   gacp: ^3.0.3
-  husky: ^8.0.3
+  husky: ^9.0.11
   lint-staged: ^13.2.0
   pinst: ^3.0.0
   prettier: ^2.8.5
@@ -44,11 +44,11 @@ devDependencies:
   browserslist-to-esbuild: 1.2.0
   eslint: 8.36.0
   eslint-config-airbnb-base: 15.0.0_eakrjjutlgqjxe5ydhtnd4qdmy
-  eslint-config-prettier: 8.8.0_eslint@8.36.0
+  eslint-config-prettier: 9.1.0_eslint@8.36.0
   eslint-plugin-import: 2.27.5_eslint@8.36.0
-  eslint-plugin-prettier: 4.2.1_i2qmqyy4fgpgq2h7f6vnil3crq
+  eslint-plugin-prettier: 4.2.1_rerguc6i3mrkv5aejio2arplne
   gacp: 3.0.3
-  husky: 8.0.3
+  husky: 9.0.11
   lint-staged: 13.2.0
   pinst: 3.0.0
   prettier: 2.8.5
@@ -3471,8 +3471,8 @@ packages:
       semver: 6.3.0
     dev: true
 
-  /eslint-config-prettier/8.8.0_eslint@8.36.0:
-    resolution: {integrity: sha512-wLbQiFre3tdGgpDv67NQKnJuTlcUVYHas3k+DZCc2U2BadthoEY4B7hLPvAxaqdyOGCzuLfii2fqGph10va7oA==}
+  /eslint-config-prettier/9.1.0_eslint@8.36.0:
+    resolution: {integrity: sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -3550,7 +3550,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-prettier/4.2.1_i2qmqyy4fgpgq2h7f6vnil3crq:
+  /eslint-plugin-prettier/4.2.1_rerguc6i3mrkv5aejio2arplne:
     resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -3562,7 +3562,7 @@ packages:
         optional: true
     dependencies:
       eslint: 8.36.0
-      eslint-config-prettier: 8.8.0_eslint@8.36.0
+      eslint-config-prettier: 9.1.0_eslint@8.36.0
       prettier: 2.8.5
       prettier-linter-helpers: 1.0.0
     dev: true
@@ -4360,9 +4360,9 @@ packages:
     engines: {node: '>=14.18.0'}
     dev: true
 
-  /husky/8.0.3:
-    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
-    engines: {node: '>=14'}
+  /husky/9.0.11:
+    resolution: {integrity: sha512-AB6lFlbwwyIqMdHYhwPe+kjOC3Oc5P3nThEoW/AaO2BX3vJDjWPFxYLxokUZOo6RNX20He3AaT8sESs9NJcmEw==}
+    engines: {node: '>=18'}
     hasBin: true
     dev: true
 
