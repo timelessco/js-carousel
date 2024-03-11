@@ -1,7 +1,9 @@
 # Js Carousel:
+
 A pure Js customisable carousel, that snaps! uses CSS scroll snap on mobile.
 
 ## Features:
+
 - Supports snapping of carousel.
 - Supports autoplay with a specified interval.
 - Supports scrolling and dragging.
@@ -9,6 +11,7 @@ A pure Js customisable carousel, that snaps! uses CSS scroll snap on mobile.
 - Alignment is alterable.
 
 ## Dependencies:
+
 - Use Gesture: https://use-gesture.netlify.app/docs/#vanilla-javascript
 - Anime js: https://animejs.com/
 

@@ -127,7 +127,7 @@ export function reverseChildren(parent) {
 // throttle
 export function throttle(fn, delay) {
   let lastCall = 0;
-  return function () {
+  return function throttlefn() {
     const now = new Date().getTime();
     if (now - lastCall < delay) {
       return;

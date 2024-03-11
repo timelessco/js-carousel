@@ -105,7 +105,7 @@ function Carousel(props) {
     alignment,
   );
 
-  const throttleClick = throttle(function () {
+  const throttleClick = throttle(function throttlefn() {
     const firstChild =
       parent.childNodes[0].nodeType === Node.ELEMENT_NODE
         ? parent.childNodes[0]
