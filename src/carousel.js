@@ -168,7 +168,7 @@ function Carousel(props) {
               parent,
               slidesToScroll,
               customDragAction,
-              "easeInCirc",
+              springConfig,
               1000,
             );
           } else {

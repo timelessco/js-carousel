@@ -14,6 +14,8 @@ counter = Carousel({
     counter.scrollTo(index, true, false, -index * 40);
     counter.addSelectedStateClass(index);
   },
+  springConfig: "easeInCirc",
+  dragActive: false,
 });
 
 // document.querySelectorAll(".counter-li").forEach((i, index) => {
