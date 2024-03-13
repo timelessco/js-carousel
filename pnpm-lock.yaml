@@ -8,8 +8,8 @@ specifiers:
   '@commitlint/config-conventional': ^17.4.4
   '@ianvs/prettier-plugin-sort-imports': ^3.7.2
   '@release-it/conventional-changelog': ^5.1.1
-  '@use-gesture/vanilla': ^10.2.24
-  animejs: ^3.2.1
+  '@use-gesture/vanilla': ^10.2.27
+  animejs: ^3.2.2
   browserslist-to-esbuild: ^1.2.0
   eslint: ^8.36.0
   eslint-config-airbnb-base: ^15.0.0
@@ -30,8 +30,8 @@ specifiers:
   vite-plugin-top-level-await: ^1.3.1
 
 dependencies:
-  '@use-gesture/vanilla': 10.2.24
-  animejs: 3.2.1
+  '@use-gesture/vanilla': 10.3.0
+  animejs: 3.2.2
 
 devDependencies:
   '@babel/core': 7.24.0
@@ -2287,14 +2287,14 @@ packages:
       '@types/node': 18.15.3
     dev: true
 
-  /@use-gesture/core/10.2.24:
-    resolution: {integrity: sha512-ZL7F9mgOn3Qlnp6QLI9jaOfcvqrx6JPE/BkdVSd8imveaFTm/a3udoO6f5Us/1XtqnL4347PsIiK6AtCvMHk2Q==}
+  /@use-gesture/core/10.3.0:
+    resolution: {integrity: sha512-rh+6MND31zfHcy9VU3dOZCqGY511lvGcfyJenN4cWZe0u1BH6brBpBddLVXhF2r4BMqWbvxfsbL7D287thJU2A==}
     dev: false
 
-  /@use-gesture/vanilla/10.2.24:
-    resolution: {integrity: sha512-vJ0Upd2dhhiQj0Q/joBweJl+e38uf7hT+mCFkkPYtpk2yzaV8Rf9DSjzpPaEw3vgFvC60Kvfz/GlX2Tz2seDUQ==}
+  /@use-gesture/vanilla/10.3.0:
+    resolution: {integrity: sha512-hehZWLaNyNc+TWAbhJpj84yumD8ZBp/eet6HGg3xztPcchuNNTGEu5LEEdSg69SXHzS7exWE6j5VnsZ3VXVFxQ==}
     dependencies:
-      '@use-gesture/core': 10.2.24
+      '@use-gesture/core': 10.3.0
     dev: false
 
   /@vivaxy/git/4.2.1:
@@ -2362,8 +2362,8 @@ packages:
       uri-js: 4.4.1
     dev: true
 
-  /animejs/3.2.1:
-    resolution: {integrity: sha512-sWno3ugFryK5nhiDm/2BKeFCpZv7vzerWUcUPyAZLDhMek3+S/p418ldZJbJXo5ZUOpfm2kP2XRO4NJcULMy9A==}
+  /animejs/3.2.2:
+    resolution: {integrity: sha512-Ao95qWLpDPXXM+WrmwcKbl6uNlC5tjnowlaRYtuVDHHoygjtIPfDUoK9NthrlZsQSKjZXlmji2TrBUAVbiH0LQ==}
     dev: false
 
   /ansi-align/3.0.1:
