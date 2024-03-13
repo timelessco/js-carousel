@@ -57,8 +57,8 @@
     "test": "echo \"no test specified\" && exit 0"
   },
   "dependencies": {
-    "@use-gesture/vanilla": "^10.2.24",
-    "animejs": "^3.2.1"
+    "@use-gesture/vanilla": "^10.2.27",
+    "animejs": "^3.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
