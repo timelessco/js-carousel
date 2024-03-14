@@ -10,7 +10,7 @@ specifiers:
   '@release-it/conventional-changelog': ^5.1.1
   '@use-gesture/vanilla': ^10.3.0
   animejs: ^3.2.2
-  browserslist-to-esbuild: ^1.2.0
+  browserslist-to-esbuild: ^2.1.1
   eslint: ^8.36.0
   eslint-config-airbnb-base: ^15.0.0
   eslint-config-prettier: ^8.8.0
@@ -41,7 +41,7 @@ devDependencies:
   '@commitlint/config-conventional': 17.4.4
   '@ianvs/prettier-plugin-sort-imports': 3.7.2_prettier@2.8.8
   '@release-it/conventional-changelog': 5.1.1_release-it@15.11.0
-  browserslist-to-esbuild: 1.2.0
+  browserslist-to-esbuild: 2.1.1_browserslist@4.23.0
   eslint: 8.36.0
   eslint-config-airbnb-base: 15.0.0_eakrjjutlgqjxe5ydhtnd4qdmy
   eslint-config-prettier: 8.8.0_eslint@8.36.0
@@ -2636,22 +2636,15 @@ packages:
       fill-range: 7.0.1
     dev: true
 
-  /browserslist-to-esbuild/1.2.0:
-    resolution: {integrity: sha512-ftrrbI/VHBgEnmnSyhkqvQVMp6jAKybfs0qMIlm7SLBrQTGMsdCIP4q3BoKeLsZTBQllIQtY9kbxgRYV2WU47g==}
-    engines: {node: '>=12'}
-    dependencies:
-      browserslist: 4.21.5
-    dev: true
-
-  /browserslist/4.21.5:
-    resolution: {integrity: sha512-tUkiguQGW7S3IhB7N+c2MV/HZPSCPAAiYBZXLsBhFB/PCy6ZKKsZrmBayHV9fdGV/ARIfJ14NkxKzRDjvp7L6w==}
-    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
+  /browserslist-to-esbuild/2.1.1_browserslist@4.23.0:
+    resolution: {integrity: sha512-KN+mty6C3e9AN8Z5dI1xeN15ExcRNeISoC3g7V0Kax/MMF9MSoYA2G7lkTTcVUFntiEjkpI0HNgqJC1NjdyNUw==}
+    engines: {node: '>=18'}
     hasBin: true
+    peerDependencies:
+      browserslist: '*'
     dependencies:
-      caniuse-lite: 1.0.30001468
-      electron-to-chromium: 1.4.333
-      node-releases: 2.0.10
-      update-browserslist-db: 1.0.10_browserslist@4.21.5
+      browserslist: 4.23.0
+      meow: 13.2.0
     dev: true
 
   /browserslist/4.23.0:
@@ -2755,10 +2748,6 @@ packages:
   /camelcase/7.0.1:
     resolution: {integrity: sha512-xlx1yCK2Oc1APsPXDL2LdlNP6+uu8OCDdhOBSVT279M/S+y75O30C2VuD8T2ogdePBBl7PfPF4504tnLgX3zfw==}
     engines: {node: '>=14.16'}
-    dev: true
-
-  /caniuse-lite/1.0.30001468:
-    resolution: {integrity: sha512-zgAo8D5kbOyUcRAgSmgyuvBkjrGk5CGYG5TYgFdpQv+ywcyEpo1LOWoG8YmoflGnh+V+UsNuKYedsoYs0hzV5A==}
     dev: true
 
   /caniuse-lite/1.0.30001597:
@@ -3416,10 +3405,6 @@ packages:
 
   /eastasianwidth/0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
-    dev: true
-
-  /electron-to-chromium/1.4.333:
-    resolution: {integrity: sha512-YyE8+GKyGtPEP1/kpvqsdhD6rA/TP1DUFDN4uiU/YI52NzDxmwHkEb3qjId8hLBa5siJvG0sfC3O66501jMruQ==}
     dev: true
 
   /electron-to-chromium/1.4.702:
@@ -5325,6 +5310,11 @@ packages:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
     dev: true
 
+  /meow/13.2.0:
+    resolution: {integrity: sha512-pxQJQzB6djGPXh08dacEloMFopsOqGVRKFPYvPOt9XDZ1HasbgDZA74CJGreSU4G3Ak7EFJGoiH2auq+yXISgA==}
+    engines: {node: '>=18'}
+    dev: true
+
   /meow/8.1.2:
     resolution: {integrity: sha512-r85E3NdZ+mpYk1C6RjPFEMSE+s1iZMuHtsHAqY0DT3jZczl0diWUZ8g6oU7h0M9cD2EL+PzaYghhCLzR0ZNn5Q==}
     engines: {node: '>=10'}
@@ -5512,10 +5502,6 @@ packages:
       data-uri-to-buffer: 4.0.1
       fetch-blob: 3.2.0
       formdata-polyfill: 4.0.10
-    dev: true
-
-  /node-releases/2.0.10:
-    resolution: {integrity: sha512-5GFldHPXVG/YZmFzJvKK2zDSzPKhEp0+ZR5SVaoSag9fsL5YgHbUHDfnG5494ISANDcK4KwPXAx2xqVEydmd7w==}
     dev: true
 
   /node-releases/2.0.14:
@@ -7112,17 +7098,6 @@ packages:
   /untildify/4.0.0:
     resolution: {integrity: sha512-KK8xQ1mkzZeg9inewmFVDNkg3l5LUhoq9kN6iWYB/CC9YMG8HA+c1Q8HwDe6dEX7kErrEVNVBO3fWsVq5iDgtw==}
     engines: {node: '>=8'}
-    dev: true
-
-  /update-browserslist-db/1.0.10_browserslist@4.21.5:
-    resolution: {integrity: sha512-OztqDenkfFkbSG+tRxBeAnCVPckDBcvibKd35yDONx6OU8N7sqgwc7rCbkJ/WcYtVRZ4ba68d6byhC21GFh7sQ==}
-    hasBin: true
-    peerDependencies:
-      browserslist: '>= 4.21.0'
-    dependencies:
-      browserslist: 4.21.5
-      escalade: 3.1.1
-      picocolors: 1.0.0
     dev: true
 
   /update-browserslist-db/1.0.13_browserslist@4.23.0:
