@@ -9,20 +9,6 @@ const selectCarousel = "";
 let yAxis = "";
 document.querySelector(".new-slide")?.addEventListener("click", () => {});
 
-function displayOrHideArrows(carousel, leftArrow, rightArrow) {
-  if (!carousel.canScrollPrev()) {
-    document.querySelector(leftArrow).style.display = "none";
-  } else {
-    document.querySelector(leftArrow).style.display = "block";
-  }
-
-  if (!carousel.canScrollNext()) {
-    document.querySelector(rightArrow).style.display = "none";
-  } else {
-    document.querySelector(rightArrow).style.display = "block";
-  }
-}
-
 document.querySelector(".left-arrow").style.display = "none";
 document.querySelector(".left-arrow.dots").style.display = "none";
 document.querySelector(".left-arrow-1").style.display = "none";
@@ -33,10 +19,18 @@ carouselValue = Carousel({
   slidesToScroll: 2,
   dragFree: false,
   whileScrolling: () => {
-    displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
+    carouselValue.displayOrHideArrows(
+      carouselValue,
+      ".left-arrow",
+      ".right-arrow",
+    );
   },
   whileDragging: () => {
-    displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
+    carouselValue.displayOrHideArrows(
+      carouselValue,
+      ".left-arrow",
+      ".right-arrow",
+    );
   },
 });
 
@@ -45,10 +39,18 @@ carouselValue1 = Carousel({
   child: ".parent-1 .slider",
   slidesToScroll: 1,
   whileScrolling: () => {
-    displayOrHideArrows(carouselValue1, ".left-arrow-1", ".right-arrow-1");
+    carouselValue1.displayOrHideArrows(
+      carouselValue1,
+      ".left-arrow-1",
+      ".right-arrow-1",
+    );
   },
   whileDragging: () => {
-    displayOrHideArrows(carouselValue1, ".left-arrow-1", ".right-arrow-1");
+    carouselValue1.displayOrHideArrows(
+      carouselValue1,
+      ".left-arrow-1",
+      ".right-arrow-1",
+    );
   },
 });
 
@@ -58,10 +60,18 @@ carouselValues1 = Carousel({
   slidesToScroll: 1,
   dragFree: true,
   whileScrolling: () => {
-    displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
+    carouselValues1.displayOrHideArrows(
+      carouselValues1,
+      ".left-arrow-s1",
+      ".right-arrow-s1",
+    );
   },
   whileDragging: () => {
-    displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
+    carouselValues1.displayOrHideArrows(
+      carouselValues1,
+      ".left-arrow-s1",
+      ".right-arrow-s1",
+    );
   },
 });
 
@@ -77,10 +87,18 @@ dotCarousel = Carousel({
   child: ".dots-parent .slider",
   displayDots: true,
   whileScrolling: () => {
-    displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
+    dotCarousel.displayOrHideArrows(
+      dotCarousel,
+      ".left-arrow.dots",
+      ".right-arrow.dots",
+    );
   },
   whileDragging: () => {
-    displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
+    dotCarousel.displayOrHideArrows(
+      dotCarousel,
+      ".left-arrow.dots",
+      ".right-arrow.dots",
+    );
   },
   selectedState: false,
 });
@@ -133,32 +151,48 @@ yAxis = Carousel({
   child: ".axis .slider",
   axis: "y",
   whileScrolling: () => {
-    displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
+    yAxis.displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
   },
   whileDragging: () => {
-    displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
+    yAxis.displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
   },
   selectedState: false,
 });
 document.querySelector(".left-arrow").addEventListener("click", () => {
   carouselValue.scrollPrev();
-  displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
+  carouselValue.displayOrHideArrows(
+    carouselValue,
+    ".left-arrow",
+    ".right-arrow",
+  );
 
   console.log(carouselValue.slidesInView(), "slides in view");
   console.log(carouselValue.slidesNotInView(), "slides not in view");
 });
 document.querySelector(".left-arrow-1").addEventListener("click", () => {
   carouselValue1.scrollPrev();
-  displayOrHideArrows(carouselValue1, ".left-arrow-1", ".right-arrow-1");
+  carouselValue1.displayOrHideArrows(
+    carouselValue1,
+    ".left-arrow-1",
+    ".right-arrow-1",
+  );
 });
 document.querySelector(".left-arrow-s1").addEventListener("click", () => {
   carouselValues1.scrollPrev();
-  displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
+  carouselValue1.displayOrHideArrows(
+    carouselValues1,
+    ".left-arrow-s1",
+    ".right-arrow-s1",
+  );
 });
 
 document.querySelector(".right-arrow").addEventListener("click", () => {
   carouselValue.scrollNext();
-  displayOrHideArrows(carouselValue, ".left-arrow", ".right-arrow");
+  carouselValue.displayOrHideArrows(
+    carouselValue,
+    ".left-arrow",
+    ".right-arrow",
+  );
   console.log(carouselValue.slidesInView(), "slides in view");
   console.log(carouselValue.slidesNotInView(), "slides not in view");
   console.log(carouselValue.slideNodes(), "slide nodes");
@@ -167,27 +201,43 @@ document.querySelector(".right-arrow").addEventListener("click", () => {
 });
 document.querySelector(".right-arrow-1").addEventListener("click", () => {
   carouselValue1.scrollNext();
-  displayOrHideArrows(carouselValue1, ".left-arrow-1", ".right-arrow-1");
+  carouselValue1.displayOrHideArrows(
+    carouselValue1,
+    ".left-arrow-1",
+    ".right-arrow-1",
+  );
 });
 
 document.querySelector(".right-arrow-s1").addEventListener("click", () => {
   carouselValues1.scrollNext();
-  displayOrHideArrows(carouselValues1, ".left-arrow-s1", ".right-arrow-s1");
+  carouselValues1.displayOrHideArrows(
+    carouselValues1,
+    ".left-arrow-s1",
+    ".right-arrow-s1",
+  );
 });
 
 document.querySelector(".left-arrow.dots").addEventListener("click", () => {
   dotCarousel.scrollPrev();
-  displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
+  dotCarousel.displayOrHideArrows(
+    dotCarousel,
+    ".left-arrow.dots",
+    ".right-arrow.dots",
+  );
 });
 
 document.querySelector(".right-arrow.dots").addEventListener("click", () => {
   dotCarousel.scrollNext();
-  displayOrHideArrows(dotCarousel, ".left-arrow.dots", ".right-arrow.dots");
+  dotCarousel.displayOrHideArrows(
+    dotCarousel,
+    ".left-arrow.dots",
+    ".right-arrow.dots",
+  );
 });
 
 document.querySelector(".left-arrow.select")?.addEventListener("click", () => {
   dotCarousel.scrollPrev();
-  displayOrHideArrows(
+  dotCarousel.displayOrHideArrows(
     selectCarousel,
     ".left-arrow.selected",
     ".right-arrow.selected",
@@ -195,7 +245,7 @@ document.querySelector(".left-arrow.select")?.addEventListener("click", () => {
 });
 document.querySelector(".right-arrow.select")?.addEventListener("click", () => {
   dotCarousel.scrollNext();
-  displayOrHideArrows(
+  dotCarousel.displayOrHideArrows(
     selectCarousel,
     ".left-arrow.selected",
     ".right-arrow.selected",
@@ -208,10 +258,10 @@ document.querySelector("#next-button")?.addEventListener("click", () => {
 
 document.querySelector(".up-arrow").addEventListener("click", () => {
   yAxis.scrollPrev();
-  displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
+  yAxis.displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
 });
 
 document.querySelector(".down-arrow").addEventListener("click", () => {
   yAxis.scrollNext();
-  displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
+  yAxis.displayOrHideArrows(yAxis, ".up-arrow.dots", ".down-arrow.dots");
 });

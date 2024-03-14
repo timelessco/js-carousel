@@ -14,6 +14,7 @@ export default defineConfig(() => {
       rollupOptions: {
         input: {
           main: resolve(__dirname, "website/index.html"),
+          skew: resolve(__dirname, "website/skew.html"),
         },
       },
     },
