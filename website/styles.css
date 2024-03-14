@@ -1,0 +1,567 @@
+/* From
+   https://raw.githubusercontent.com/tailwindlabs/tailwindcss/master/src/css/preflight.css
+*/
+
+/*
+1. Prevent padding and border from affecting element width.
+   (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width.
+(https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */
+
+  font-feature-settings: normal; /* 5 */
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  object-fit: cover;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none;
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+h3 {
+  color: white;
+  margin: 25px auto 10px !important;
+  text-align: left;
+  max-width: 660px;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  line-height: inherit;
+  background: black;
+}
+
+hr {
+  height: 0;
+  color: inherit;
+  border-top-width: 1px;
+}
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+p {
+  color: white;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 1em;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+table {
+  text-indent: 0;
+  border-color: inherit;
+  border-collapse: collapse;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+  background-color: transparent;
+  background-image: none;
+}
+
+:-moz-focusring {
+  outline: auto;
+}
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+[type="search"] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+summary {
+  display: list-item;
+}
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1;
+  color: #9ca3af;
+}
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+:disabled {
+  cursor: default;
+}
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+}
+
+.fig {
+  width: 20px;
+  height: 20px;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+[hidden] {
+  display: none;
+}
+
+/* ======  App CSS  ====== */
+
+#app {
+  min-height: 100%;
+}
+
+.parent {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  cursor: grab;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
+.axis-container {
+  margin-bottom: 60px;
+}
+
+.parent2,
+.loop,
+.autoplay,
+.dragfree,
+.dots-parent,
+.carousel-container,
+.selected-state,
+.parent-1,
+.parent-0,
+.scroll-1,
+.loop-exp,
+.progress,
+.start-index,
+.direction,
+.align-c,
+.thumbnail,
+.thumb-top {
+  /* max-width: 1090px; */
+
+  max-width: 660px;
+  z-index: 1;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  cursor: grab;
+  overflow-y: hidden;
+  white-space: nowrap;
+  touch-action: none;
+  will-change: transform;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  position: relative;
+}
+
+.inner {
+  /* touch-action: none; */
+  padding-bottom: 20px;
+}
+
+.dots-flex {
+  display: flex;
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: black;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.dots {
+  cursor: pointer;
+}
+
+.dots-parent {
+  padding-bottom: 20px;
+}
+
+.scroll {
+  overflow-x: scroll;
+}
+
+.scroll-behaviour {
+  scroll-behavior: smooth;
+}
+
+.selected-dot circle {
+  fill: white;
+  stroke: white;
+}
+@media only screen and (max-width: 700px) {
+  .slider.selected {
+    transform: scale(1) !important;
+  }
+}
+
+.previous {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+}
+
+.next {
+  position: absolute;
+  z-index: 10;
+  right: 0;
+}
+
+.previous svg {
+  transform: rotate(180deg);
+}
+
+.parent:active {
+  cursor: grabbing;
+}
+
+.slider {
+  width: 150px;
+  margin: 10px;
+  height: auto;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  z-index: 800;
+  position: relative;
+}
+
+.dots-parent .slider,
+.progress .slider,
+.loop-exp .slider,
+.thumb-top-div .slider {
+  width: 660px;
+  max-width: 100%;
+  max-height: 300px;
+}
+
+.axis-loop .slider,
+.axis-loop .slider img {
+  height: 480px;
+}
+
+.loop-exp .slider {
+  position: relative;
+}
+
+.loop-exp p {
+  position: absolute;
+  z-index: 3300;
+  top: 10px;
+  left: 10px;
+  font-size: 30px;
+}
+
+progress {
+  position: absolute;
+  z-index: 20;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: width 5s ease;
+  border-radius: 12px;
+}
+
+progress::-webkit-progress-value {
+  transition: width 0.4s ease;
+}
+
+.two {
+  background-color: blue;
+}
+
+.three {
+  background-color: green;
+}
+
+.inner,
+.carousel-item,
+.selected-state-div,
+.loop-exp-div,
+.progress-inner,
+.start-index-div,
+.direction-div,
+.align-c-div,
+.thumbnail-inner,
+.thumb-top-div {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.slider.selected {
+  transform: scale(1.2);
+}
+
+.slider:first-of-type {
+  margin-left: 0;
+}
+
+.thumbnail-inner .slider.selected {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.thumbnail-inner .slider:not(.selected) {
+  opacity: 0.3;
+}
+
+.axis-container,
+.axis-loop-container {
+  max-height: 500px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+span {
+  color: white;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none;
+}
+
+.active {
+  scroll-behavior: smooth;
+}
+
+.embla {
+  overflow: hidden;
+  cursor: grab;
+}
+
+.left-arrow,
+.left-arrow-1,
+.left-arrow-0,
+.left-arrow-s1 {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+  display: block;
+}
+
+.up-arrow,
+.up-arrow-loop {
+  transform: rotateZ(270deg);
+  position: absolute;
+  z-index: 970;
+  cursor: pointer;
+}
+
+.down-arrow,
+.down-arrow-loop {
+  transform: rotateZ(90deg);
+  position: absolute;
+  z-index: 970;
+  cursor: pointer;
+  bottom: 0;
+}
+
+.right-arrow,
+.right-arrow-1,
+.right-arrow-0,
+.right-arrow-s1 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  cursor: pointer;
+}
+
+.axis-container .slider:first-of-type,
+.axis-loop-containe .slider:first-of-type {
+  margin: 0 !important;
+  margin-left: 13px !important;
+}

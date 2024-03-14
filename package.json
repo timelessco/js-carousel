@@ -1,15 +1,15 @@
 {
-  "name": "browser-js-library-template",
+  "name": "js-carousel",
   "version": "1.0.0",
   "type": "module",
-  "description": "Template for production ready vanilla js library",
+  "description": "A pure Js customisable carousel, that snaps! uses CSS scroll snap on mobile.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/timelessco/browser-js-library-template.git"
+    "url": "git+https://github.com/timelessco/js-carousel"
   },
-  "homepage": "https://github.com/timelessco/browser-js-library-template#readme",
+  "homepage": "https://github.com/timelessco/js-carousel#readme",
   "bugs": {
-    "url": "https://github.com/timelessco/browser-js-library-template/issues"
+    "url": "https://github.com/timelessco/js-carousel/issues"
   },
   "author": "Timeless <hello@timeless.co> (https://timeless.co/)",
   "license": "MIT",
@@ -33,7 +33,11 @@
     "library",
     "production",
     "template",
-    "vanilla"
+    "vanilla",
+    "carousel",
+    "slider",
+    "js-slider",
+    "js-carousel"
   ],
   "scripts": {
     "build": "vite build --config vite-lib.config.js",
