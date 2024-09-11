@@ -67,7 +67,7 @@
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
     "@ianvs/prettier-plugin-sort-imports": "^3.7.2",
-    "@release-it/conventional-changelog": "^5.1.1",
+    "@release-it/conventional-changelog": "^8.0.2",
     "browserslist-to-esbuild": "^1.2.0",
     "eslint": "^8.36.0",
     "eslint-config-airbnb-base": "^15.0.0",
